@@ -56,7 +56,7 @@ Item {
         }
         BotonUX{
             id: botActualiza
-            text: !r.modificando?'Guardar Registro':'Modificar Registro'
+            text:'Actualizar Aplicación'
             height: app.fs*2
             onClicked: {
                     let cmd='-git=https://github.com/nextsigner/taekwondo.git'
