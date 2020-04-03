@@ -7,6 +7,13 @@ Item {
     anchors.fill: parent
     property bool buscando: false
     property string currentTableName: ''
+    property bool selectedAll: false
+    onSelectedAllChanged: {
+        for(var i=0;i<lm.count; i++){
+            uLogView.showLog('i'+i+':'+lm.get(i).selected)
+            lm.get(i).selected=true
+        }
+    }
     onVisibleChanged: {
         tiSearch.focus=visible
         if(visible&&tiSearch.text===''){
@@ -22,7 +29,7 @@ Item {
     Column{
         width: parent.width-app.fs
         height: parent.height
-        spacing: app.fs*0.5
+        //spacing: app.fs*0.5
         anchors.horizontalCenter: parent.horizontalCenter
         Row{
             spacing: app.fs*0.5
@@ -106,6 +113,82 @@ Item {
 
         UText{id: cant}
         Rectangle{
+            id:xRowTitDes
+            width: lv.width
+            height: app.fs*4
+            radius: app.fs*0.1
+            border.width: 2
+            border.color: app.c2
+            anchors.horizontalCenter: parent.horizontalCenter
+            color: app.c2
+            property var anchos: [0.05,0.1, 0.25,0.4,0.1,0.1]
+            property string fontColor: app.c2
+            Row{
+                anchors.centerIn: parent
+                Rectangle{
+                    width: xRowTitDes.width*xRowTitDes.anchos[0]
+                    height:xRowTitDes.height
+                    border.width: 2
+                    border.color: app.c2
+                    color: app.c1
+                    CheckBox{
+                        id: cbSelectedAll
+                        anchors.centerIn: parent
+                        onCheckedChanged: {
+                            r.selectedAll=checked
+                        }
+                    }
+                }
+                Repeater{
+                    model: app.colsNameAlumnos
+                    Rectangle{
+                        width: xRowTitDes.width*xRowTitDes.anchos[index+1]
+                        height:xRowTitDes.height
+                        border.width: 2
+                        border.color: app.c2
+                        color: app.c1
+                        UText{
+                            text: (''+app.colsNameAlumnos[index]).replace(/ /g, '\n')
+                            anchors.centerIn: parent
+                            color: xRowTitDes.fontColor
+                            horizontalAlignment: Text.AlignHCenter
+                        }
+                    }
+                }
+                /*
+                Rectangle{
+                    id: xRDT2
+                    width: xRowTitDes.width*xRowTitDes.anchos[1]
+                    height:xRowTitDes.height
+                    border.width: 2
+                    border.color: app.c2
+                    color: app.c2
+                    UText{
+                        id: txtDes
+                        text: 'Grado'
+                        color: xRowTitDes.fontColor
+                        width: parent.width-app.fs
+                        wrapMode: Text.WordWrap
+                        anchors.centerIn: parent
+                    }
+                }
+                Rectangle{
+                    id: xRDT3
+                    width: xRowTitDes.width*xRowTitDes.anchos[2]
+                    height:xRowTitDes.height
+                    border.width: 2
+                    border.color: app.c2
+                    color: app.c2
+                    UText{
+                        text: 'Nombre'
+                        color: xRowTitDes.fontColor
+                        anchors.centerIn: parent
+                    }
+                }
+                */
+            }
+        }
+        Rectangle{
             width: parent.width
             height: r.height-tiSearch.height-app.fs*2-cant.height
             color: 'transparent'
@@ -119,7 +202,7 @@ Item {
                 id: lv
                 model: lm
                 delegate: delPorCod//rbCod.checked?delPorCod:delPorDes
-                spacing: app.fs*0.5
+                spacing: 0//app.fs*0.5
                 width: parent.width
                 height: parent.height
                 clip: true
@@ -141,15 +224,14 @@ Item {
                 }
                 ListModel{
                     id: lm
-                    function addProd(pid, pcod, pdes, pcos, pven, pstock, pgan){
+                    function addDato(pid, pfolio, pgrado, pnom, pfechanac, pfechacert){
                         return{
-                            vpid: pid,
-                            vpcod: pcod,
-                            vpdes: pdes,
-                            vpcos:pcos,
-                            vpven: pven,
-                            vpstock: pstock,
-                            vpgan: pgan
+                            vaid: pid,
+                            vafolio: pfolio,
+                            vagrado: pgrado,
+                            vanom:pnom,
+                            vafechanac: pfechanac,
+                            vafechacert: pfechacert
                         }
                     }
                 }
@@ -158,87 +240,48 @@ Item {
                     Rectangle{
                         id:xRowDes
                         width: parent.width
-                        height: parseInt(vpid)!==-10?txtDes.height+app.fs:app.fs*3
+                        height: app.fs*2//parseInt(vaid)!==-10?app.fs*2:app.fs*3
                         radius: app.fs*0.1
                         border.width: 2
                         anchors.horizontalCenter: parent.horizontalCenter
-                        color: parseInt(vpid)!==-10&&index!==lv.currentIndex?app.c1:app.c2
+                        color: parseInt(vaid)!==-10&&index!==lv.currentIndex?app.c1:app.c2
                         property string fontColor: index!==lv.currentIndex?app.c2:app.c1
+                        property var arrayModeloDatos: [vafolio, vagrado, vanom, vafechanac, vafechacert]//[vafolio, vagrado, vanom, vafechanac, vafechacert]
+                        property bool selected:false
+                        onSelectedChanged: {
+                            uLogView.showLog('Selected:'+selected)
+                            cbRow.checked=selected
+                        }
                         Row{
-                            visible: parseInt(vpid)!==-10
                             anchors.centerIn: parent
                             Rectangle{
-                                id: xRD1
-                                width: app.fs*10
-                                height:xRD2.height
+                                width: xRowDes.width*xRowTitDes.anchos[0]
+                                height:xRowDes.height
                                 border.width: 2
                                 border.color: app.c2
-                                color: parseInt(vpid)!==-10&&index!==lv.currentIndex?app.c1:app.c2
-                                UText{
-                                    text: vpcod
-                                    anchors.centerIn: parent
-                                    color: xRowDes.fontColor
-                                }
-                            }
-                            Rectangle{
-                                id: xRD2
-                                width: xRowDes.width-xRD1.width-xRD3.width
-                                height:txtDes.contentHeight+app.fs*2
-                                border.width: 2
-                                border.color: app.c2
-                                color: parseInt(vpid)!==-10&&index!==lv.currentIndex?app.c1:app.c2
-                                UText{
-                                    id: txtDes
-                                    text: vpdes
-                                    color: xRowDes.fontColor
-                                    width: parent.width-app.fs
-                                    wrapMode: Text.WordWrap
+                                color: app.c1
+                                CheckBox{
+                                    id: cbRow
+                                    checked: xRowDes.selected
                                     anchors.centerIn: parent
                                 }
                             }
-                            Rectangle{
-                                id: xRD3
-                                width: app.fs*10
-                                height:xRD2.height
-                                border.width: 2
-                                border.color: app.c2
-                                color: parseInt(vpid)!==-10&&index!==lv.currentIndex?app.c1:app.c2
-                                UText{
-                                    text: ''+vpcos
-                                    color: xRowDes.fontColor
-                                    anchors.centerIn: parent
+                            Repeater{
+                                model: app.colsNameAlumnos
+                                Rectangle{
+                                    width: xRowDes.width*xRowTitDes.anchos[index+1]
+                                    height:xRowDes.height
+                                    border.width: 2
+                                    border.color: app.c2
+                                    color: app.c1
+                                    UText{
+                                        id: txtCelda
+                                        text: xRowDes.arrayModeloDatos[index]
+                                        anchors.centerIn: parent
+                                        color: xRowDes.fontColor
+                                        horizontalAlignment: Text.AlignHCenter
+                                    }
                                 }
-                            }
-                        }
-                        Rectangle{
-                            visible: parseInt(vpid)===-10
-                            width: xRowDes.width
-                            height:app.fs*3
-                            border.width: 2
-                            border.color: app.c2
-                            color: app.c1
-                            UText{
-                                text: tiSearch.text==='*'?'Mostrando todos los alumnos.':'Resultados de '+tiSearch.text
-                                color: app.c2
-                                anchors.verticalCenter: parent.verticalCenter
-                                anchors.left: parent.left
-                                anchors.leftMargin: app.fs
-                            }
-                        }
-                        BotonUX{
-                            text: 'Eliminar'
-                            height: app.fs*2
-                            fontColor: app.c2
-                            bg.color: app.c1
-                            glow.radius: 2
-                            visible: index===lv.currentIndex&&parseInt(vpid)!==-10
-                            anchors.right: parent.right
-                            anchors.rightMargin: app.fs*0.5
-                            anchors.verticalCenter: parent.verticalCenter
-                            onClicked: {
-                                let sql='delete from '+r.currentTableName+' where id='+vpid
-                                unik.sqlQuery(sql)
-                                search()
                             }
                         }
                     }
@@ -270,7 +313,7 @@ Item {
             sOrderByAndAsc+=app.colsAlumnos[cbPor.currentIndex]+' '+ascDesc
         }
 
-        lm.append(lm.addProd('-10', tiSearch.text, '', '',''))
+        //lm.append(lm.addDato('-10', tiSearch.text, '', '','',''))
         var b=colSearch+' like \'%'
         //b+=p1[0]+'%'
         for(var i=0;i<p1.length;i++){
@@ -290,7 +333,7 @@ Item {
         //console.log('Sql count result: '+rows.length)
         cant.text='Resultados: '+rows.length
         for(i=0;i<rows.length;i++){
-            lm.append(lm.addProd(rows[i].col[0], rows[i].col[1], rows[i].col[2], rows[i].col[3], rows[i].col[4]))
+            lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[2], rows[i].col[3], rows[i].col[4], rows[i].col[5]))
         }
 
         b=''
@@ -300,14 +343,14 @@ Item {
             }else{
                 b+='or nombre like \'%'+p1[i]+'%\' '
             }*/
-            //lm.append(lm.addProd('-10', p1[i], '', '','','',''))
+            //lm.append(lm.addDato('-10', p1[i], '', '','','',''))
             sql='select distinct * from '+app.tableName1+' where '+colSearch+' like \'%'+p1[i]+'%\' '+sOrderByAndAsc
             console.log('Sql 2: '+sql)
             var rows2=unik.getSqlData(sql)
             //console.log('Sql count result: '+rows.length)
             //cant.text='Resultados: '+parseInt(rows.length+rows2.length)
             for(var i2=0;i2<rows2.length;i2++){
-                lm.append(lm.addProd(rows2[i2].col[0], rows2[i2].col[1], rows2[i2].col[2], rows2[i2].col[3], rows2[i2].col[4]))
+                lm.append(lm.addDato(rows2[i2].col[0], rows2[i2].col[1], rows2[i2].col[2], rows2[i2].col[3], rows2[i2].col[4], rows[i].col[5]))
             }
         }
 
