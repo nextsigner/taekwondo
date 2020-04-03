@@ -41,6 +41,7 @@ Item {
                     textInput.selectAll()
                 }
                 onTextChanged: {
+                    if(r.modificando)return
                     tCheckCodExist.restart()
                 }
                 Timer{
@@ -147,6 +148,15 @@ Item {
                 UnikFocus{}
             }
             BotonUX{
+                id: botCancelarModificar
+                text: 'Cancelar'
+                height: app.fs*2
+                visible: r.modificando
+                onClicked: {
+                   r.modificando=false
+                }
+            }
+            BotonUX{
                 id: botReg
                 text: !r.modificando?'Guardar Registro':'Modificar Registro'
                 height: app.fs*2
@@ -183,13 +193,15 @@ Item {
             height: colExists.height+app.fs
             radius: app.fs*0.1
             border.width: 2
+            border.color: app.c2
             anchors.centerIn: parent
-            color: parseInt(vpid)!==-10?app.c1:app.c2
-            property string vpid: ''
+            color: app.c1
+            property string vaid: ''
             property string vafolio: ''
             property string vagrado: ''
             property string vanom: ''
             property string vafechanac: ''
+            property string vafechacert: ''
             Column{
                 id: colExists
                 spacing: app.fs
@@ -197,9 +209,9 @@ Item {
                 anchors.centerIn: parent
                 UText{
                     id: txt
-                    color:parseInt(vpid)!==-10?app.c2:app.c1
+                    color:app.c2
                     font.pixelSize: app.fs
-                    text: parseInt(vpid)!==-10? '<b style="font-size:'+app.fs+'px;">Folio: </b><span style="font-size:'+app.fs+'px;">'+vafolio+'</span><br /><br /><b  style="font-size:'+app.fs*1.4+'px;">Grado: </b><span style="font-size:'+app.fs+'px;">'+vagrado+'</span><br /><br /><b style="font-size:'+app.fs+'px;">Nombre: </b> <span style="font-size:'+app.fs+'px;">$'+vanom+'</span><br /><b>Fecha de Nacimiento: </b>'+vafechanac:'<b>Resultados por descripción:</b> '+tiSearch.text
+                    text: '<br /><b style="font-size:'+app.fs+'px;">Id único del registro: </b><span style="font-size:'+app.fs+'px;">'+vaid+'</span><br /><br /><b style="font-size:'+app.fs+'px;">Folio: </b><span style="font-size:'+app.fs+'px;">'+vafolio+'</span><br /><b  style="font-size:'+app.fs*1.4+'px;">Grado: </b><span style="font-size:'+app.fs+'px;">'+vagrado+'</span><br /><b style="font-size:'+app.fs+'px;">Nombre: </b> <span style="font-size:'+app.fs+'px;">'+vanom+'</span><br /><b>Fecha de Nacimiento: </b>'+vafechanac+'<br /><b>Fecha de Certificado: </b>'+vafechacert+'<br />'
                     textFormat: Text.RichText
                     width: parent.width-app.fs
                     wrapMode: Text.WordWrap
@@ -218,12 +230,13 @@ Item {
                         function loadProd(){
                             xCodExists.visible=false
                             xCodExists.destroy(3000)
-                            tiFolio.text=vagrado
-                            tiGrado.text=vafolio
+                            tiFolio.text=vafolio
+                            tiGrado.text=vagrado
                             tiNombre.text=vanom
                             tiFechaNac.text=vafechanac
+                            tiFechaCert.text=vafechacert
                             r.modificando=true
-                            r.pIdAModificar=parseInt(vpid)
+                            r.pIdAModificar=parseInt(vaid)
                         }
                     }
                     BotonUX{
@@ -245,14 +258,10 @@ Item {
         let exists= rows.length>0
         if(exists){
             let comp = compExist
-            let obj = comp.createObject(r, {vpid:rows[0].col[0], vagrado:rows[0].col[1],  vafolio:rows[0].col[2], vanom: rows[0].col[3], vafechanac: rows[0].col[4]})
+            let obj = comp.createObject(r, {vaid:rows[0].col[0], vafolio:rows[0].col[1],  vagrado:rows[0].col[2], vanom: rows[0].col[3], vafechanac: rows[0].col[4], vafechacert: rows[0].col[5]})
         }
         return exists
-    }
-    function calcPorcVen(pcos, porc){
-        let diff=pcos/100*porc
-        return parseFloat(pcos+diff).toFixed(2)
-    }
+    }   
     function getCount(){
         let sql = 'select '+r.cols[0]+' from '+r.tableName
         let rows = unik.getSqlData(sql)
@@ -309,7 +318,7 @@ Item {
         //uLogView.showLog('Registro Insertado: '+insertado)
     }
     function modify(){
-        if(tiFolio.text===''||tiGrado.text===''||tiNombre.text===''||tiPrecioVenta.text===''||tiStock.text===''||tiFechaNac.text===''||tiFechaCert.text===''){
+        if(tiFolio.text===''||tiGrado.text===''||tiNombre.text===''||tiFechaNac.text===''||tiFechaCert.text===''){
             uLogView.showLog('Error!\nNo se han introducido todos los datos requeridos.\nPara registrar este alumno es necesario completar el formulario en su totalidad.')
             if(tiFolio.text===''){
                 uLogView.showLog('Faltan los datos de folio.')

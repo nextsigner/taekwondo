@@ -275,6 +275,9 @@ Item {
         onTriggered: {
             let cantSel=0
             for(var i=0;i<lm.count+1; i++){
+                if(!lv.children[0].children[i]){
+                    return
+                }
                 if(lv.children[0].children[i].selected){
                     cantSel++
                 }
