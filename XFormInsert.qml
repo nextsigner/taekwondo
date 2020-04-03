@@ -43,7 +43,7 @@ Item {
                 }
                 onTextChanged: {
                     if(r.modificando)return
-                    tCheckCodExist.restart()
+                    //tCheckCodExist.restart()
                 }
                 Timer{
                     id: tCheckCodExist
@@ -163,7 +163,13 @@ Item {
                 height: app.fs*2
                 onClicked: {
                     if(!r.modificando){
-                        insert()
+                        if(codExist()){
+                            let msg='<b>Atención!: </b>El código actual ya existe.'
+                            unik.speak(msg.replace(/<[^>]*>?/gm, ''))
+                            labelStatus.text=msg
+                        }else{
+                            insert()
+                        }
                     }else{
                         modify()
                     }

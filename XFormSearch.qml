@@ -54,12 +54,6 @@ Item {
                 }
             }
             BotonUX{
-                id: botSearch
-                text: 'Buscar'
-                height: app.fs*2
-                onClicked: search()
-            }
-            BotonUX{
                 id: botSearchTools
                 text: 'Opciones de Busqueda'
                 height: app.fs*2
@@ -285,12 +279,12 @@ Item {
     Timer{
         running: r.visible
         repeat: true
-        interval: 1000
+        interval: 500
         onTriggered: {
             let cantSel=0
             for(var i=0;i<lm.count+1; i++){
                 if(!lv.children[0].children[i]){
-                    return
+                    //return
                 }
                 if(lv.children[0].children[i].selected){
                     cantSel++
