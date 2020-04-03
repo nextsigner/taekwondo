@@ -96,6 +96,7 @@ ApplicationWindow {
                     visible: app.mod===2
                     currentTableName: xFormInsert.tableName
                 }
+                XConfig{visible: app.mod===3}
             }
         }
         ULogView{id:uLogView}
@@ -112,8 +113,8 @@ ApplicationWindow {
                 uWarnings.visible=false
                 return
             }
-            if(app.mod!==-1){
-                app.mod=-1
+            if(app.mod!==0){
+                app.mod=0
                 return
             }
             Qt.quit()
@@ -126,7 +127,7 @@ ApplicationWindow {
     Shortcut{
         sequence: 'Ctrl+Tab'
         onActivated: {
-            if(app.mod<4){
+            if(app.mod<xMenu.arrayMenuNames.length-1){
                 app.mod++
             }else{
                 app.mod=0

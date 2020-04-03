@@ -235,6 +235,7 @@ Item {
                             tiNombre.text=vanom
                             tiFechaNac.text=vafechanac
                             tiFechaCert.text=vafechacert
+                            tiFolio.focus=true
                             r.modificando=true
                             r.pIdAModificar=parseInt(vaid)
                         }

@@ -9,11 +9,17 @@ Item {
     property string currentTableName: ''
     property bool selectedAll: false
     onSelectedAllChanged: {
+        cbSelectedAll.checked=selectedAll
+        if(!cbSelectedAll.setearTodos&&!selectedAll){
+            cbSelectedAll.setearTodos=true
+            return
+        }
         for(var i=0;i<lm.count+1; i++){
-            if(lv.children[0].children[i].selected||!lv.children[0].children[i].selected){
+            if(lv.children[0].children[i]){
                 lv.children[0].children[i].selected=selectedAll
             }
         }
+
     }
     onVisibleChanged: {
         tiSearch.focus=visible
@@ -136,6 +142,8 @@ Item {
                         CheckBox{
                             id: cbSelectedAll
                             anchors.centerIn: parent
+                            property bool setearTodos: true
+                            onClicked: cbSelectedAll.setearTodos=true
                             onCheckedChanged: {
                                 r.selectedAll=checked
                             }
@@ -240,6 +248,7 @@ Item {
                                     onCheckedChanged: {
                                         xRowDes.selected=checked
                                         if(!checked){
+                                            cbSelectedAll.setearTodos=false
                                             r.selectedAll=false
                                         }
                                     }
@@ -251,8 +260,9 @@ Item {
                                     width: xRowDes.width*xRowTitDes.anchos[index+1]
                                     height:xRowDes.height
                                     border.width: 2
-                                    border.color: app.c2
+                                    border.color:cbRow.checked?app.c1:app.c2
                                     color: cbRow.checked?app.c2:app.c1
+                                    clip: true
                                     UText{
                                         id: txtCelda
                                         text: xRowDes.arrayModeloDatos[index]

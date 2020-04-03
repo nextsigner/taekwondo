@@ -6,7 +6,7 @@ Item{
     width: parent.width
     height: minimalista?app.fs*0.5:app.fs*1.4
     property bool minimalista: menuSettings.minimalista
-    property var arrayMenuNames: ['Inicio', 'Registrar Alumnos', 'Buscar Alumnos']
+    property var arrayMenuNames: ['Inicio', 'Registrar Alumnos', 'Buscar Alumnos', 'Configurar']
     Settings{
         id: menuSettings
         property bool minimalista: false
