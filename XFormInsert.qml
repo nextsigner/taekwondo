@@ -140,11 +140,7 @@ Item {
                 height: app.fs*2
                 KeyNavigation.tab: botReg
                 onClicked: {
-                    tiFolio.text=''
-                    tiGrado.text=''
-                    tiNombre.text=''
-                    tiFolio.focus=true
-                    labelStatus.text='Formulario limpiado.'
+                    clear()
                 }
                 UnikFocus{}
             }
@@ -169,9 +165,11 @@ Item {
                             labelStatus.text=msg
                         }else{
                             insert()
+                            clear()
                         }
                     }else{
                         modify()
+                        clear()
                     }
                 }
                 KeyNavigation.tab: tiFolio
@@ -385,4 +383,15 @@ Item {
         tiFechaNac.text=p5
         tiFechaCert.text=p6
     }
+    function clear(){
+        tiFolio.text=''
+        tiGrado.text=''
+        tiNombre.text=''
+        tiFechaNac.text=''
+        tiFechaCert.text=''
+        tiFolio.focus=true
+        labelStatus.text='Formulario limpiado.'
+    }
+
+
 }
