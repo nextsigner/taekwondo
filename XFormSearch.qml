@@ -9,9 +9,10 @@ Item {
     property string currentTableName: ''
     property bool selectedAll: false
     onSelectedAllChanged: {
-        for(var i=0;i<lm.count; i++){
-            uLogView.showLog('i'+i+':'+lm.get(i).selected)
-            lm.get(i).selected=true
+        for(var i=0;i<lm.count+1; i++){
+            if(lv.children[0].children[i].selected||!lv.children[0].children[i].selected){
+                lv.children[0].children[i].selected=selectedAll
+            }
         }
     }
     onVisibleChanged: {
@@ -27,9 +28,10 @@ Item {
         property bool showTools
     }
     Column{
+        id: colFormSearch
         width: parent.width-app.fs
         height: parent.height
-        //spacing: app.fs*0.5
+        spacing: app.fs*0.25
         anchors.horizontalCenter: parent.horizontalCenter
         Row{
             spacing: app.fs*0.5
@@ -42,10 +44,6 @@ Item {
                 onTextChanged: {
                     r.buscando=true
                     lv.currentIndex=0
-                    //                    if(text===''){
-                    //                        lm.clear()
-                    //                        return
-                    //                    }
                     search()
                 }
             }
@@ -60,6 +58,12 @@ Item {
                 text: 'Opciones de Busqueda'
                 height: app.fs*2
                 onClicked: usFormSearch.showTools=!usFormSearch.showTools
+            }
+            BotonUX{
+                id: botDelete
+                text: 'Eliminar Registro'
+                height: app.fs*2
+                onClicked: deleteRows()
             }
         }
         Row{
@@ -112,85 +116,53 @@ Item {
         }
 
         UText{id: cant}
-        Rectangle{
-            id:xRowTitDes
+        Item{
             width: lv.width
-            height: app.fs*4
-            radius: app.fs*0.1
-            border.width: 2
-            border.color: app.c2
-            anchors.horizontalCenter: parent.horizontalCenter
-            color: app.c2
-            property var anchos: [0.05,0.1, 0.25,0.4,0.1,0.1]
-            property string fontColor: app.c2
-            Row{
-                anchors.centerIn: parent
-                Rectangle{
-                    width: xRowTitDes.width*xRowTitDes.anchos[0]
-                    height:xRowTitDes.height
-                    border.width: 2
-                    border.color: app.c2
-                    color: app.c1
-                    CheckBox{
-                        id: cbSelectedAll
-                        anchors.centerIn: parent
-                        onCheckedChanged: {
-                            r.selectedAll=checked
-                        }
-                    }
-                }
-                Repeater{
-                    model: app.colsNameAlumnos
+            height: app.fs*4-colFormSearch.spacing
+            Item{
+                id:xRowTitDes
+                width: lv.width
+                height: app.fs*4
+                property var anchos: [0.05,0.1, 0.25,0.4,0.1,0.1]
+                property string fontColor: app.c1
+                Row{
+                    anchors.centerIn: parent
                     Rectangle{
-                        width: xRowTitDes.width*xRowTitDes.anchos[index+1]
+                        width: xRowTitDes.width*xRowTitDes.anchos[0]
                         height:xRowTitDes.height
                         border.width: 2
                         border.color: app.c2
                         color: app.c1
-                        UText{
-                            text: (''+app.colsNameAlumnos[index]).replace(/ /g, '\n')
+                        CheckBox{
+                            id: cbSelectedAll
                             anchors.centerIn: parent
-                            color: xRowTitDes.fontColor
-                            horizontalAlignment: Text.AlignHCenter
+                            onCheckedChanged: {
+                                r.selectedAll=checked
+                            }
+                        }
+                    }
+                    Repeater{
+                        model: app.colsNameAlumnos
+                        Rectangle{
+                            width: xRowTitDes.width*xRowTitDes.anchos[index+1]
+                            height:xRowTitDes.height
+                            border.width: 2
+                            border.color: app.c4
+                            color: app.c2
+                            UText{
+                                text: (''+app.colsNameAlumnos[index]).replace(/ /g, '\n')
+                                anchors.centerIn: parent
+                                color: app.c1//xRowTitDes.fontColor
+                                horizontalAlignment: Text.AlignHCenter
+                            }
                         }
                     }
                 }
-                /*
-                Rectangle{
-                    id: xRDT2
-                    width: xRowTitDes.width*xRowTitDes.anchos[1]
-                    height:xRowTitDes.height
-                    border.width: 2
-                    border.color: app.c2
-                    color: app.c2
-                    UText{
-                        id: txtDes
-                        text: 'Grado'
-                        color: xRowTitDes.fontColor
-                        width: parent.width-app.fs
-                        wrapMode: Text.WordWrap
-                        anchors.centerIn: parent
-                    }
-                }
-                Rectangle{
-                    id: xRDT3
-                    width: xRowTitDes.width*xRowTitDes.anchos[2]
-                    height:xRowTitDes.height
-                    border.width: 2
-                    border.color: app.c2
-                    color: app.c2
-                    UText{
-                        text: 'Nombre'
-                        color: xRowTitDes.fontColor
-                        anchors.centerIn: parent
-                    }
-                }
-                */
             }
         }
         Rectangle{
             width: parent.width
-            height: r.height-tiSearch.height-app.fs*2-cant.height
+            height: usFormSearch.showTools?r.height-tiSearch.height-xRowTitDes.height-cant.height-colFormSearch.spacing*4-rowRBX.height:r.height-tiSearch.height-xRowTitDes.height-cant.height-colFormSearch.spacing*3
             color: 'transparent'
             border.color: app.c2
             border.width:   2
@@ -222,6 +194,7 @@ Item {
                         currentIndex=lm.count-1
                     }
                 }
+                ScrollBar.vertical: ScrollBar {}
                 ListModel{
                     id: lm
                     function addDato(pid, pfolio, pgrado, pnom, pfechanac, pfechacert){
@@ -244,12 +217,12 @@ Item {
                         radius: app.fs*0.1
                         border.width: 2
                         anchors.horizontalCenter: parent.horizontalCenter
-                        color: parseInt(vaid)!==-10&&index!==lv.currentIndex?app.c1:app.c2
-                        property string fontColor: index!==lv.currentIndex?app.c2:app.c1
+                        color: cbRow.checked?app.c1:app.c2
+                        property string fontColor: cbRow.checked?app.c1:app.c2
                         property var arrayModeloDatos: [vafolio, vagrado, vanom, vafechanac, vafechacert]//[vafolio, vagrado, vanom, vafechanac, vafechacert]
                         property bool selected:false
+                        property int rowId: vaid
                         onSelectedChanged: {
-                            uLogView.showLog('Selected:'+selected)
                             cbRow.checked=selected
                         }
                         Row{
@@ -259,11 +232,17 @@ Item {
                                 height:xRowDes.height
                                 border.width: 2
                                 border.color: app.c2
-                                color: app.c1
+                                color:app.c1
                                 CheckBox{
                                     id: cbRow
                                     checked: xRowDes.selected
                                     anchors.centerIn: parent
+                                    onCheckedChanged: {
+                                        xRowDes.selected=checked
+                                        if(!checked){
+                                            r.selectedAll=false
+                                        }
+                                    }
                                 }
                             }
                             Repeater{
@@ -273,7 +252,7 @@ Item {
                                     height:xRowDes.height
                                     border.width: 2
                                     border.color: app.c2
-                                    color: app.c1
+                                    color: cbRow.checked?app.c2:app.c1
                                     UText{
                                         id: txtCelda
                                         text: xRowDes.arrayModeloDatos[index]
@@ -285,6 +264,29 @@ Item {
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+    Timer{
+        running: r.visible
+        repeat: true
+        interval: 1000
+        onTriggered: {
+            let cantSel=0
+            for(var i=0;i<lm.count+1; i++){
+                if(lv.children[0].children[i].selected){
+                    cantSel++
+                }
+            }
+            if(cantSel===0){
+                botDelete.visible=false
+            }else{
+                botDelete.visible=true
+                if(cantSel===1){
+                    botDelete.text='Eliminar Registro'
+                }else{
+                    botDelete.text='Eliminar '+cantSel+' Registros'
                 }
             }
         }
@@ -353,7 +355,17 @@ Item {
                 lm.append(lm.addDato(rows2[i2].col[0], rows2[i2].col[1], rows2[i2].col[2], rows2[i2].col[3], rows2[i2].col[4], rows[i].col[5]))
             }
         }
-
         //uLogView.showLog('2 SQL SEARCH:'+sql)
+    }
+    function deleteRows(){
+        for(var i=0;i<lv.children[0].children.length; i++){
+            let id=lv.children[0].children[i].rowId
+            //uLogView.showLog('s: '+lv.children[0].children[i].selected)
+            if(id&&lv.children[0].children[i].selected){
+                let sql='delete from '+app.tableName1+' where id='+id
+                unik.sqlQuery(sql)
+            }
+        }
+        search()
     }
 }
