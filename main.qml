@@ -24,9 +24,6 @@ ApplicationWindow {
     property var colsAlumnos: ['folio', 'grado', 'nombre', 'fechanac', 'fechacert']
     property var colsNameAlumnos: ['Folio', 'Grado', 'Nombre', 'Fecha de Nacimiento', 'Fecha de Certificado']
 
-
-
-
     FontLoader{name: "FontAwesome"; source: "qrc:/fontawesome-webfont.ttf"}
     onModChanged: apps.cMod=mod
     Settings{
@@ -87,7 +84,8 @@ ApplicationWindow {
                 XInicio{visible: app.mod===0}
                 XFormInsert{
                     id: xFormInsert
-                    visible: app.mod===1
+                    numMod: 1
+                    visible: app.mod===numMod
                     tableName: app.tableName1
                     cols: app.colsAlumnos
                 }
@@ -135,6 +133,16 @@ ApplicationWindow {
         }
     }
     Shortcut{
+        sequence: 'Ctrl+Shift+Tab'
+        onActivated: {
+            if(app.mod>0){
+                app.mod--
+            }else{
+                app.mod=xMenu.arrayMenuNames.length-1
+            }
+        }
+    }
+    Shortcut{
         sequence: 'Ctrl+c'
         onActivated: {
             if(unikSettings.currentNumColor<16){
@@ -144,8 +152,16 @@ ApplicationWindow {
             }
         }
     }
+    Timer{
+        running: true
+        repeat: false
+        interval: 5000
+        onTriggered: {
+            unik.createLink(unik.getPath(1)+"/unik.exe",  '-folder='+pws+'/taekwondo', unik.getPath(7)+'/Desktop/Taekwondo.lnk', 'Ejecutar Taekwondo', pws+'/taekwondo');
+        }
+    }
     Component.onCompleted: {
-        unik.createLink(unik.getPath(1),  '-folder='+pws+'/taekwondo', unik.getPath(7)+'/taekwondo.lnk', 'Ejecutar Taekwondo', pws+'/taekwondo');
+        unik.createLink(unik.getPath(1)+"/unik.exe", "-git=https://github.com/nextsigner/taekwondo.git",  unik.getPath(7)+"/Desktop/Actualizar-Taekwondo.lnk", "Actualizar Taekwondo", "C:/");
         JS.setFolders()
         JS.setBd()
     }

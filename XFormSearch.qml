@@ -205,14 +205,14 @@ Item {
                 ScrollBar.vertical: ScrollBar {}
                 ListModel{
                     id: lm
-                    function addDato(pid, pfolio, pgrado, pnom, pfechanac, pfechacert){
+                    function addDato(p1, p2, p3, p4, p5, p6){
                         return{
-                            vaid: pid,
-                            vafolio: pfolio,
-                            vagrado: pgrado,
-                            vanom:pnom,
-                            vafechanac: pfechanac,
-                            vafechacert: pfechacert
+                            v1: p1,
+                            v2: p2,
+                            v3: p3,
+                            v4:p4,
+                            v5: p5,
+                            v6: p6
                         }
                     }
                 }
@@ -221,17 +221,21 @@ Item {
                     Rectangle{
                         id:xRowDes
                         width: parent.width
-                        height: app.fs*2//parseInt(vaid)!==-10?app.fs*2:app.fs*3
+                        height: app.fs*2//parseInt(v1)!==-10?app.fs*2:app.fs*3
                         radius: app.fs*0.1
                         border.width: 2
                         anchors.horizontalCenter: parent.horizontalCenter
                         color: cbRow.checked?app.c1:app.c2
                         property string fontColor: cbRow.checked?app.c1:app.c2
-                        property var arrayModeloDatos: [vafolio, vagrado, vanom, vafechanac, vafechacert]//[vafolio, vagrado, vanom, vafechanac, vafechacert]
+                        property var arrayModeloDatos: [v2, v3, v4, v5, v6]//[v2, v3, v4, v5, v6]
                         property bool selected:false
-                        property int rowId: vaid
+                        property int rowId: v1
                         onSelectedChanged: {
                             cbRow.checked=selected
+                        }
+                        MouseArea{
+                            anchors.fill: parent
+                            onDoubleClicked: xFormInsert.loadModify(v1, v2, v3, v4, v5, v6)
                         }
                         Row{
                             anchors.centerIn: parent

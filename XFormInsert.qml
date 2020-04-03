@@ -3,6 +3,7 @@ import QtQuick 2.0
 Item {
     id: r
     anchors.fill: parent
+    property int numMod
     property bool modificando: false
     property int pIdAModificar: -1
     property string tableName: ''
@@ -368,5 +369,14 @@ Item {
     }
     function updateGui(){
         labelCount.text=!r.modificando?'Creando el registro número '+parseInt(getCount() + 1):'Modificando el registro con código '+tiFolio.text
+    }
+    function loadModify(p1, p2, p3, p4, p5, p6){
+        r.modificando=true
+        app.mod=r.numMod
+        tiFolio.text=p2
+        tiGrado.text=p3
+        tiNombre.text=p4
+        tiFechaNac.text=p5
+        tiFechaCert.text=p6
     }
 }
