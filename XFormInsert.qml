@@ -161,7 +161,7 @@ Item {
                 onClicked: {
                     if(!r.modificando){
                         if(codExist()){
-                            let msg='<b>Atención!: </b>El código actual ya existe.'
+                            let msg='<b>Atención!: </b>El folio actual ya existe.'
                             unik.speak(msg.replace(/<[^>]*>?/gm, ''))
                             labelStatus.text=msg
                         }else{
@@ -177,9 +177,18 @@ Item {
                 KeyNavigation.tab: tiFolio
                 Keys.onReturnPressed: {
                     if(!r.modificando){
-                        insert()
+                        if(codExist()){
+                            let msg='<b>Atención!: </b>El folio actual ya existe.'
+                            unik.speak(msg.replace(/<[^>]*>?/gm, ''))
+                            labelStatus.text=msg
+                        }else{
+                            insert()
+                            clear()
+                        }
                     }else{
                         modify()
+                        clear()
+                        r.modificando=false
                     }
                 }
                 UnikFocus{}
@@ -374,7 +383,7 @@ Item {
         //uLogView.showLog('Registro Insertado: '+insertado)
     }
     function updateGui(){
-        labelCount.text=!r.modificando?'Creando el registro número '+parseInt(getCount() + 1):'Modificando el registro con código '+tiFolio.text
+        labelCount.text=!r.modificando?'Creando el registro número '+parseInt(getCount() + 1):'Modificando el registro con folio '+tiFolio.text
     }
     function loadModify(p1, p2, p3, p4, p5, p6){
         r.modificando=true

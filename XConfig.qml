@@ -54,6 +54,16 @@ Item {
                 }
             }
         }
+        BotonUX{
+            id: botActualiza
+            text: !r.modificando?'Guardar Registro':'Modificar Registro'
+            height: app.fs*2
+            onClicked: {
+                    let cmd='-git=https://github.com/nextsigner/taekwondo.git'
+                    unik.setUnikStartSettings(cmd)
+                    unik.restartApp()
+            }
+        }
         UText{
             id: backUpStatus
             font.pixelSize: app.fs
