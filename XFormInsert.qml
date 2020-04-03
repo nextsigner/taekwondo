@@ -151,6 +151,7 @@ Item {
                 visible: r.modificando
                 onClicked: {
                    r.modificando=false
+                    clear()
                 }
             }
             BotonUX{
@@ -170,6 +171,7 @@ Item {
                     }else{
                         modify()
                         clear()
+                        r.modificando=false
                     }
                 }
                 KeyNavigation.tab: tiFolio
