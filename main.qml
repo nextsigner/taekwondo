@@ -95,6 +95,7 @@ ApplicationWindow {
                     currentTableName: xFormInsert.tableName
                 }
                 XConfig{visible: app.mod===3}
+                XLogin{id: xLogin}
             }
         }
         ULogView{id:uLogView}
@@ -163,7 +164,7 @@ ApplicationWindow {
     Component.onCompleted: {
         unik.createLink(unik.getPath(1)+"/unik.exe", "-git=https://github.com/nextsigner/taekwondo.git",  unik.getPath(7)+"/Desktop/Actualizar-Taekwondo.lnk", "Actualizar Taekwondo", "C:/");
         JS.setFolders()
-        JS.setBd()
+        JS.setBd()       
     }
     function getNewBdName(){
         let d=new Date(Date.now())

@@ -19,7 +19,6 @@ Item {
                 lv.children[0].children[i].selected=selectedAll
             }
         }
-
     }
     onVisibleChanged: {
         tiSearch.focus=visible
@@ -140,6 +139,7 @@ Item {
                             onClicked: cbSelectedAll.setearTodos=true
                             onCheckedChanged: {
                                 r.selectedAll=checked
+                                setBtnDeleteText()
                             }
                         }
                     }
@@ -249,6 +249,7 @@ Item {
                                             cbSelectedAll.setearTodos=false
                                             r.selectedAll=false
                                         }
+                                        setBtnDeleteText()
                                     }
                                 }
                             }
@@ -277,29 +278,11 @@ Item {
         }
     }
     Timer{
-        running: r.visible
+        running: false
         repeat: true
         interval: 500
         onTriggered: {
-            let cantSel=0
-            for(var i=0;i<lm.count+1; i++){
-                if(!lv.children[0].children[i]){
-                    //return
-                }
-                if(lv.children[0].children[i].selected){
-                    cantSel++
-                }
-            }
-            if(cantSel===0){
-                botDelete.visible=false
-            }else{
-                botDelete.visible=true
-                if(cantSel===1){
-                    botDelete.text='Eliminar Registro'
-                }else{
-                    botDelete.text='Eliminar '+cantSel+' Registros'
-                }
-            }
+
         }
     }
     Component.onCompleted: {
@@ -378,5 +361,38 @@ Item {
             }
         }
         search()
+    }
+    function setCbs(){
+        cbSelectedAll.checked=selectedAll
+        if(!cbSelectedAll.setearTodos&&!selectedAll){
+            cbSelectedAll.setearTodos=true
+            return
+        }
+        for(var i=0;i<lm.count+1; i++){
+            if(lv.children[0].children[i]){
+                lv.children[0].children[i].selected=selectedAll
+            }
+        }
+    }
+    function setBtnDeleteText(){
+        let cantSel=0
+        for(var i=0;i<lm.count+1; i++){
+            if(!lv.children[0].children[i]){
+                //return
+            }
+            if(lv.children[0].children[i].selected){
+                cantSel++
+            }
+        }
+        if(cantSel===0){
+            botDelete.visible=false
+        }else{
+            botDelete.visible=true
+            if(cantSel===1){
+                botDelete.text='Eliminar Registro'
+            }else{
+                botDelete.text='Eliminar '+cantSel+' Registros'
+            }
+        }
     }
 }
