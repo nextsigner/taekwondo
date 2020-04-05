@@ -51,7 +51,7 @@ Item {
                 KeyNavigation.tab: lv
                 onTextChanged: {
                     r.buscando=true
-                    lv.currentIndex=0
+                    //lv.currentIndex=0
                     search()
                 }
             }
@@ -193,9 +193,9 @@ Item {
                 width: parent.width
                 height: parent.height
                 clip: true
-                onFocusChanged: currentIndex=1
+                //onFocusChanged: currentIndex=1
                 KeyNavigation.tab: tiSearch
-                Keys.onDownPressed: {
+                /*Keys.onDownPressed: {
                     if(currentIndex<lm.count-1){
                         currentIndex++
                     }else{
@@ -208,7 +208,8 @@ Item {
                     }else{
                         currentIndex=lm.count-1
                     }
-                }
+                }*/
+                //Keys.onSpacePressed: selectRowIndex(index)
                 ScrollBar.vertical: ScrollBar {}
                 //onCurrentIndexChanged: uLogView.showLog('CurrentIndex: '+currentIndex)
                 ListModel{
@@ -281,6 +282,9 @@ Item {
                                         color: 'transparent'
                                         visible: index===lv.currentIndex
                                         z:parent.z+100000
+                                        onVisibleChanged: {
+                                            if(visible)lv.currentIndex=index
+                                        }
                                     }
                                 }
                             }
@@ -307,6 +311,11 @@ Item {
                 }
             }
         }
+    }
+    UText{
+        text: 'INDEX: '+lv.currentIndex
+        font.pixelSize: app.fs*2
+        color: 'red'
     }
     Timer{
         running: false
@@ -446,8 +455,12 @@ Item {
             lv.currentIndex=0
         }
     }
+    function selectRowIndex(i){
+        //if(tiSearch.focus)return
+        lv.children[0].children[i].selected=!lv.children[0].children[i].selected
+    }
     function selectRow(){
-        if(tiSearch.focus)return
+        //if(tiSearch.focus)return
         lv.children[0].children[lv.currentIndex].selected=!lv.children[0].children[lv.currentIndex].selected
     }
     function atras(){
