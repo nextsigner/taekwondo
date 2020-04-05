@@ -20,6 +20,7 @@ Item {
             }
         }
         setBtnDeleteText()
+        lv.focus=true
     }
     onVisibleChanged: {
         tiSearch.focus=visible
