@@ -445,6 +445,7 @@ Item {
         }
     }
     function selectRow(){
+        if(tiSearch.focus)return
         lv.children[0].children[lv.currentIndex].selected=!lv.children[0].children[lv.currentIndex].selected
     }
     function atras(){
