@@ -247,6 +247,7 @@ Item {
                                     checked: xRowDes.selected
                                     anchors.centerIn: parent
                                     onCheckedChanged: {
+                                        lv.currentIndex=index
                                         xRowDes.selected=checked
                                         if(!checked){
                                             cbSelectedAll.setearTodos=false
