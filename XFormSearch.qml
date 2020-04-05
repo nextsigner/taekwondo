@@ -23,7 +23,7 @@ Item {
         lv.focus=true
     }
     onVisibleChanged: {
-        tiSearch.focus=visible
+        lv.focus=visible
         if(visible&&tiSearch.text===''){
             search()
         }
