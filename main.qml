@@ -95,7 +95,7 @@ ApplicationWindow {
                     currentTableName: xFormInsert.tableName
                 }
                 XConfig{visible: app.mod===3}
-                XLogin{id: xLogin}
+                XLogin{id: xLogin; visible: false}
             }
         }
         ULogView{id:uLogView}
@@ -153,6 +153,25 @@ ApplicationWindow {
             }
         }
     }
+    Shortcut{
+        sequence: 'Up'
+        onActivated: {
+            xFormSearch.upRow()
+        }
+    }
+    Shortcut{
+        sequence: 'Down'
+        onActivated: {
+            xFormSearch.downRow()
+        }
+    }
+    Shortcut{
+        sequence: 'Ctrl+Space'
+        onActivated: {
+            xFormSearch.selectRow()
+        }
+    }
+
     Timer{
         running: true
         repeat: false

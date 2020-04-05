@@ -19,6 +19,7 @@ Item {
                 lv.children[0].children[i].selected=selectedAll
             }
         }
+        setBtnDeleteText()
     }
     onVisibleChanged: {
         tiSearch.focus=visible
@@ -168,10 +169,10 @@ Item {
             color: 'transparent'
             border.color: app.c2
             border.width:   2
-            UnikFocus{
-                visible: lv.focus
-                radius: 0
-            }
+            //            UnikFocus{
+            //                visible: lv.focus
+            //                radius: 0
+            //            }
             ListView{
                 id: lv
                 model: lm
@@ -197,6 +198,7 @@ Item {
                     }
                 }
                 ScrollBar.vertical: ScrollBar {}
+                //onCurrentIndexChanged: uLogView.showLog('CurrentIndex: '+currentIndex)
                 ListModel{
                     id: lm
                     function addDato(p1, p2, p3, p4, p5, p6){
@@ -250,6 +252,16 @@ Item {
                                             r.selectedAll=false
                                         }
                                         setBtnDeleteText()
+                                    }
+                                    Rectangle{
+                                        anchors.centerIn: parent
+                                        width: parent.contentItem.width
+                                        height: parent.contentItem.height
+                                        border.width: 3
+                                        border.color: 'red'
+                                        color: 'transparent'
+                                        visible: index===lv.currentIndex
+                                        z:parent.z+100000
                                     }
                                 }
                             }
@@ -384,15 +396,34 @@ Item {
                 cantSel++
             }
         }
-        if(cantSel===0){
+        if(cantSel===1){
             botDelete.visible=false
         }else{
             botDelete.visible=true
-            if(cantSel===1){
+            if(cantSel===2){
                 botDelete.text='Eliminar Registro'
             }else{
-                botDelete.text='Eliminar '+cantSel+' Registros'
+                botDelete.text='Eliminar '+parseInt(cantSel - 1)+' Registros'
             }
         }
+        //uLogView.showLog('Cantidad: '+cantSel)
+    }
+
+    function upRow(){
+        if(lv.currentIndex>0){
+            lv.currentIndex--
+        }else{
+            lv.currentIndex=lm.count-1
+        }
+    }
+    function downRow(){
+        if(lv.currentIndex<lm.count-1){
+            lv.currentIndex++
+        }else{
+            lv.currentIndex=0
+        }
+    }
+    function selectRow(){
+        lv.children[0].children[lv.currentIndex].selected=!lv.children[0].children[lv.currentIndex].selected
     }
 }
