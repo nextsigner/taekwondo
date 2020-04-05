@@ -24,6 +24,7 @@ Item {
     }
     onVisibleChanged: {
         lv.focus=visible
+        tiSearch.text=''
         if(visible&&tiSearch.text===''){
             search()
         }
@@ -264,6 +265,7 @@ Item {
                                             r.selectedAll=false
                                         }
                                         setBtnDeleteText()
+                                        lv.focus=true
                                     }
                                     MouseArea{
                                         anchors.fill: parent
