@@ -27,6 +27,7 @@ Item {
         tiSearch.text=''
         if(visible&&tiSearch.text===''){
             search()
+            lv.currentIndex=usFormSearch.uCurrentIndex
         }
     }
     Settings{
@@ -34,6 +35,10 @@ Item {
         property string searchBy
         property int orderAscDesc
         property bool showTools
+        property int uCurrentIndex
+        Component.onCompleted: {
+            if(usFormSearch.searchBy==='')usFormSearch.searchBy='Folio'
+        }
     }
     Column{
         id: colFormSearch
@@ -193,25 +198,9 @@ Item {
                 width: parent.width
                 height: parent.height
                 clip: true
-                //onFocusChanged: currentIndex=1
                 KeyNavigation.tab: tiSearch
-                /*Keys.onDownPressed: {
-                    if(currentIndex<lm.count-1){
-                        currentIndex++
-                    }else{
-                        currentIndex=1
-                    }
-                }
-                Keys.onUpPressed: {
-                    if(currentIndex>1){
-                        currentIndex--
-                    }else{
-                        currentIndex=lm.count-1
-                    }
-                }*/
-                //Keys.onSpacePressed: selectRowIndex(index)
                 ScrollBar.vertical: ScrollBar {}
-                //onCurrentIndexChanged: uLogView.showLog('CurrentIndex: '+currentIndex)
+                onCurrentIndexChanged: usFormSearch.uCurrentIndex=currentIndex//uLogView.showLog('CurrentIndex: '+currentIndex)
                 ListModel{
                     id: lm
                     function addDato(p1, p2, p3, p4, p5, p6){
@@ -239,13 +228,18 @@ Item {
                         property var arrayModeloDatos: [v2, v3, v4, v5, v6]//[v2, v3, v4, v5, v6]
                         property bool selected:false
                         property int rowId: v1
+                        Keys.onSpacePressed: {
+                            lv.currentIndex=index
+                            cbRow.checked=!cbRow.checked
+                            //uLogView.showLog('Spacing'+index)
+                        }
                         onSelectedChanged: {
                             cbRow.checked=selected
                         }
-//                        MouseArea{
-//                            anchors.fill: parent
-//                            onDoubleClicked: xFormInsert.loadModify(v1, v2, v3, v4, v5, v6)
-//                        }
+                        MouseArea{
+                            anchors.fill: parent
+                            onDoubleClicked: xFormInsert.loadModify(v1, v2, v3, v4, v5, v6)
+                        }
                         Row{
                             anchors.centerIn: parent
                             Rectangle{
@@ -259,7 +253,6 @@ Item {
                                     checked: xRowDes.selected
                                     anchors.centerIn: parent
                                     onCheckedChanged: {
-                                        lv.currentIndex=index
                                         xRowDes.selected=checked
                                         if(!checked){
                                             cbSelectedAll.setearTodos=false
@@ -312,23 +305,16 @@ Item {
             }
         }
     }
-    UText{
-        text: 'INDEX: '+lv.currentIndex
-        font.pixelSize: app.fs*2
-        color: 'red'
-    }
-    Timer{
-        running: false
-        repeat: true
-        interval: 500
-        onTriggered: {
-
-        }
-    }
+//    UText{
+//        text: 'INDEX: '+lv.currentIndex+' Cant: '+lm.count
+//        font.pixelSize: app.fs*2
+//        color: 'red'
+//    }
     Component.onCompleted: {
         if(r.visible){
             search()
-            tiSearch.focus=true
+            lv.focus=true
+            //tiSearch.focus=true
         }
     }
     function search(){
@@ -376,20 +362,20 @@ Item {
         }
         //b=''
         //for(var i=0;i<p1.length-1;i++){
-            /*if(i===0){
+        /*if(i===0){
                 b+='nombre like \'%'+p1[i]+'%\' '
             }else{
                 b+='or nombre like \'%'+p1[i]+'%\' '
             }*/
-            //lm.append(lm.addDato('-10', p1[i], '', '','','',''))
-            //sql='select distinct * from '+app.tableName1+' where '+colSearch+' like \'%'+p1[i]+'%\' '+sOrderByAndAsc
-            //console.log('Sql 2: '+sql)
-            //var rows2=unik.getSqlData(sql)
-            //console.log('Sql count result: '+rows.length)
-            //cant.text='Resultados: '+parseInt(rows.length+rows2.length)
-//            for(var i2=0;i2<rows2.length;i2++){
-//                lm.append(lm.addDato(rows2[i2].col[0], rows2[i2].col[1], rows2[i2].col[2], rows2[i2].col[3], rows2[i2].col[4], rows[i].col[5]))
-//            }
+        //lm.append(lm.addDato('-10', p1[i], '', '','','',''))
+        //sql='select distinct * from '+app.tableName1+' where '+colSearch+' like \'%'+p1[i]+'%\' '+sOrderByAndAsc
+        //console.log('Sql 2: '+sql)
+        //var rows2=unik.getSqlData(sql)
+        //console.log('Sql count result: '+rows.length)
+        //cant.text='Resultados: '+parseInt(rows.length+rows2.length)
+        //            for(var i2=0;i2<rows2.length;i2++){
+        //                lm.append(lm.addDato(rows2[i2].col[0], rows2[i2].col[1], rows2[i2].col[2], rows2[i2].col[3], rows2[i2].col[4], rows[i].col[5]))
+        //            }
         //}
         //uLogView.showLog('2 SQL SEARCH:'+sql)
     }
@@ -454,14 +440,6 @@ Item {
         }else{
             lv.currentIndex=0
         }
-    }
-    function selectRowIndex(i){
-        //if(tiSearch.focus)return
-        lv.children[0].children[i].selected=!lv.children[0].children[i].selected
-    }
-    function selectRow(){
-        //if(tiSearch.focus)return
-        lv.children[0].children[lv.currentIndex].selected=!lv.children[0].children[lv.currentIndex].selected
     }
     function atras(){
         if(tiSearch.focus){

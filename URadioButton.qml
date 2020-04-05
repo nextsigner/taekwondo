@@ -37,10 +37,11 @@ Item {
             border.width: unikSettings.borderWidth
             anchors.verticalCenter: parent.verticalCenter
             anchors.verticalCenterOffset: 0-r.d*0.3
+            color: app.c2
             Rectangle {
                 anchors.fill: parent
                 visible: r.checked
-                color: app.c2
+                color: app.c1
                 radius: r.d*0.5
                 anchors.margins: app.fs*0.25
             }

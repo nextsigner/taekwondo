@@ -168,12 +168,7 @@ ApplicationWindow {
             xFormSearch.downRow()
         }
     }
-    Shortcut{
-        sequence: 'Ctrl+Space'
-        onActivated: {
-            xFormSearch.selectRow()
-        }
-    }
+
 
     Timer{
         running: true
