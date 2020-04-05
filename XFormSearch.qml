@@ -230,10 +230,10 @@ Item {
                         onSelectedChanged: {
                             cbRow.checked=selected
                         }
-                        MouseArea{
-                            anchors.fill: parent
-                            onDoubleClicked: xFormInsert.loadModify(v1, v2, v3, v4, v5, v6)
-                        }
+//                        MouseArea{
+//                            anchors.fill: parent
+//                            onDoubleClicked: xFormInsert.loadModify(v1, v2, v3, v4, v5, v6)
+//                        }
                         Row{
                             anchors.centerIn: parent
                             Rectangle{
@@ -254,6 +254,11 @@ Item {
                                             r.selectedAll=false
                                         }
                                         setBtnDeleteText()
+                                    }
+                                    MouseArea{
+                                        anchors.fill: parent
+                                        onDoubleClicked: lv.currentIndex=index
+                                        onClicked: cbRow.checked=!cbRow.checked
                                     }
                                     Rectangle{
                                         anchors.centerIn: parent
@@ -398,7 +403,9 @@ Item {
                 cantSel++
             }
         }
-        if(cantSel===1){
+        if(cantSel===0){
+            botDelete.visible=false
+        }else  if(cantSel===1){
             botDelete.visible=false
         }else{
             botDelete.visible=true
