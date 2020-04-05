@@ -112,6 +112,9 @@ ApplicationWindow {
                 uWarnings.visible=false
                 return
             }
+            if(xFormSearch.visible&&!xFormSearch.atras()){
+                return
+            }
             if(app.mod!==0){
                 app.mod=0
                 return

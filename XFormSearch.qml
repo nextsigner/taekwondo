@@ -82,14 +82,24 @@ Item {
                     text: 'Folio'
                     checked: true
                     d: app.fs*1.4
-                    onCheckedChanged: search()
+                    onCheckedChanged: {
+                        search()
+                        if(checked){
+                            rbDes.checked=false
+                        }
+                    }
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 URadioButton{
                     id: rbDes
                     text: 'Nombre'
                     d: app.fs*1.4
-                    onCheckedChanged: search()
+                    onCheckedChanged: {
+                        search()
+                        if(checked){
+                            rbCod.checked=false
+                        }
+                    }
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }
@@ -305,7 +315,10 @@ Item {
         }
     }
     Component.onCompleted: {
-        if(r.visible)search()
+        if(r.visible){
+            search()
+            tiSearch.focus=true
+        }
     }
     function search(){
         //if(!buscando)return
@@ -340,7 +353,7 @@ Item {
         }
         b+='\''
         var sql='select distinct * from '+app.tableName1+' where '+b+' '+sOrderByAndAsc
-        console.log('Sql: '+sql)
+        //console.log('Sql: '+sql)
 
         //uLogView.showLog('1 SQL SEARCH:'+sql)
 
@@ -350,24 +363,23 @@ Item {
         for(i=0;i<rows.length;i++){
             lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[2], rows[i].col[3], rows[i].col[4], rows[i].col[5]))
         }
-
-        b=''
-        for(var i=0;i<p1.length-1;i++){
+        //b=''
+        //for(var i=0;i<p1.length-1;i++){
             /*if(i===0){
                 b+='nombre like \'%'+p1[i]+'%\' '
             }else{
                 b+='or nombre like \'%'+p1[i]+'%\' '
             }*/
             //lm.append(lm.addDato('-10', p1[i], '', '','','',''))
-            sql='select distinct * from '+app.tableName1+' where '+colSearch+' like \'%'+p1[i]+'%\' '+sOrderByAndAsc
-            console.log('Sql 2: '+sql)
-            var rows2=unik.getSqlData(sql)
+            //sql='select distinct * from '+app.tableName1+' where '+colSearch+' like \'%'+p1[i]+'%\' '+sOrderByAndAsc
+            //console.log('Sql 2: '+sql)
+            //var rows2=unik.getSqlData(sql)
             //console.log('Sql count result: '+rows.length)
             //cant.text='Resultados: '+parseInt(rows.length+rows2.length)
-            for(var i2=0;i2<rows2.length;i2++){
-                lm.append(lm.addDato(rows2[i2].col[0], rows2[i2].col[1], rows2[i2].col[2], rows2[i2].col[3], rows2[i2].col[4], rows[i].col[5]))
-            }
-        }
+//            for(var i2=0;i2<rows2.length;i2++){
+//                lm.append(lm.addDato(rows2[i2].col[0], rows2[i2].col[1], rows2[i2].col[2], rows2[i2].col[3], rows2[i2].col[4], rows[i].col[5]))
+//            }
+        //}
         //uLogView.showLog('2 SQL SEARCH:'+sql)
     }
     function deleteRows(){
@@ -434,5 +446,12 @@ Item {
     }
     function selectRow(){
         lv.children[0].children[lv.currentIndex].selected=!lv.children[0].children[lv.currentIndex].selected
+    }
+    function atras(){
+        if(tiSearch.focus){
+            lv.focus=true
+            return true
+        }
+        return false
     }
 }
