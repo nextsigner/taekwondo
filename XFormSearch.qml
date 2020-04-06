@@ -53,12 +53,28 @@ Item {
                 id: tiSearch
                 label: 'Buscar:'
                 width: app.fs*18
+//                Keys.onDownPressed: {
+//                    toutFocus.start()
+//                }
+                KeyNavigation.down: lv
                 KeyNavigation.tab: lv
+                itemNextFocus: lv
                 onTextChanged: {
                     r.buscando=true
                     //lv.currentIndex=0
                     search()
                 }
+//                Timer{
+//                    id: toutFocus
+//                    repeat: false
+//                    running: false
+//                    interval: 500
+//                    onTriggered:{
+//                        textInput.focus=false
+//                        tiSearch.focus=false
+//                        lv.focus=true
+//                    }
+//                }
             }
             BotonUX{
                 id: botSearchTools
@@ -435,6 +451,12 @@ Item {
         }
     }
     function downRow(){
+        if(tiSearch.focus){
+            tiSearch.focus=false
+            tiSearch.textInput.focus=false
+            lv.focus=true
+            return
+        }
         if(lv.currentIndex<lm.count-1){
             lv.currentIndex++
         }else{

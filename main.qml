@@ -162,12 +162,12 @@ ApplicationWindow {
             xFormSearch.upRow()
         }
     }
-    Shortcut{
-        sequence: 'Down'
-        onActivated: {
-            xFormSearch.downRow()
-        }
-    }
+//    Shortcut{
+//        sequence: 'Down'
+//        onActivated: {
+//            xFormSearch.downRow()
+//        }
+//    }
 
 
     Timer{

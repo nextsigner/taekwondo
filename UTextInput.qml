@@ -16,6 +16,7 @@ Item{
     property int fontSize: app.fs
     property int customHeight: -1
     property RegExpValidator regularExp
+    property var itemNextFocus: rectXTextInput
     signal seted(string text)
     onFocusChanged: {
         if(focus){
@@ -58,6 +59,7 @@ Item{
                 anchors.centerIn: parent
                 onTextChanged: r.textChanged(text)
                 Keys.onReturnPressed: r.seted(text)
+                //Keys.onDownPressed: Qt.quit()
                 color: r.fontColor
                 validator: r.regularExp
                 cursorDelegate: rectCursor
