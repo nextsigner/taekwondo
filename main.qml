@@ -156,12 +156,12 @@ ApplicationWindow {
             }
         }
     }
-    Shortcut{
-        sequence: 'Up'
-        onActivated: {
-            xFormSearch.upRow()
-        }
-    }
+//    Shortcut{
+//        sequence: 'Up'
+//        onActivated: {
+//            xFormSearch.upRow()
+//        }
+//    }
 //    Shortcut{
 //        sequence: 'Down'
 //        onActivated: {
@@ -181,7 +181,13 @@ ApplicationWindow {
     Component.onCompleted: {
         unik.createLink(unik.getPath(1)+"/unik.exe", "-git=https://github.com/nextsigner/taekwondo.git",  unik.getPath(7)+"/Desktop/Actualizar-Taekwondo.lnk", "Actualizar Taekwondo", "C:/");
         JS.setFolders()
-        JS.setBd()       
+        JS.setBd()
+
+//        for(var i=0;i<100;i++){
+//            let sql='insert into alumnos(folio, grado, nombre, fechanac, fechacert)values(\'adasdf'+i+'\',\'32'+i+'\',\'gdgg'+i+'\',\'xxxx'+i+'\',\'asggg'+i+'\')'
+//            unik.sqlQuery(sql)
+//            //unik.
+//        }
     }
     function getNewBdName(){
         let d=new Date(Date.now())

@@ -53,9 +53,9 @@ Item {
                 id: tiSearch
                 label: 'Buscar:'
                 width: app.fs*18
-//                Keys.onDownPressed: {
-//                    toutFocus.start()
-//                }
+                //                Keys.onDownPressed: {
+                //                    toutFocus.start()
+                //                }
                 KeyNavigation.down: lv
                 KeyNavigation.tab: lv
                 itemNextFocus: lv
@@ -64,17 +64,17 @@ Item {
                     //lv.currentIndex=0
                     search()
                 }
-//                Timer{
-//                    id: toutFocus
-//                    repeat: false
-//                    running: false
-//                    interval: 500
-//                    onTriggered:{
-//                        textInput.focus=false
-//                        tiSearch.focus=false
-//                        lv.focus=true
-//                    }
-//                }
+                //                Timer{
+                //                    id: toutFocus
+                //                    repeat: false
+                //                    running: false
+                //                    interval: 500
+                //                    onTriggered:{
+                //                        textInput.focus=false
+                //                        tiSearch.focus=false
+                //                        lv.focus=true
+                //                    }
+                //                }
             }
             BotonUX{
                 id: botSearchTools
@@ -86,6 +86,7 @@ Item {
                 id: botDelete
                 text: 'Eliminar Registro'
                 height: app.fs*2
+                visible: false
                 onClicked: deleteRows()
             }
         }
@@ -215,8 +216,25 @@ Item {
                 height: parent.height
                 clip: true
                 KeyNavigation.tab: tiSearch
+                Keys.onDownPressed: downRow()
+                Keys.onUpPressed: upRow()
+                boundsBehavior: ListView.StopAtBounds
                 ScrollBar.vertical: ScrollBar {}
-                onCurrentIndexChanged: usFormSearch.uCurrentIndex=currentIndex//uLogView.showLog('CurrentIndex: '+currentIndex)
+                onCurrentIndexChanged: {
+                    //                    if(lv.currentIndex===0){
+                    //                        lv.contentY=lm.count*app.fs*2-lv.height
+                    //                    }
+                    //                    if(lv.currentIndex===lm.count-1){
+                    //                        lv.contentY=0
+                    //                    }
+                    usFormSearch.uCurrentIndex=currentIndex//uLogView.showLog('CurrentIndex: '+currentIndex)
+                }
+                /*Behavior on contentY{
+                        NumberAnimation {  duration: 100 }
+                }*/
+                /*displaced: Transition {
+                    NumberAnimation { properties: "x,y"; duration: 50; easing.type: Easing.InOutBounce }
+                }*/
                 ListModel{
                     id: lm
                     function addDato(p1, p2, p3, p4, p5, p6){
@@ -321,11 +339,11 @@ Item {
             }
         }
     }
-//    UText{
-//        text: 'INDEX: '+lv.currentIndex+' Cant: '+lm.count
-//        font.pixelSize: app.fs*2
-//        color: 'red'
-//    }
+    //    UText{
+    //        text: 'INDEX: '+lv.currentIndex+' Cant: '+lm.count
+    //        font.pixelSize: app.fs*2
+    //        color: 'red'
+    //    }
     Component.onCompleted: {
         if(r.visible){
             search()
@@ -372,6 +390,7 @@ Item {
 
         var rows=unik.getSqlData(sql)
         //console.log('Sql count result: '+rows.length)
+        lv.cacheBuffer=rows.length
         cant.text='Resultados: '+rows.length
         for(i=0;i<rows.length;i++){
             lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[2], rows[i].col[3], rows[i].col[4], rows[i].col[5]))
@@ -424,26 +443,31 @@ Item {
             if(!lv.children[0].children[i]){
                 //return
             }
-            if(lv.children[0].children[i].selected){
-                cantSel++
+            if(lv.children[0].children[i]){
+                if(lv.children[0].children[i].selected){
+                    cantSel++
+                }
             }
         }
         if(cantSel===0){
             botDelete.visible=false
         }else  if(cantSel===1){
-            botDelete.visible=false
+            botDelete.visible=true
         }else{
             botDelete.visible=true
-            if(cantSel===2){
+            if(cantSel===1){
                 botDelete.text='Eliminar Registro'
             }else{
-                botDelete.text='Eliminar '+parseInt(cantSel - 1)+' Registros'
+                botDelete.text='Eliminar '+parseInt(cantSel )+' Registros'
             }
         }
         //uLogView.showLog('Cantidad: '+cantSel)
     }
 
     function upRow(){
+        if(lv.currentIndex===0){
+            lv.contentY=lm.count*app.fs*2-lv.height
+        }
         if(lv.currentIndex>0){
             lv.currentIndex--
         }else{
@@ -457,10 +481,15 @@ Item {
             lv.focus=true
             return
         }
+        if(lv.currentIndex===lm.count-1){
+            lv.contentY=0
+        }
         if(lv.currentIndex<lm.count-1){
+            //uLogView.showLog('Suma')
             lv.currentIndex++
         }else{
             lv.currentIndex=0
+            //uLogView.showLog('Pone en cero')
         }
     }
     function atras(){
