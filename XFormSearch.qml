@@ -10,14 +10,12 @@ Item {
     property bool selectedAll: false
     onSelectedAllChanged: {
         cbSelectedAll.checked=selectedAll
-        if(!cbSelectedAll.setearTodos&&!selectedAll){
+        /*if(!cbSelectedAll.setearTodos&&!selectedAll){
             cbSelectedAll.setearTodos=true
             return
-        }
-        for(var i=0;i<lm.count+1; i++){
-            if(lv.children[0].children[i]){
-                lv.children[0].children[i].selected=selectedAll
-            }
+        }*/
+        for(var i=0;i<lm.count; i++){
+            lm.get(i).v7=selectedAll
         }
         setBtnDeleteText()
         lv.focus=true
@@ -173,7 +171,10 @@ Item {
                             property bool setearTodos: true
                             onClicked: cbSelectedAll.setearTodos=true
                             onCheckedChanged: {
-                                r.selectedAll=checked
+                                //r.selectedAll=checked
+                                for(var i=0;i<lm.count; i++){
+                                    lm.get(i).v7=checked
+                                }
                                 setBtnDeleteText()
                             }
                         }
@@ -214,7 +215,7 @@ Item {
                 spacing: 0//app.fs*0.5
                 width: parent.width
                 height: parent.height
-                //clip: true
+                clip: true
                 KeyNavigation.tab: tiSearch
                 Keys.onDownPressed: downRow()
                 Keys.onUpPressed: upRow()
@@ -222,6 +223,7 @@ Item {
                 ScrollBar.vertical: ScrollBar {}
                 cacheBuffer: 1000
                 displayMarginBeginning: lm.count*app.fs*2
+                displayMarginEnd: lm.count*app.fs*2
                 onCurrentIndexChanged: {
                     //                    if(lv.currentIndex===0){
                     //                        lv.contentY=lm.count*app.fs*2-lv.height
@@ -246,7 +248,8 @@ Item {
                             v3: p3,
                             v4:p4,
                             v5: p5,
-                            v6: p6
+                            v6: p6,
+                            v7: false
                         }
                     }
                 }
@@ -262,13 +265,8 @@ Item {
                         color: cbRow.checked?app.c1:app.c2
                         property string fontColor: cbRow.checked?app.c1:app.c2
                         property var arrayModeloDatos: [v2, v3, v4, v5, v6]//[v2, v3, v4, v5, v6]
-                        property bool selected:false
+                        property bool selected:v7
                         property int rowId: v1
-                        onVisibleChanged: {
-                            if(!visible){
-                                uLogView.showLog('Invisible: '+index)
-                            }
-                        }
                         Keys.onSpacePressed: {
                             lv.currentIndex=index
                             cbRow.checked=!cbRow.checked
@@ -294,18 +292,26 @@ Item {
                                     checked: xRowDes.selected
                                     anchors.centerIn: parent
                                     onCheckedChanged: {
-                                        xRowDes.selected=checked
+                                        /*xRowDes.selected=checked
+                                        v7=checked
                                         if(!checked){
                                             cbSelectedAll.setearTodos=false
                                             r.selectedAll=false
-                                        }
+                                        }*/
+                                        v7=checked
                                         setBtnDeleteText()
                                         lv.focus=true
                                     }
                                     MouseArea{
                                         anchors.fill: parent
-                                        onDoubleClicked: lv.currentIndex=index
-                                        onClicked: cbRow.checked=!cbRow.checked
+                                        onDoubleClicked: {
+                                            lv.currentIndex=index
+                                            setBtnDeleteText()
+                                        }
+                                        onClicked: {
+                                           cbRow.checked=!cbRow.checked
+                                            setBtnDeleteText()
+                                        }
                                     }
                                     Rectangle{
                                         anchors.centerIn: parent
@@ -455,28 +461,21 @@ Item {
         }
     }
     function setBtnDeleteText(){
+        //uLogView.showLog('setBtnDeleteText()')
         let cantSel=0
-        for(var i=0;i<lm.count+1; i++){
-            if(!lv.children[0].children[i]){
-                //return
-            }
-            if(lv.children[0].children[i]){
-                if(lv.children[0].children[i].selected){
-                    cantSel++
-                }
+        for(var i=0;i<lm.count; i++){
+            if(lm.get(i).v7){
+                cantSel++
             }
         }
         if(cantSel===0){
             botDelete.visible=false
         }else  if(cantSel===1){
+            botDelete.text='Eliminar Registro'
             botDelete.visible=true
         }else{
+            botDelete.text='Eliminar '+cantSel +' Registros'
             botDelete.visible=true
-            if(cantSel===1){
-                botDelete.text='Eliminar Registro'
-            }else{
-                botDelete.text='Eliminar '+parseInt(cantSel )+' Registros'
-            }
         }
         //uLogView.showLog('Cantidad: '+cantSel)
     }
