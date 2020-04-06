@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.12
 import QtQuick.Controls 2.0
 import Qt.labs.settings 1.0
 
@@ -214,12 +214,14 @@ Item {
                 spacing: 0//app.fs*0.5
                 width: parent.width
                 height: parent.height
-                clip: true
+                //clip: true
                 KeyNavigation.tab: tiSearch
                 Keys.onDownPressed: downRow()
                 Keys.onUpPressed: upRow()
                 boundsBehavior: ListView.StopAtBounds
                 ScrollBar.vertical: ScrollBar {}
+                cacheBuffer: 1000
+                displayMarginBeginning: lm.count*app.fs*2
                 onCurrentIndexChanged: {
                     //                    if(lv.currentIndex===0){
                     //                        lv.contentY=lm.count*app.fs*2-lv.height
@@ -262,6 +264,11 @@ Item {
                         property var arrayModeloDatos: [v2, v3, v4, v5, v6]//[v2, v3, v4, v5, v6]
                         property bool selected:false
                         property int rowId: v1
+                        onVisibleChanged: {
+                            if(!visible){
+                                uLogView.showLog('Invisible: '+index)
+                            }
+                        }
                         Keys.onSpacePressed: {
                             lv.currentIndex=index
                             cbRow.checked=!cbRow.checked
@@ -334,6 +341,14 @@ Item {
                                 }
                             }
                         }
+                        UText{
+                            text: '<b>'+parseInt(index +1)+'</b>'
+                            font.pixelSize: app.fs*0.6
+                            color: 'red'
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: parent.left
+                            anchors.leftMargin: app.fs*0.5
+                        }
                     }
                 }
             }
@@ -390,7 +405,9 @@ Item {
 
         var rows=unik.getSqlData(sql)
         //console.log('Sql count result: '+rows.length)
-        lv.cacheBuffer=rows.length
+        //lv.cacheBuffer=rows.length
+        //lv.displayMarginBeginning=rows.length*app.fs*2
+        //lv.displayMarginEnd=rows.length*app.fs*2
         cant.text='Resultados: '+rows.length
         for(i=0;i<rows.length;i++){
             lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[2], rows[i].col[3], rows[i].col[4], rows[i].col[5]))
