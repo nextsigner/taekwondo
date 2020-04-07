@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtQuick.Controls 1.4
 
 Item {
     id: r
@@ -98,6 +99,29 @@ Item {
                 onFocusChanged: {
                     textInput.selectAll()
                 }
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked:calFN.visible=true
+                }
+                Calendar {
+                   id: calFN
+                    width: app.fs*20
+                    height: app.fs*20
+                    anchors.right: parent.right
+                    anchors.rightMargin: app.fs*4
+                    anchors.verticalCenter: parent.verticalCenter
+                    visible: false
+                    //weekNumbersVisible: true
+                    onSelectedDateChanged: {
+                        calFN.visible=false
+                        let d = selectedDate
+                        let dia=d.getDate()
+                        let mes=d.getMonth()+1
+                        let an=(''+d.getYear()).split('')
+                        let s=''+dia+'/'+mes+'/'+an[an.length-2]+''+an[an.length-1]
+                        tiFechaNac.text=s
+                    }
+                }
             }
             UTextInput{
                 id: tiFechaCert
@@ -108,6 +132,29 @@ Item {
                 KeyNavigation.tab: botReg
                 onFocusChanged: {
                     textInput.selectAll()
+                }
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked:calFC.visible=true
+                }
+                Calendar {
+                   id: calFC
+                    width: app.fs*20
+                    height: app.fs*20
+                    anchors.right: parent.right
+                    anchors.rightMargin: app.fs*4
+                    anchors.verticalCenter: parent.verticalCenter
+                    visible: false
+                    //weekNumbersVisible: true
+                    onSelectedDateChanged: {
+                        calFC.visible=false
+                        let d = selectedDate
+                        let dia=d.getDate()
+                        let mes=d.getMonth()+1
+                        let an=(''+d.getYear()).split('')
+                        let s=''+dia+'/'+mes+'/'+an[an.length-2]+''+an[an.length-1]
+                        tiFechaCert.text=s
+                    }
                 }
             }
         }
@@ -201,6 +248,7 @@ Item {
         interval: 15000
         onTriggered: updateGui()
     }
+
     Component{
         id: compExist
         Rectangle{

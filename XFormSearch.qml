@@ -10,10 +10,10 @@ Item {
     property bool selectedAll: false
     onSelectedAllChanged: {
         cbSelectedAll.checked=selectedAll
-        /*if(!cbSelectedAll.setearTodos&&!selectedAll){
+        if(!cbSelectedAll.setearTodos&&!selectedAll){
             cbSelectedAll.setearTodos=true
             return
-        }*/
+        }
         for(var i=0;i<lm.count; i++){
             lm.get(i).v7=selectedAll
         }
@@ -293,11 +293,11 @@ Item {
                                     anchors.centerIn: parent
                                     onCheckedChanged: {
                                         /*xRowDes.selected=checked
-                                        v7=checked
+                                        v7=checked*/
                                         if(!checked){
                                             cbSelectedAll.setearTodos=false
                                             r.selectedAll=false
-                                        }*/
+                                        }
                                         v7=checked
                                         setBtnDeleteText()
                                         lv.focus=true
