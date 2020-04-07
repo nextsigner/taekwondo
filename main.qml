@@ -169,6 +169,30 @@ ApplicationWindow {
         }
     }
     Shortcut{
+        sequence: 'Right'
+        onActivated: {
+            xFormInsert.rightForm()
+        }
+    }
+    Shortcut{
+        sequence: 'Left'
+        onActivated: {
+            xFormInsert.leftForm()
+        }
+    }
+    Shortcut{
+        sequence: 'Shift+Right'
+        onActivated: {
+            xFormInsert.shiftRightForm()
+        }
+    }
+    Shortcut{
+        sequence: 'Shift+Left'
+        onActivated: {
+            xFormInsert.shiftLeftForm()
+        }
+    }
+    Shortcut{
         sequence: 'Return'
         onActivated: {
             xFormInsert.enterForm()

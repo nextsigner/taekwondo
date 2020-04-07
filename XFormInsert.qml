@@ -221,11 +221,9 @@ Item {
                             labelStatus.text=msg
                         }else{
                             insert()
-                            clear()
                         }
                     }else{
                         modify()
-                        clear()
                         r.modificando=false
                     }
                 }
@@ -238,17 +236,24 @@ Item {
                             labelStatus.text=msg
                         }else{
                             insert()
-                            clear()
                         }
                     }else{
                         modify()
-                        clear()
                         r.modificando=false
                     }
                 }
                 UnikFocus{}
             }
         }
+        UText{
+            id: labelCalCmd
+            width: parent.width
+            height: app.fs*2
+            wrapMode: Text.WordWrap
+            opacity: itemCalFC.visible||itemCalFN.visible?1.0:0.0
+            text: 'Presionar arriba o abajo para cambiar día.\nPresionar derecha o izquierda para cambiar mes.\nPresionar Shift+derecha o Shift+izquierda para cambiar de año.'
+        }
+
     }
     Timer{
         repeat: true
@@ -391,6 +396,7 @@ Item {
             labelStatus.text='El alumno con el folio '+tiFolio.text+' no ha sido registrado correctamente.'
             r.uCodInserted=tiFolio.text
         }
+        clear()
         //uLogView.showLog('Registro Insertado: '+insertado)
     }
     function modify(){
@@ -439,6 +445,7 @@ Item {
             labelStatus.text=msg
             r.uCodInserted=tiFolio.text
         }
+        clear()
         //uLogView.showLog('Registro Insertado: '+insertado)
     }
     function updateGui(){
@@ -463,12 +470,19 @@ Item {
         labelStatus.text='Formulario limpiado.'
     }
     Timer{
-        running: itemCalFN.children.length>0||itemCalFC.children.length>0
-        repeat: true
+        id: tShowCal
+        running: false//itemCalFN.children.length>0||itemCalFC.children.length>0
+        repeat: false
         interval: 1000
+        property int is: -1
         onTriggered: {
-            if(itemCalFN.visible){
-
+            if(is==1){
+                showCal(itemCalFN, 1)
+                itemCalFN.visible=true
+            }
+            if(is==2){
+                showCal(itemCalFC, 2)
+                itemCalFC.visible=true
             }
         }
     }
@@ -534,7 +548,47 @@ Item {
             r.currentCal.hide=false
         }
     }
+    function rightForm(){
+        if(r.currentCal){
+            var ahora = r.currentCal.selectedDate;
+            ahora.setMonth(ahora.getMonth() + 1);
+            r.currentCal.hide=true
+            r.currentCal.selectedDate=ahora
+            r.currentCal.hide=false
+        }
+    }
+    function leftForm(){
+        if(r.currentCal){
+            var ahora = r.currentCal.selectedDate;
+            ahora.setMonth(ahora.getMonth() - 1);
+            r.currentCal.hide=true
+            r.currentCal.selectedDate=ahora
+            r.currentCal.hide=false
+        }
+    }
+    function shiftRightForm(){
+        if(r.currentCal){
+            var ahora = r.currentCal.selectedDate;
+            ahora.setYear(ahora.getFullYear() + 1);
+            r.currentCal.hide=true
+            r.currentCal.selectedDate=ahora
+            r.currentCal.hide=false
+        }
+    }
+    function shiftLeftForm(){
+        if(r.currentCal){
+            var ahora = r.currentCal.selectedDate;
+            ahora.setYear(ahora.getFullYear() - 1);
+            r.currentCal.hide=true
+            r.currentCal.selectedDate=ahora
+            r.currentCal.hide=false
+        }
+    }
     function enterForm(){
+        if(botReg.focus){
+            botReg.clicked()
+            return
+        }
         if(!itemCalFN.visible&&tiFechaNac.focus){
             showCal(itemCalFN, 1)
             itemCalFN.visible=true
@@ -554,14 +608,15 @@ Item {
             if(itemCalFN.visible){
                 tiFechaNac.text=s
                 itemCalFN.visible=false
-                //tiFechaCert.focus=true
-                //showCal(itemCalFC, 2)
-                //itemCalFC.visible=true
+                tShowCal.is=2
+                tShowCal.start()
             }
             if(itemCalFC.visible){
                 tiFechaCert.text=s
                 itemCalFC.visible=false
+                botReg.focus=true
             }
         }
     }
+
 }
