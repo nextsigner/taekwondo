@@ -156,18 +156,24 @@ ApplicationWindow {
             }
         }
     }
-//    Shortcut{
-//        sequence: 'Up'
-//        onActivated: {
-//            xFormSearch.upRow()
-//        }
-//    }
-//    Shortcut{
-//        sequence: 'Down'
-//        onActivated: {
-//            xFormSearch.downRow()
-//        }
-//    }
+    Shortcut{
+        sequence: 'Up'
+        onActivated: {
+            xFormInsert.upForm()
+        }
+    }
+    Shortcut{
+        sequence: 'Down'
+        onActivated: {
+            xFormInsert.downForm()
+        }
+    }
+    Shortcut{
+        sequence: 'Return'
+        onActivated: {
+            xFormInsert.enterForm()
+        }
+    }
 
 
     Timer{

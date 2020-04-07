@@ -10,6 +10,8 @@ Item {
     property string tableName: ''
     property string uCodInserted: ''
     property var cols: []
+    property var currentCal
+    property var uDateFNSelected
     onVisibleChanged: {
         if(visible){
             updateGui()
@@ -94,32 +96,35 @@ Item {
                 label: 'Fecha de Nacimiento: '
                 width: parent.parent.width*0.5-app.fs*0.5
                 maximumLength: 10
+                textInput.enabled: false
                 //regularExp: RegExpValidator{regExp: /^([1-9])([0-9]{10})/ }
                 KeyNavigation.tab: tiFechaCert
                 onFocusChanged: {
-                    textInput.selectAll()
+                    //textInput.selectAll()
+                    showCal(itemCalFN, 1)
+                    itemCalFN.visible=true
                 }
                 MouseArea{
                     anchors.fill: parent
-                    onClicked:calFN.visible=true
+                    onClicked:{
+                        showCal(itemCalFN, 1)
+                        itemCalFN.visible=true
+                    }
                 }
-                Calendar {
-                   id: calFN
+                Item{
+                    id: itemCalFN
                     width: app.fs*20
                     height: app.fs*20
                     anchors.right: parent.right
                     anchors.rightMargin: app.fs*4
                     anchors.verticalCenter: parent.verticalCenter
                     visible: false
-                    //weekNumbersVisible: true
-                    onSelectedDateChanged: {
-                        calFN.visible=false
-                        let d = selectedDate
-                        let dia=d.getDate()
-                        let mes=d.getMonth()+1
-                        let an=(''+d.getYear()).split('')
-                        let s=''+dia+'/'+mes+'/'+an[an.length-2]+''+an[an.length-1]
-                        tiFechaNac.text=s
+                    onVisibleChanged: {
+                        if(visible)return
+                        for(var i=0;i<itemCalFN.children.length;i++){
+                            itemCalFN.children[i].destroy(10)
+                        }
+                        r.focus=true
                     }
                 }
             }
@@ -128,32 +133,35 @@ Item {
                 label: 'Fecha de Certificado: '
                 width: parent.parent.width*0.5-app.fs*0.5
                 maximumLength: 10
+                textInput.enabled: false
                 //regularExp: RegExpValidator{regExp: /^([1-9])([0-9]{10})/ }
                 KeyNavigation.tab: botReg
                 onFocusChanged: {
-                    textInput.selectAll()
+                    //textInput.selectAll()
+                    showCal(itemCalFC, 2)
+                    itemCalFC.visible=true
                 }
                 MouseArea{
                     anchors.fill: parent
-                    onClicked:calFC.visible=true
+                    onClicked:{
+                        showCal(itemCalFC, 2)
+                        itemCalFC.visible=true
+                    }
                 }
-                Calendar {
-                   id: calFC
+                Item{
+                    id: itemCalFC
                     width: app.fs*20
                     height: app.fs*20
                     anchors.right: parent.right
                     anchors.rightMargin: app.fs*4
                     anchors.verticalCenter: parent.verticalCenter
                     visible: false
-                    //weekNumbersVisible: true
-                    onSelectedDateChanged: {
-                        calFC.visible=false
-                        let d = selectedDate
-                        let dia=d.getDate()
-                        let mes=d.getMonth()+1
-                        let an=(''+d.getYear()).split('')
-                        let s=''+dia+'/'+mes+'/'+an[an.length-2]+''+an[an.length-1]
-                        tiFechaCert.text=s
+                    onVisibleChanged: {
+                        if(visible)return
+                        for(var i=0;i<itemCalFC.children.length;i++){
+                            itemCalFC.children[i].destroy(10)
+                        }
+                        r.focus=true
                     }
                 }
             }
@@ -197,7 +205,7 @@ Item {
                 height: app.fs*2
                 visible: r.modificando
                 onClicked: {
-                   r.modificando=false
+                    r.modificando=false
                     clear()
                 }
             }
@@ -317,6 +325,9 @@ Item {
             Component.onCompleted: botCodExistsMod.focus=true
         }
     }
+    Component.onCompleted: {
+        tiFolio.focus=true
+    }
     function codExist(){
         let sql = 'select * from '+r.tableName+' where folio=\''+tiFolio.text+'\''
         let rows = unik.getSqlData(sql)
@@ -326,7 +337,7 @@ Item {
             let obj = comp.createObject(r, {vaid:rows[0].col[0], vafolio:rows[0].col[1],  vagrado:rows[0].col[2], vanom: rows[0].col[3], vafechanac: rows[0].col[4], vafechacert: rows[0].col[5]})
         }
         return exists
-    }   
+    }
     function getCount(){
         let sql = 'select '+r.cols[0]+' from '+r.tableName
         let rows = unik.getSqlData(sql)
@@ -451,6 +462,106 @@ Item {
         tiFolio.focus=true
         labelStatus.text='Formulario limpiado.'
     }
+    Timer{
+        running: itemCalFN.children.length>0||itemCalFC.children.length>0
+        repeat: true
+        interval: 1000
+        onTriggered: {
+            if(itemCalFN.visible){
 
+            }
+        }
+    }
 
+    function showCal(item, cal){
+        let l1=''
+        let l2=''
+        let l3=''
+        let l4=''
+        if(cal===1){
+            l1=' itemCalFN.visible=cal'+cal+'.hide\n'
+            l2='  tiFechaNac.text=s\n'
+            l3='  if(itemCalFC.visible){\n'
+            l4='       itemCalFC.visible=false\n'
+        }else{
+            l1=' itemCalFC.visible=cal'+cal+'.hide\n'
+            l2='  tiFechaCert.text=s\n'
+            l3='  if(itemCalFN.visible){\n'
+            l4='       itemCalFN.visible=false\n'
+        }
+        let code='import QtQuick 2.0\n'
+            +'import QtQuick.Controls 1.4\n'
+            +'Calendar{\n'
+            +'id: cal'+cal+'\n'
+            +'  property bool hide: false\n'
+        //+'  focus: true\n'
+            +'  anchors.fill: parent\n'
+            +'  onSelectedDateChanged: {\n'
+            +''+l1
+            +'  let d = selectedDate\n'
+            +'  let dia=d.getDate()\n'
+            +'  let mes=d.getMonth()+1\n'
+            +'  let an=(\'\'+d.getYear()).split(\'\')\n'
+            +'  let s=\'\'+dia+\'/\'+mes+\'/\'+an[an.length-2]+\'\'+an[an.length-1]\n'
+            +'  '+l2
+            +'  }\n'
+            +'  Component.onCompleted:{\n'
+            +'  '+l3
+            +'  '+l4
+        // +'  }\n'
+            +'  }\n'
+            +'  r.currentCal=cal'+cal+'\n'
+            +'  }\n'
+            +'}\n'
+        let comp=Qt.createQmlObject(code, item, 'qmlCalendar')
+    }
+
+    function upForm(){
+        if(r.currentCal){
+            var ayer = r.currentCal.selectedDate;
+            ayer.setDate(ayer.getDate() - 1);
+            r.currentCal.hide=true
+            r.currentCal.selectedDate=ayer
+            r.currentCal.hide=false
+        }
+    }
+    function downForm(){
+        if(r.currentCal){
+            var ayer = r.currentCal.selectedDate;
+            ayer.setDate(ayer.getDate() + 1);
+            r.currentCal.hide=true
+            r.currentCal.selectedDate=ayer
+            r.currentCal.hide=false
+        }
+    }
+    function enterForm(){
+        if(!itemCalFN.visible&&tiFechaNac.focus){
+            showCal(itemCalFN, 1)
+            itemCalFN.visible=true
+            return
+        }
+        if(!itemCalFC.visible&&tiFechaCert.focus){
+            showCal(itemCalFC, 2)
+            itemCalFC.visible=true
+            return
+        }
+        if(r.currentCal){
+            let d = r.currentCal.selectedDate
+            let dia=d.getDate()
+            let mes=d.getMonth()+1
+            let an=(''+d.getYear()).split('')
+            let s=''+dia+'/'+mes+'/'+an[an.length-2]+''+an[an.length-1]
+            if(itemCalFN.visible){
+                tiFechaNac.text=s
+                itemCalFN.visible=false
+                //tiFechaCert.focus=true
+                //showCal(itemCalFC, 2)
+                //itemCalFC.visible=true
+            }
+            if(itemCalFC.visible){
+                tiFechaCert.text=s
+                itemCalFC.visible=false
+            }
+        }
+    }
 }
