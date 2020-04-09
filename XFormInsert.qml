@@ -39,7 +39,7 @@ Item {
             UTextInput{
                 id: tiFolio
                 label: 'Folio: '
-                width: app.fs*10
+                width: app.fs*12
                 maximumLength: 10
                 KeyNavigation.tab: tiGrado
                 property string uCodExist: ''
@@ -514,7 +514,7 @@ Item {
             l4='       itemCalFC.visible=false\n'
             if(tiFechaNac.text!==''){
                 let m0=tiFechaNac.text.split('/')
-                r.uDate=new Date(parseInt(m0[m0.length-1]),parseInt(m0[m0.length-2]) ,parseInt(m0[0]));
+                r.uDate=new Date(parseInt(m0[m0.length-1]),parseInt(m0[m0.length-2]-1) ,parseInt(m0[0]));
             }else{
                 r.uDate=new Date(Date.now())
             }
