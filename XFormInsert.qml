@@ -24,6 +24,7 @@ Item {
         }
     }
     Column{
+        id: col1
         spacing: app.fs*0.5
         anchors.centerIn: parent
         UText{
@@ -41,8 +42,12 @@ Item {
                 maximumLength: 10
                 KeyNavigation.tab: tiGrado
                 property string uCodExist: ''
-                onFocusChanged: {
-                    textInput.selectAll()
+                textInput.onFocusChanged: {
+                    if(textInput.focus){
+                        itemCalFN.visible=false
+                        itemCalFC.visible=false
+                        textInput.selectAll()
+                    }
                 }
                 onTextChanged: {
                     if(r.modificando)return
@@ -73,8 +78,12 @@ Item {
                 width: r.width*0.5-tiFolio.width-app.fs*2
                 maximumLength: 250
                 KeyNavigation.tab: tiNombre
-                onFocusChanged: {
-                    textInput.selectAll()
+                textInput.onFocusChanged: {
+                    if(textInput.focus){
+                        itemCalFN.visible=false
+                        itemCalFC.visible=false
+                        textInput.selectAll()
+                    }
                 }
             }
         }
@@ -85,11 +94,16 @@ Item {
             maximumLength: 50
             //regularExp: RegExpValidator{regExp: /^\d+(\.\d{1,2})?$/ }
             KeyNavigation.tab: tiFechaNac
-            onFocusChanged: {
-                textInput.selectAll()
+            textInput.onFocusChanged: {
+                if(textInput.focus){
+                    itemCalFN.visible=false
+                    itemCalFC.visible=false
+                    textInput.selectAll()
+                }
             }
         }
         Row{
+            z:labelCount.z+100
             spacing: app.fs
             UTextInput{
                 id: tiFechaNac
@@ -99,7 +113,7 @@ Item {
                 textInput.enabled: false
                 //regularExp: RegExpValidator{regExp: /^([1-9])([0-9]{10})/ }
                 KeyNavigation.tab: tiFechaCert
-                onFocusChanged: {
+                textInput.onFocusChanged: {
                     //textInput.selectAll()
                     showCal(itemCalFN, 1)
                     itemCalFN.visible=true
@@ -116,7 +130,7 @@ Item {
                     width: app.fs*20
                     height: app.fs*20
                     anchors.right: parent.right
-                    anchors.rightMargin: app.fs*4
+                    anchors.rightMargin: app.fs*8
                     anchors.verticalCenter: parent.verticalCenter
                     visible: false
                     onVisibleChanged: {
@@ -136,7 +150,7 @@ Item {
                 textInput.enabled: false
                 //regularExp: RegExpValidator{regExp: /^([1-9])([0-9]{10})/ }
                 KeyNavigation.tab: botReg
-                onFocusChanged: {
+                textInput.onFocusChanged: {
                     //textInput.selectAll()
                     showCal(itemCalFC, 2)
                     itemCalFC.visible=true
@@ -150,10 +164,10 @@ Item {
                 }
                 Item{
                     id: itemCalFC
-                    width: app.fs*20
+                    width: r.width-col1.x-tiFechaCert.x-tiFechaCert.width
                     height: app.fs*20
-                    anchors.right: parent.right
-                    anchors.rightMargin: app.fs*4
+                    anchors.left: parent.right
+                    anchors.leftMargin: 0
                     anchors.verticalCenter: parent.verticalCenter
                     visible: false
                     onVisibleChanged: {
