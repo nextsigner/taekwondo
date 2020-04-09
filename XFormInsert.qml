@@ -12,6 +12,7 @@ Item {
     property var cols: []
     property var currentCal
     property var uDateFNSelected
+    property var uDate
     onVisibleChanged: {
         if(visible){
             updateGui()
@@ -127,10 +128,10 @@ Item {
                 }
                 Item{
                     id: itemCalFN
-                    width: app.fs*20
+                    width: itemCalFC.width
                     height: app.fs*20
                     anchors.right: parent.right
-                    anchors.rightMargin: app.fs*8
+                    anchors.rightMargin: app.fs*5
                     anchors.verticalCenter: parent.verticalCenter
                     visible: false
                     onVisibleChanged: {
@@ -500,42 +501,57 @@ Item {
             }
         }
     }
-
     function showCal(item, cal){
         let l1=''
         let l2=''
         let l3=''
         let l4=''
+        let lDate=''
         if(cal===1){
             l1=' itemCalFN.visible=cal'+cal+'.hide\n'
             l2='  tiFechaNac.text=s\n'
             l3='  if(itemCalFC.visible){\n'
             l4='       itemCalFC.visible=false\n'
+            if(tiFechaNac.text!==''){
+                let m0=tiFechaNac.text.split('/')
+                r.uDate=new Date(parseInt(m0[m0.length-1]),parseInt(m0[m0.length-2]) ,parseInt(m0[0]));
+            }else{
+                r.uDate=new Date(Date.now())
+            }
         }else{
             l1=' itemCalFC.visible=cal'+cal+'.hide\n'
             l2='  tiFechaCert.text=s\n'
             l3='  if(itemCalFN.visible){\n'
             l4='       itemCalFN.visible=false\n'
+            if(tiFechaCert.text!==''){
+                let m0=tiFechaCert.text.split('/')
+                r.uDate=new Date(parseInt(m0[m0.length-1]),parseInt(m0[m0.length-2]) ,parseInt(m0[0]));
+            }else{
+                r.uDate=new Date(Date.now())
+            }
         }
         let code='import QtQuick 2.0\n'
             +'import QtQuick.Controls 1.4\n'
             +'Calendar{\n'
             +'id: cal'+cal+'\n'
             +'  property bool hide: false\n'
-        //+'  focus: true\n'
+           +'  selectedDate: r.uDate\n'
             +'  anchors.fill: parent\n'
             +'  onSelectedDateChanged: {\n'
             +''+l1
             +'  let d = selectedDate\n'
             +'  let dia=d.getDate()\n'
             +'  let mes=d.getMonth()+1\n'
-            +'  let an=(\'\'+d.getYear()).split(\'\')\n'
-            +'  let s=\'\'+dia+\'/\'+mes+\'/\'+an[an.length-2]+\'\'+an[an.length-1]\n'
+            //+'  let an=(\'\'+d.getFullYear()).split(\'\')\n'
+            +'  let an=d.getFullYear()\n'
+            +'  let s=\'\'+dia+\'/\'+mes+\'/\'+an\n'
             +'  '+l2
             +'  }\n'
             +'  Component.onCompleted:{\n'
             +'  '+l3
             +'  '+l4
+            //+' '+lDate
+            //+' cal'+cal+'.selectedDate=r.uDate\n'
         // +'  }\n'
             +'  }\n'
             +'  r.currentCal=cal'+cal+'\n'
