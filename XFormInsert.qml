@@ -117,6 +117,10 @@ Item {
                 textInput.enabled: false
                 //regularExp: RegExpValidator{regExp: /^([1-9])([0-9]{10})/ }
                 KeyNavigation.tab: tiFechaCert
+                onTextChanged: {
+                    itemCalFN.visible=false
+                    itemCalFC.visible=true
+                }
                 textInput.onFocusChanged: {
                     //textInput.selectAll()
                     //showCal(itemCalFN, 1)
@@ -220,6 +224,19 @@ Item {
                     onVisibleChanged: {
                         if(visible&&tiFechaCert.text!==''){
                             prevDateString=tiFechaCert.text
+
+                        }else{
+                            itemCalFN.visible=false
+                            tHideCal1.start()
+                        }
+                    }
+                    Timer{
+                        id: tHideCal1
+                        running: false
+                        repeat: false
+                        interval: 100
+                        onTriggered: {
+                            itemCalFN.visible=false
                         }
                     }
                     Calendar{
@@ -610,6 +627,10 @@ Item {
         }
     }
     function leftForm(){
+        if(botReg.focus){
+            botClear.focus=true
+            return
+        }
         if(!itemCalFN.visible&&!itemCalFC.visible){
             return
         }
@@ -627,13 +648,32 @@ Item {
         }
     }
     function shiftRightForm(){
+        if(!itemCalFN.visible&&!itemCalFC.visible){
+            return
+        }
+        if(itemCalFN.visible){
+            r.currentCal=cal1
+        }
+        if(itemCalFC.visible){
+            r.currentCal=cal2
+        }
         if(r.currentCal){
             var ahora = r.currentCal.selectedDate;
             ahora.setYear(ahora.getFullYear() + 1);
+            r.currentCal.setTextInput=false
             r.currentCal.selectedDate=ahora
         }
     }
     function shiftLeftForm(){
+        if(!itemCalFN.visible&&!itemCalFC.visible){
+            return
+        }
+        if(itemCalFN.visible){
+            r.currentCal=cal1
+        }
+        if(itemCalFC.visible){
+            r.currentCal=cal2
+        }
         if(r.currentCal){
             var ahora = r.currentCal.selectedDate;
             ahora.setYear(ahora.getFullYear() - 1);
@@ -642,6 +682,10 @@ Item {
         }
     }
     function enterForm(){
+        if(botClear.focus){
+            clear()
+            return
+        }
         if(botReg.focus){
             botReg.clicked()
             return
@@ -665,11 +709,13 @@ Item {
             if(itemCalFN.visible){
                 tiFechaNac.text=s
                 itemCalFN.visible=false
+                return
             }
             if(itemCalFC.visible){
                 tiFechaCert.text=s
                 itemCalFC.visible=false
                 botReg.focus=true
+                return
             }
         }
     }
