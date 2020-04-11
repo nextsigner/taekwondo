@@ -115,6 +115,7 @@ Item {
                 width: tiNombre.width*0.5-app.fs*0.5
                 maximumLength: 10
                 textInput.enabled: false
+                textInput.clip: false
                 //regularExp: RegExpValidator{regExp: /^([1-9])([0-9]{10})/ }
                 KeyNavigation.tab: tiFechaCert
                 onTextChanged: {
@@ -144,7 +145,7 @@ Item {
                     width: itemCalFC.width
                     height: app.fs*20
                     anchors.right: parent.right
-                    anchors.rightMargin: app.fs*5
+                    anchors.rightMargin: app.fs*6.5
                     anchors.verticalCenter: parent.verticalCenter
                     visible: false
                     property string prevDateString:''
@@ -153,13 +154,6 @@ Item {
                             prevDateString=tiFechaNac.text
                         }
                     }
-                    //                    onVisibleChanged: {
-                    //                        if(visible)return
-                    //                        for(var i=0;i<itemCalFN.children.length;i++){
-                    //                            itemCalFN.children[i].destroy(10)
-                    //                        }
-                    //                        r.focus=true
-                    //                    }
                     Calendar{
                         id: cal1
                         anchors.fill: parent
@@ -192,6 +186,7 @@ Item {
                 width: tiNombre.width*0.5-app.fs
                 maximumLength: 10
                 textInput.enabled: false
+                textInput.clip: false
                 //regularExp: RegExpValidator{regExp: /^([1-9])([0-9]{10})/ }
                 KeyNavigation.tab: botReg
                 textInput.onFocusChanged: {
@@ -226,7 +221,7 @@ Item {
                             prevDateString=tiFechaCert.text
 
                         }else{
-                            itemCalFN.visible=false
+                            //itemCalFN.visible=false
                             tHideCal1.start()
                         }
                     }
@@ -234,7 +229,7 @@ Item {
                         id: tHideCal1
                         running: false
                         repeat: false
-                        interval: 100
+                        interval: 1
                         onTriggered: {
                             itemCalFN.visible=false
                         }
@@ -692,18 +687,24 @@ Item {
         }
         if(!itemCalFN.visible&&tiFechaNac.focus){
             //showCal(itemCalFN, 1)
-            itemCalFN.visible=true
+            //itemCalFN.visible=true
             return
         }
         if(!itemCalFC.visible&&tiFechaCert.focus){
             //showCal(itemCalFC, 2)
-            itemCalFC.visible=true
+            //itemCalFC.visible=true
             return
         }
         if(r.currentCal){
             let d = r.currentCal.selectedDate
-            let dia=d.getDate()
-            let mes=d.getMonth()+1
+            let dia=''+d.getDate()
+            if(d.getDate()<10){
+                dia='0'+dia
+            }
+            let mes=''+parseInt(d.getMonth()+1)
+            if(parseInt(d.getMonth()+1)<10){
+                mes='0'+mes
+            }
             let an=''+d.getFullYear()
             let s=''+dia+'/'+mes+'/'+an
             if(itemCalFN.visible){
@@ -722,9 +723,11 @@ Item {
     function escForm(){
         if(itemCalFN.visible){
             tiFechaNac.text=itemCalFN.prevDateString
+            tiNombre.textInput.focus=true
         }
         if(itemCalFC.visible){
             tiFechaCert.text=itemCalFC.prevDateString
+            tiNombre.textInput.focus=true
         }
         itemCalFN.visible=false
         itemCalFC.visible=false
