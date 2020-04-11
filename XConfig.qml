@@ -12,6 +12,7 @@ Item {
     }
     Settings{
         id: inicioSettings
+        fileName: pws+'/'+app.moduleName+'/'+app.moduleName+'_xconfig'
         property string uFolder
         property string uFolderSelect
     }

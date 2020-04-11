@@ -16,6 +16,9 @@ Rectangle{
     Connections {
         target: unik
         onUWarningChanged: {
+//            if(Qt.platform.os==='linux'&&(''+unik.getUWarning()).indexOf('initialize QSettings instance')>0){
+//                return
+//            }
             if((''+Qt.application.arguments).indexOf('-fuw')>=0){
                 xUWarnings.showEnabled=true
             }

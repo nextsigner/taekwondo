@@ -9,6 +9,7 @@ Item{
     property var arrayMenuNames: ['Inicio', 'Registrar Alumnos', 'Buscar Alumnos', 'Configurar']
     Settings{
         id: menuSettings
+        fileName: pws+'/'+app.moduleName+'/'+app.moduleName+'_xmenu'
         property bool minimalista: false
     }
     MouseArea{
@@ -30,7 +31,11 @@ Item{
                     width: parent.width*2
                     height: width
                     anchors.centerIn: parent
-                    onClicked: app.mod=index
+                    onClicked: {
+                        app.mod=index
+                        apps.setValue("umod", index)
+                        //apps.cMod=index
+                    }
                 }
             }
         }

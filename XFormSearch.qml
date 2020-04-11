@@ -30,12 +30,14 @@ Item {
     }
     Settings{
         id: usFormSearch
+        fileName: pws+'/'+app.moduleName+'/'+app.moduleName+'_xsearch'
         property string searchBy
         property int orderAscDesc
         property bool showTools
         property int uCurrentIndex
         Component.onCompleted: {
             if(usFormSearch.searchBy==='')usFormSearch.searchBy='Folio'
+            tiSearch.focus=true
         }
     }
     Column{
@@ -61,18 +63,7 @@ Item {
                     r.buscando=true
                     //lv.currentIndex=0
                     search()
-                }
-                //                Timer{
-                //                    id: toutFocus
-                //                    repeat: false
-                //                    running: false
-                //                    interval: 500
-                //                    onTriggered:{
-                //                        textInput.focus=false
-                //                        tiSearch.focus=false
-                //                        lv.focus=true
-                //                    }
-                //                }
+                }               
             }
             BotonUX{
                 id: botSearchTools
@@ -172,10 +163,23 @@ Item {
                             onClicked: cbSelectedAll.setearTodos=true
                             onCheckedChanged: {
                                 //r.selectedAll=checked
+                                if(!setearTodos){
+                                    cbSelectedAll.setearTodos=true
+                                    return
+                                }
                                 for(var i=0;i<lm.count; i++){
                                     lm.get(i).v7=checked
                                 }
                                 setBtnDeleteText()
+                            }
+                        }
+                        MouseArea{
+                            anchors.fill: parent
+                            onClicked: {
+                                cbSelectedAll.checked=!cbSelectedAll.checked
+                                for(var i=0;i<lm.count; i++){
+                                    lm.get(i).v7=cbSelectedAll.checked
+                                }
                             }
                         }
                     }
@@ -232,13 +236,7 @@ Item {
                     //                        lv.contentY=0
                     //                    }
                     usFormSearch.uCurrentIndex=currentIndex//uLogView.showLog('CurrentIndex: '+currentIndex)
-                }
-                /*Behavior on contentY{
-                        NumberAnimation {  duration: 100 }
-                }*/
-                /*displaced: Transition {
-                    NumberAnimation { properties: "x,y"; duration: 50; easing.type: Easing.InOutBounce }
-                }*/
+                }               
                 ListModel{
                     id: lm
                     function addDato(p1, p2, p3, p4, p5, p6){
@@ -267,6 +265,8 @@ Item {
                         property var arrayModeloDatos: [v2, v3, v4, v5, v6]//[v2, v3, v4, v5, v6]
                         property bool selected:v7
                         property int rowId: v1
+                        Keys.onDownPressed: downRow()
+                        Keys.onUpPressed: upRow()
                         Keys.onSpacePressed: {
                             lv.currentIndex=index
                             cbRow.checked=!cbRow.checked
@@ -296,11 +296,24 @@ Item {
                                         v7=checked*/
                                         if(!checked){
                                             cbSelectedAll.setearTodos=false
-                                            r.selectedAll=false
+                                            cbSelectedAll.checked=false
+                                            //r.selectedAll=false
                                         }
                                         v7=checked
                                         setBtnDeleteText()
                                         lv.focus=true
+                                        let allSelected=true
+                                        for(var i=0;i<lm.count; i++){
+                                            if(!lm.get(i).v7){
+                                               allSelected=false
+                                                break
+                                            }
+                                        }
+                                        if(allSelected){
+                                            cbSelectedAll.setearTodos=false
+                                            cbSelectedAll.checked=allSelected
+                                        }
+
                                     }
                                     MouseArea{
                                         anchors.fill: parent
@@ -343,28 +356,47 @@ Item {
                                         anchors.centerIn: parent
                                         color: xRowDes.fontColor
                                         horizontalAlignment: Text.AlignHCenter
+                                        //color: index===3||index===4?'red':'blue'
+                                        visible: false
+                                        Component.onCompleted: {
+                                            if(index===3||index===4){
+                                                let d=new Date(parseInt(xRowDes.arrayModeloDatos[index]))
+                                                let dia=''+d.getDate()
+                                                if(d.getDate()<10){
+                                                    dia='0'+dia
+                                                }
+                                                let mes=''+parseInt(d.getMonth()+1)
+                                                if(d.getMonth()+1<10){
+                                                    mes='0'+mes
+                                                }
+                                                let an=''+d.getFullYear()
+                                                let s=''+dia+'/'+mes+'/'+an
+                                                text=s
+                                            }
+                                            visible=true
+                                        }
                                     }
                                 }
                             }
                         }
-                        UText{
-                            text: '<b>'+parseInt(index +1)+'</b>'
-                            font.pixelSize: app.fs*0.6
-                            color: 'red'
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.left: parent.left
-                            anchors.leftMargin: app.fs*0.5
-                        }
+//                        UText{
+//                            text: '<b>'+parseInt(index +1)+'</b>'
+//                            font.pixelSize: app.fs*0.6
+//                            color: 'red'
+//                            anchors.verticalCenter: parent.verticalCenter
+//                            anchors.left: parent.left
+//                            anchors.leftMargin: app.fs*0.5
+//                        }
                     }
                 }
             }
         }
     }
-    //    UText{
-    //        text: 'INDEX: '+lv.currentIndex+' Cant: '+lm.count
-    //        font.pixelSize: app.fs*2
-    //        color: 'red'
-    //    }
+//        UText{
+//            text: 'INDEX: '+lv.focus+' '+lv.currentIndex+' Cant: '+lm.count
+//            font.pixelSize: app.fs*2
+//            color: 'red'
+//        }
     Component.onCompleted: {
         if(r.visible){
             search()
@@ -411,31 +443,10 @@ Item {
 
         var rows=unik.getSqlData(sql)
         //console.log('Sql count result: '+rows.length)
-        //lv.cacheBuffer=rows.length
-        //lv.displayMarginBeginning=rows.length*app.fs*2
-        //lv.displayMarginEnd=rows.length*app.fs*2
         cant.text='Resultados: '+rows.length
         for(i=0;i<rows.length;i++){
             lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[2], rows[i].col[3], rows[i].col[4], rows[i].col[5]))
-        }
-        //b=''
-        //for(var i=0;i<p1.length-1;i++){
-        /*if(i===0){
-                b+='nombre like \'%'+p1[i]+'%\' '
-            }else{
-                b+='or nombre like \'%'+p1[i]+'%\' '
-            }*/
-        //lm.append(lm.addDato('-10', p1[i], '', '','','',''))
-        //sql='select distinct * from '+app.tableName1+' where '+colSearch+' like \'%'+p1[i]+'%\' '+sOrderByAndAsc
-        //console.log('Sql 2: '+sql)
-        //var rows2=unik.getSqlData(sql)
-        //console.log('Sql count result: '+rows.length)
-        //cant.text='Resultados: '+parseInt(rows.length+rows2.length)
-        //            for(var i2=0;i2<rows2.length;i2++){
-        //                lm.append(lm.addDato(rows2[i2].col[0], rows2[i2].col[1], rows2[i2].col[2], rows2[i2].col[3], rows2[i2].col[4], rows[i].col[5]))
-        //            }
-        //}
-        //uLogView.showLog('2 SQL SEARCH:'+sql)
+        }        
     }
     function deleteRows(){
         for(var i=0;i<lv.children[0].children.length; i++){
@@ -509,7 +520,7 @@ Item {
         }
     }
     function atras(){
-        if(tiSearch.focus){
+        if(tiSearch.textInput.focus){
             lv.focus=true
             return true
         }

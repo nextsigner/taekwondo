@@ -9,12 +9,13 @@ ApplicationWindow {
     visibility: 'Maximized'
     color: app.c1
     property var objFocus
+    property string moduleName: 'taekwondo'
     property int fs: app.width*0.015 //Font Size
     property color c1: 'white'
     property color c2: 'black'
     property color c3: 'red'
     property color c4: 'gray'
-    property int mod: apps.cMod
+    property int mod: -20
 
 
     //Variables Globales
@@ -25,11 +26,14 @@ ApplicationWindow {
     property var colsNameAlumnos: ['Folio', 'Grado', 'Nombre', 'Fecha de Nacimiento', 'Fecha de Certificado']
 
     FontLoader{name: "FontAwesome"; source: "qrc:/fontawesome-webfont.ttf"}
-    onModChanged: apps.cMod=mod
+    onModChanged: apps.setValue("umod", mod)//cMod=mod
     Settings{
         id: apps
-        property int cMod
+        fileName: pws+'/'+app.moduleName+'/'+app.moduleName+'_apps'
+        property int cMod:-11
+        property int umod
         property string bdFileName
+        //onUmodChanged: uLogView.showLog('umod: '+umod)
         Component.onCompleted: {
             if(bdFileName===''){
                 let d=new Date(Date.now())
@@ -45,6 +49,8 @@ ApplicationWindow {
 
                 bdFileName=bdFN
             }
+            //app.mod=cMod
+            //uLogView.showLog('Apps umod: '+apps.value("umod"))
         }
     }
 
@@ -104,6 +110,10 @@ ApplicationWindow {
     Shortcut{
         sequence: 'Esc'
         onActivated: {
+            if(xFormInsert.calsVisible){
+                xFormInsert.escForm()
+                return
+            }
             if(uLogView.visible){
                 uLogView.visible=false
                 return
@@ -159,13 +169,28 @@ ApplicationWindow {
     Shortcut{
         sequence: 'Up'
         onActivated: {
-            xFormInsert.upForm()
+            if(xFormInsert.visible){
+                xFormInsert.upForm()
+                return
+            }
+            if(xFormSearch.visible){
+                xFormSearch.upRow()
+                return
+            }
+
         }
     }
     Shortcut{
         sequence: 'Down'
         onActivated: {
-            xFormInsert.downForm()
+            if(xFormInsert.visible){
+                xFormInsert.downForm()
+                return
+            }
+            if(xFormSearch.visible){
+                xFormSearch.downRow()
+                return
+            }
         }
     }
     Shortcut{
@@ -198,8 +223,6 @@ ApplicationWindow {
             xFormInsert.enterForm()
         }
     }
-
-
     Timer{
         running: true
         repeat: false
@@ -209,15 +232,22 @@ ApplicationWindow {
         }
     }
     Component.onCompleted: {
-        unik.createLink(unik.getPath(1)+"/unik.exe", "-git=https://github.com/nextsigner/taekwondo.git",  unik.getPath(7)+"/Desktop/Actualizar-Taekwondo.lnk", "Actualizar Taekwondo", "C:/");
+        if(apps.value("umod", -1)===-1){
+            apps.setValue("umod", 0)
+            //uLogView.showLog('Negativo: '+apps.value("umod", -2))
+        }
+        app.mod=apps.value("umod", 0)
+        if(Qt.platform.os==='windows'){
+            unik.createLink(unik.getPath(1)+"/unik.exe", "-git=https://github.com/nextsigner/taekwondo.git",  unik.getPath(7)+"/Desktop/Actualizar-Taekwondo.lnk", "Actualizar Taekwondo", "C:/");
+        }
         JS.setFolders()
         JS.setBd()
 
-//        for(var i=0;i<100;i++){
-//            let sql='insert into alumnos(folio, grado, nombre, fechanac, fechacert)values(\'adasdf'+i+'\',\'32'+i+'\',\'gdgg'+i+'\',\'xxxx'+i+'\',\'asggg'+i+'\')'
-//            unik.sqlQuery(sql)
-//            //unik.
-//        }
+        //        for(var i=0;i<100;i++){
+        //            let sql='insert into alumnos(folio, grado, nombre, fechanac, fechacert)values(\'adasdf'+i+'\',\'32'+i+'\',\'gdgg'+i+'\',\'xxxx'+i+'\',\'asggg'+i+'\')'
+        //            unik.sqlQuery(sql)
+        //            //unik.
+        //        }
     }
     function getNewBdName(){
         let d=new Date(Date.now())

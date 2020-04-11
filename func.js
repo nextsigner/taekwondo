@@ -1,6 +1,12 @@
 function setBd() {
     let folderBds=""+pws+"/taekwondo/bds"
-    let bd=apps.bdFileName.indexOf('\\')<0?""+folderBds+"/"+apps.bdFileName:""+apps.bdFileName.replace(/\\\\/g, '/')
+    let bd=''
+    if(Qt.platform.os==='windows'){
+        bd=apps.bdFileName.indexOf('\\')<0?""+folderBds+"/"+apps.bdFileName:""+apps.bdFileName.replace(/\\\\/g, '/')
+    }else{
+        bd=apps.bdFileName.indexOf('\\')<0?""+folderBds+"/"+apps.bdFileName:""+apps.bdFileName
+    }
+
     if(!unik.fileExist(bd)){
         apps.bdFileName=getNewBdName()
         bd=""+folderBds+"/"+apps.bdFileName
@@ -16,17 +22,14 @@ function setBd() {
         +app.colsAlumnos[0]+' TEXT NOT NULL,'
         +app.colsAlumnos[1]+' TEXT NOT NULL,'
         +app.colsAlumnos[2]+' TEXT NOT NULL,'
-        +app.colsAlumnos[3]+' TEXT NOT NULL,'
-        +app.colsAlumnos[4]+' TEXT NOT NULL'
+        +app.colsAlumnos[3]+' NUMERIC NOT NULL,'
+        +app.colsAlumnos[4]+' NUMERIC NOT NULL'
         +')'
     unik.sqlQuery(sql)
     //console.log('Ejecutado: '+ejecutado)
 }
 
-function setFolders(){
-    if(!unik.folderExist('facts')){
-        unik.mkdir('facts')
-    }
+function setFolders(){   
     unik.debugLog=true
 
     if(!unik.folderExist(pws+'/taekwondo')){
