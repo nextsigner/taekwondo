@@ -35,6 +35,7 @@ Item {
         property string searchBy
         property int orderAscDesc
         property bool showTools
+        property bool selectToTop
         property int uCurrentIndex
         Component.onCompleted: {
             if(usFormSearch.searchBy==='')usFormSearch.searchBy='Folio'
@@ -145,11 +146,19 @@ Item {
             Row{
                 spacing: app.fs
                 UText{
-                    text: 'Elevar Seleccionados'
+                    text: 'Posicionar seleccionados\nhacia arriba'
+                    width: app.fs*16
+                    wrapMode: Text.WordWrap
+                    horizontalAlignment: Text.AlignHCenter
+                    anchors.verticalCenter: parent.verticalCenter
                 }
                 CheckBox{
                     id: cbSelToTop
-                    onCheckedChanged: search()
+                    checked: usFormSearch.selectToTop
+                    onCheckedChanged: {
+                        usFormSearch.selectToTop=checked
+                        search()
+                    }
                 }
             }
         }
@@ -286,6 +295,9 @@ Item {
                         Keys.onSpacePressed: {
                             lv.currentIndex=index
                             cbRow.checked=!cbRow.checked
+                            if(cbSelToTop.checked){
+                                search()
+                            }
                             //uLogView.showLog('Spacing'+index)
                         }
                         onSelectedChanged: {
@@ -337,6 +349,14 @@ Item {
                                             r.idsSelected.pop(parseInt(v1))
                                         }
                                         //cant.text=r.idsSelected.toString()
+
+                                    }
+                                    Timer{
+                                        id: tSearchSelToTop
+                                        running: false
+                                        repeat: false
+                                        interval: 500
+                                        onTriggered: search()
                                     }
                                     MouseArea{
                                         anchors.fill: parent
@@ -346,6 +366,9 @@ Item {
                                         }
                                         onClicked: {
                                             cbRow.checked=!cbRow.checked
+                                            if(cbSelToTop.checked){
+                                                search()
+                                            }
                                             setBtnDeleteText()
                                         }
                                     }
@@ -553,6 +576,7 @@ Item {
             lv.focus=true
             return
         }
+        lv.focus=true
         if(lv.currentIndex===lm.count-1){
             lv.contentY=0
         }
