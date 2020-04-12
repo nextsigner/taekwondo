@@ -254,13 +254,7 @@ Item {
                 displayMarginBeginning: lm.count*app.fs*2
                 displayMarginEnd: lm.count*app.fs*2
                 onCurrentIndexChanged: {
-                    //                    if(lv.currentIndex===0){
-                    //                        lv.contentY=lm.count*app.fs*2-lv.height
-                    //                    }
-                    //                    if(lv.currentIndex===lm.count-1){
-                    //                        lv.contentY=0
-                    //                    }
-                    usFormSearch.uCurrentIndex=currentIndex//uLogView.showLog('CurrentIndex: '+currentIndex)
+                    usFormSearch.uCurrentIndex=currentIndex
                 }
                 ListModel{
                     id: lm
@@ -320,8 +314,6 @@ Item {
                                     checked: xRowDes.selected
                                     anchors.centerIn: parent
                                     onCheckedChanged: {
-                                        /*xRowDes.selected=checked
-                                        v7=checked*/
                                         if(!checked){
                                             cbSelectedAll.setearTodos=false
                                             cbSelectedAll.checked=false
@@ -436,7 +428,6 @@ Item {
                         Component.onCompleted: {
                             if(idsSelected.indexOf(parseInt(v1))>=0){
                                 xRowDes.selected=true
-                                //cbRow.checked=true
                             }
                         }
                     }
@@ -581,11 +572,9 @@ Item {
             lv.contentY=0
         }
         if(lv.currentIndex<lm.count-1){
-            //uLogView.showLog('Suma')
             lv.currentIndex++
         }else{
             lv.currentIndex=0
-            //uLogView.showLog('Pone en cero')
         }
     }
     function atras(){

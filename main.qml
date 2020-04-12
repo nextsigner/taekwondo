@@ -243,11 +243,18 @@ ApplicationWindow {
         JS.setFolders()
         JS.setBd()
 
-        //        for(var i=0;i<100;i++){
-        //            let sql='insert into alumnos(folio, grado, nombre, fechanac, fechacert)values(\'adasdf'+i+'\',\'32'+i+'\',\'gdgg'+i+'\',\'xxxx'+i+'\',\'asggg'+i+'\')'
-        //            unik.sqlQuery(sql)
-        //            //unik.
-        //        }
+        let h=0
+        let d=new Date(Date.now())
+        let d2=new Date(Date.now())
+
+        /*for(var i=0;i<100;i++){
+            d.setHours(d.getHours()+26*h)
+            d2.setHours(d2.getHours()+60*h)
+            let sql='insert into alumnos(folio, grado, nombre, fechanac, fechacert)values(\'adasdf'+i+'\',\'32'+i+'\',\'gdgg'+i+'\',\''+d.getTime()+'\',\''+d2.getTime()+'\')'
+            unik.sqlQuery(sql)
+            //unik.
+            h++
+        }*/
     }
     function getNewBdName(){
         let d=new Date(Date.now())
