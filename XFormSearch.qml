@@ -8,6 +8,7 @@ Item {
     property bool buscando: false
     property string currentTableName: ''
     property bool selectedAll: false
+    property var idsSelected: []
     onSelectedAllChanged: {
         cbSelectedAll.checked=selectedAll
         if(!cbSelectedAll.setearTodos&&!selectedAll){
@@ -63,13 +64,18 @@ Item {
                     r.buscando=true
                     //lv.currentIndex=0
                     search()
-                }               
+                }
             }
             BotonUX{
                 id: botSearchTools
-                text: 'Opciones de Busqueda'
+                text: ''//'Opciones de Busqueda'
                 height: app.fs*2
                 onClicked: usFormSearch.showTools=!usFormSearch.showTools
+                UText{
+                    text: '\uf013'//'Opciones de Busqueda'
+                    font.family: "FontAwesome"
+                    anchors.centerIn: parent
+                }
             }
             BotonUX{
                 id: botDelete
@@ -136,6 +142,16 @@ Item {
                     search()
                 }
             }
+            Row{
+                spacing: app.fs
+                UText{
+                    text: 'Elevar Seleccionados'
+                }
+                CheckBox{
+                    id: cbSelToTop
+                    onCheckedChanged: search()
+                }
+            }
         }
 
         UText{id: cant}
@@ -192,7 +208,7 @@ Item {
                             border.color: app.c4
                             color: app.c2
                             UText{
-                                text: (''+app.colsNameAlumnos[index]).replace(/ /g, '\n')
+                                text: '<b>'+(''+app.colsNameAlumnos[index]).replace(/ /g, '<br />')+'</b>'
                                 anchors.centerIn: parent
                                 color: app.c1//xRowTitDes.fontColor
                                 horizontalAlignment: Text.AlignHCenter
@@ -236,7 +252,7 @@ Item {
                     //                        lv.contentY=0
                     //                    }
                     usFormSearch.uCurrentIndex=currentIndex//uLogView.showLog('CurrentIndex: '+currentIndex)
-                }               
+                }
                 ListModel{
                     id: lm
                     function addDato(p1, p2, p3, p4, p5, p6){
@@ -263,7 +279,7 @@ Item {
                         color: cbRow.checked?app.c1:app.c2
                         property string fontColor: cbRow.checked?app.c1:app.c2
                         property var arrayModeloDatos: [v2, v3, v4, v5, v6]//[v2, v3, v4, v5, v6]
-                        property bool selected:v7
+                        property bool selected:v7//r.idsSelected.length>0?parseInt(idsSelected.indexOf(v1)+1):v7
                         property int rowId: v1
                         Keys.onDownPressed: downRow()
                         Keys.onUpPressed: upRow()
@@ -305,7 +321,7 @@ Item {
                                         let allSelected=true
                                         for(var i=0;i<lm.count; i++){
                                             if(!lm.get(i).v7){
-                                               allSelected=false
+                                                allSelected=false
                                                 break
                                             }
                                         }
@@ -313,7 +329,14 @@ Item {
                                             cbSelectedAll.setearTodos=false
                                             cbSelectedAll.checked=allSelected
                                         }
-
+                                        if(checked){
+                                            if(r.idsSelected.indexOf(parseInt(v1))<0){
+                                                r.idsSelected.push(parseInt(v1))
+                                            }
+                                        }else{
+                                            r.idsSelected.pop(parseInt(v1))
+                                        }
+                                        //cant.text=r.idsSelected.toString()
                                     }
                                     MouseArea{
                                         anchors.fill: parent
@@ -322,7 +345,7 @@ Item {
                                             setBtnDeleteText()
                                         }
                                         onClicked: {
-                                           cbRow.checked=!cbRow.checked
+                                            cbRow.checked=!cbRow.checked
                                             setBtnDeleteText()
                                         }
                                     }
@@ -379,24 +402,30 @@ Item {
                                 }
                             }
                         }
-//                        UText{
-//                            text: '<b>'+parseInt(index +1)+'</b>'
-//                            font.pixelSize: app.fs*0.6
-//                            color: 'red'
-//                            anchors.verticalCenter: parent.verticalCenter
-//                            anchors.left: parent.left
-//                            anchors.leftMargin: app.fs*0.5
-//                        }
+                        //                        UText{
+                        //                            text: '<b>'+parseInt(index +1)+'</b>'
+                        //                            font.pixelSize: app.fs*0.6
+                        //                            color: 'red'
+                        //                            anchors.verticalCenter: parent.verticalCenter
+                        //                            anchors.left: parent.left
+                        //                            anchors.leftMargin: app.fs*0.5
+                        //                        }
+                        Component.onCompleted: {
+                            if(idsSelected.indexOf(parseInt(v1))>=0){
+                                xRowDes.selected=true
+                                //cbRow.checked=true
+                            }
+                        }
                     }
                 }
             }
         }
     }
-//        UText{
-//            text: 'INDEX: '+lv.focus+' '+lv.currentIndex+' Cant: '+lm.count
-//            font.pixelSize: app.fs*2
-//            color: 'red'
-//        }
+    //        UText{
+    //            text: 'INDEX: '+lv.focus+' '+lv.currentIndex+' Cant: '+lm.count
+    //            font.pixelSize: app.fs*2
+    //            color: 'red'
+    //        }
     Component.onCompleted: {
         if(r.visible){
             search()
@@ -444,9 +473,24 @@ Item {
         var rows=unik.getSqlData(sql)
         //console.log('Sql count result: '+rows.length)
         cant.text='Resultados: '+rows.length
-        for(i=0;i<rows.length;i++){
-            lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[2], rows[i].col[3], rows[i].col[4], rows[i].col[5]))
-        }        
+        if(r.idsSelected.length===0||!cbSelToTop.checked){
+            for(i=0;i<rows.length;i++){
+                lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[2], rows[i].col[3], rows[i].col[4], rows[i].col[5]))
+            }
+        }else{
+            for(i=0;i<rows.length;i++){
+                if(r.idsSelected.indexOf(parseInt(rows[i].col[0]))>=0){
+                    //uLogView.showLog('id: '+rows[i].col[0])
+                    lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[2], rows[i].col[3], rows[i].col[4], rows[i].col[5]))
+                }
+            }
+            for(i=0;i<rows.length;i++){
+                if(r.idsSelected.indexOf(parseInt(rows[i].col[0]))<0){
+                    lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[2], rows[i].col[3], rows[i].col[4], rows[i].col[5]))
+                }
+            }
+        }
+
     }
     function deleteRows(){
         for(var i=0;i<lv.children[0].children.length; i++){
@@ -457,6 +501,7 @@ Item {
                 unik.sqlQuery(sql)
             }
         }
+        botDelete.visible=false
         search()
     }
     function setCbs(){
