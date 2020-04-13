@@ -16,6 +16,8 @@ Item {
     property var uDate
     property var uMaxDate
     property var uMinDate
+    property var dateForOpenFN
+    property var dateForOpenFC
     onVisibleChanged: {
         if(visible){
             updateGui()
@@ -102,7 +104,7 @@ Item {
                 if(textInput.focus){
                     itemCalFN.visible=false
                     itemCalFC.visible=false
-                    textInput.selectAll()
+                    //textInput.selectAll()
                 }
             }
         }
@@ -125,6 +127,8 @@ Item {
                 textInput.onFocusChanged: {
                     //textInput.selectAll()
                     //showCal(itemCalFN, 1)
+                    cal1.setTextInput=false
+                    cal1.selectedDate=r.dateForOpenFN
                     itemCalFN.visible=true
                 }
                 MouseArea{
@@ -137,6 +141,8 @@ Item {
                         tiFechaNac.textInput.focus=false
                         tiFechaCert.textInput.focus=false
                         itemCalFC.visible=false
+                        cal1.setTextInput=false
+                        cal1.selectedDate=r.dateForOpenFN
                         itemCalFN.visible=true
                     }
                 }
@@ -150,6 +156,7 @@ Item {
                     visible: false
                     property string prevDateString:''
                     onVisibleChanged: {
+                        if(visible)r.currentCal=cal1
                         if(visible&&tiFechaNac.text!==''){
                             prevDateString=tiFechaNac.text
                         }
@@ -173,6 +180,9 @@ Item {
                             if(setTextInput){
                                 tiFechaNac.text=s
                                 itemCalFN.visible=false
+                                r.dateForOpenFN=setectedDate
+                                cal2.setTextInput=false
+                                cal2.selectedDate=r.dateForOpenFC
                                 itemCalFC.visible=true
                             }
                             setTextInput=true
@@ -192,6 +202,8 @@ Item {
                 textInput.onFocusChanged: {
                     //textInput.selectAll()
                     //showCal(itemCalFC, 2)
+                    cal2.setTextInput=false
+                    cal2.selectedDate=r.dateForOpenFC
                     itemCalFC.visible=true
                 }
                 MouseArea{
@@ -204,6 +216,8 @@ Item {
                         tiFechaNac.textInput.focus=false
                         tiFechaCert.textInput.focus=false
                         itemCalFN.visible=false
+                        cal2.setTextInput=false
+                        cal2.selectedDate=r.dateForOpenFC
                         itemCalFC.visible=true
                     }
                 }
@@ -217,9 +231,11 @@ Item {
                     visible: false
                     property string prevDateString: ''
                     onVisibleChanged: {
+                        if(visible)r.currentCal=cal2
                         if(visible&&tiFechaCert.text!==''){
                             prevDateString=tiFechaCert.text
-
+                            cal2.setTextInput=false
+                            cal2.selectedDate=new Date(Date.now())
                         }else{
                             //itemCalFN.visible=false
                             tHideCal1.start()
@@ -252,6 +268,7 @@ Item {
                             let s=''+dia+'/'+mes+'/'+an
                             if(setTextInput){
                                 tiFechaCert.text=s
+                                r.dateForOpenFC=setectedDate
                                 itemCalFC.visible=false
                             }
                             setTextInput=true
@@ -426,6 +443,8 @@ Item {
     }
     Component.onCompleted: {
         tiFolio.focus=true
+        r.dateForOpenFN=new Date(Date.now())
+        r.dateForOpenFC=new Date(Date.now())
     }
     function codExist(){
         let sql = 'select * from '+r.tableName+' where folio=\''+tiFolio.text+'\''
@@ -565,6 +584,11 @@ Item {
         tiFechaNac.text=''
         tiFechaCert.text=''
         tiFolio.focus=true
+        r.dateForOpenFN=new Date(Date.now())
+        r.dateForOpenFC=r.dateForOpenFN
+        itemCalFN.visible=false
+        itemCalFC.visible=false
+        r.currentCal=cal1
         labelStatus.text='Formulario limpiado.'
     }
 
@@ -640,6 +664,8 @@ Item {
             ahora.setMonth(ahora.getMonth() - 1);
             r.currentCal.setTextInput=false
             r.currentCal.selectedDate=ahora
+            r.dateForOpenFN=cal1.selectedDate
+            r.dateForOpenFC=cal2.selectedDate
         }
     }
     function shiftRightForm(){
