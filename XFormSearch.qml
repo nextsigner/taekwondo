@@ -202,6 +202,14 @@ Item {
                             anchors.fill: parent
                             onClicked: {
                                 cbSelectedAll.checked=!cbSelectedAll.checked
+                                r.idsSelected=[]
+                                search()
+                                /*if(!cbSelectedAll.checked){
+
+                                }else{
+                                    r.idsSelected=[]
+                                    cbSelToTop.checked=false
+                                }*/
                                 for(var i=0;i<lm.count; i++){
                                     lm.get(i).v7=cbSelectedAll.checked
                                 }
