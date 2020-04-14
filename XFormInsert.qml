@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 
 Item {
     id: r
@@ -11,7 +12,8 @@ Item {
     property string uCodInserted: ''
     property var cols: []
     property bool calsVisible: itemCalFN.visible||itemCalFC.visible
-    property var currentCal
+    property var currentCalFN
+    property var currentCalFC
     property var uDateFNSelected
     property var uDate
     property var uMaxDate
@@ -50,8 +52,7 @@ Item {
                 property string uCodExist: ''
                 textInput.onFocusChanged: {
                     if(textInput.focus){
-                        itemCalFN.visible=false
-                        itemCalFC.visible=false
+                        calendario.parent=r
                         textInput.selectAll()
                     }
                 }
@@ -86,8 +87,7 @@ Item {
                 KeyNavigation.tab: tiNombre
                 textInput.onFocusChanged: {
                     if(textInput.focus){
-                        itemCalFN.visible=false
-                        itemCalFC.visible=false
+                        calendario.parent=r
                         textInput.selectAll()
                     }
                 }
@@ -99,12 +99,11 @@ Item {
             width: r.width*0.5+app.fs
             maximumLength: 50
             //regularExp: RegExpValidator{regExp: /^\d+(\.\d{1,2})?$/ }
-            KeyNavigation.tab: tiFechaNac
+            KeyNavigation.tab: itemCalFN
             textInput.onFocusChanged: {
                 if(textInput.focus){
-                    itemCalFN.visible=false
-                    itemCalFC.visible=false
-                    //textInput.selectAll()
+                    calendario.parent=r
+                    textInput.selectAll()
                 }
             }
         }
@@ -119,31 +118,11 @@ Item {
                 textInput.enabled: false
                 textInput.clip: false
                 //regularExp: RegExpValidator{regExp: /^([1-9])([0-9]{10})/ }
-                KeyNavigation.tab: tiFechaCert
-                onTextChanged: {
-                    itemCalFN.visible=false
-                    itemCalFC.visible=true
-                }
-                textInput.onFocusChanged: {
-                    //textInput.selectAll()
-                    //showCal(itemCalFN, 1)
-                    cal1.setTextInput=false
-                    cal1.selectedDate=r.dateForOpenFN
-                    itemCalFN.visible=true
-                }
+                KeyNavigation.tab: itemCalFC
                 MouseArea{
                     anchors.fill: parent
                     onClicked:{
-                        //showCal(itemCalFN, 1)
-                        tiFolio.textInput.focus=false
-                        tiGrado.textInput.focus=false
-                        tiNombre.textInput.focus=false
-                        tiFechaNac.textInput.focus=false
-                        tiFechaCert.textInput.focus=false
-                        itemCalFC.visible=false
-                        cal1.setTextInput=false
-                        cal1.selectedDate=r.dateForOpenFN
-                        itemCalFN.visible=true
+                        showCal(1)
                     }
                 }
                 Item{
@@ -153,39 +132,15 @@ Item {
                     anchors.right: parent.right
                     anchors.rightMargin: app.fs*6.5
                     anchors.verticalCenter: parent.verticalCenter
-                    visible: false
+                    objectName: 'itemCal1'
                     property string prevDateString:''
+                    KeyNavigation.tab: itemCalFC
+                    onFocusChanged: {
+                        if(focus)showCal(1)
+                    }
                     onVisibleChanged: {
-                        if(visible)r.currentCal=cal1
                         if(visible&&tiFechaNac.text!==''){
                             prevDateString=tiFechaNac.text
-                        }
-                    }
-                    Calendar{
-                        id: cal1
-                        anchors.fill: parent
-                        property bool setTextInput: false
-                        onSelectedDateChanged: {
-                            let d = selectedDate
-                            let dia=''+d.getDate()
-                            let mes=''+parseInt(d.getMonth()+1)
-                            if(parseInt(dia)<10){
-                                dia='0'+dia
-                            }
-                            if(parseInt(mes)<10){
-                                mes='0'+mes
-                            }
-                            let an=d.getFullYear()
-                            let s=''+dia+'/'+mes+'/'+an
-                            if(setTextInput){
-                                tiFechaNac.text=s
-                                itemCalFN.visible=false
-                                r.dateForOpenFN=setectedDate
-                                cal2.setTextInput=false
-                                cal2.selectedDate=r.dateForOpenFC
-                                itemCalFC.visible=true
-                            }
-                            setTextInput=true
                         }
                     }
                 }
@@ -197,28 +152,10 @@ Item {
                 maximumLength: 10
                 textInput.enabled: false
                 textInput.clip: false
-                //regularExp: RegExpValidator{regExp: /^([1-9])([0-9]{10})/ }
-                KeyNavigation.tab: botReg
-                textInput.onFocusChanged: {
-                    //textInput.selectAll()
-                    //showCal(itemCalFC, 2)
-                    cal2.setTextInput=false
-                    cal2.selectedDate=r.dateForOpenFC
-                    itemCalFC.visible=true
-                }
                 MouseArea{
                     anchors.fill: parent
                     onClicked:{
-                        //showCal(itemCalFC, 2)
-                        tiFolio.textInput.focus=false
-                        tiGrado.textInput.focus=false
-                        tiNombre.textInput.focus=false
-                        tiFechaNac.textInput.focus=false
-                        tiFechaCert.textInput.focus=false
-                        itemCalFN.visible=false
-                        cal2.setTextInput=false
-                        cal2.selectedDate=r.dateForOpenFC
-                        itemCalFC.visible=true
+                        showCal(2)
                     }
                 }
                 Item{
@@ -228,51 +165,14 @@ Item {
                     anchors.left: parent.right
                     anchors.leftMargin: 0
                     anchors.verticalCenter: parent.verticalCenter
-                    visible: false
+                    objectName: 'itemCal2'
+                    KeyNavigation.tab: botReg
                     property string prevDateString: ''
-                    onVisibleChanged: {
-                        if(visible)r.currentCal=cal2
-                        if(visible&&tiFechaCert.text!==''){
-                            prevDateString=tiFechaCert.text
-                            cal2.setTextInput=false
-                            cal2.selectedDate=new Date(Date.now())
-                        }else{
-                            //itemCalFN.visible=false
-                            tHideCal1.start()
-                        }
-                    }
-                    Timer{
-                        id: tHideCal1
-                        running: false
-                        repeat: false
-                        interval: 1
-                        onTriggered: {
-                            itemCalFN.visible=false
-                        }
-                    }
-                    Calendar{
-                        id: cal2
-                        anchors.fill: parent
-                        property bool setTextInput: false
-                        onSelectedDateChanged: {
-                            let d = selectedDate
-                            let dia=''+d.getDate()
-                            let mes=''+parseInt(d.getMonth()+1)
-                            if(parseInt(dia)<10){
-                                dia='0'+dia
-                            }
-                            if(parseInt(mes)<10){
-                                mes='0'+mes
-                            }
-                            let an=d.getFullYear()
-                            let s=''+dia+'/'+mes+'/'+an
-                            if(setTextInput){
-                                tiFechaCert.text=s
-                                r.dateForOpenFC=setectedDate
-                                itemCalFC.visible=false
-                            }
-                            setTextInput=true
-                        }
+                    onFocusChanged: {
+                        if(focus)showCal(2)
+                        //                        if(!focus&&!itemCalFN.focus){
+                        //                            calendario.parent=r
+                        //                        }
                     }
                 }
             }
@@ -372,7 +272,6 @@ Item {
         interval: 15000
         onTriggered: updateGui()
     }
-
     Component{
         id: compExist
         Rectangle{
@@ -441,6 +340,117 @@ Item {
             Component.onCompleted: botCodExistsMod.focus=true
         }
     }
+    Calendar{
+        id: calendario
+        anchors.fill: parent
+        visible: parent.objectName==='itemCal1'||parent.objectName==='itemCal2'
+        property bool setTextInput: false
+        property int num:-1
+        onParentChanged: {
+            setTextInput=false
+            if(parent===r){
+                //selectedDate=new Date(Date.now())
+                return
+            }
+            if(parent===itemCalFN){
+                if(tiFechaNac.text.length<2){
+                    selectedDate=new Date(Date.now())
+                }else{
+                    selectedDate=new Date(r.dateForOpenFN.getTime())
+                }
+                return
+            }
+            if(parent===itemCalFC){
+                if(tiFechaCert.text.length<2){
+                    selectedDate=new Date(Date.now())
+                }else{
+                    selectedDate=new Date(r.dateForOpenFC.getTime())
+                }
+                return
+            }
+        }
+        onVisibleChanged:{
+            if(parent.objectName==='itemCal1'){
+                num=1
+                return
+            }
+            if(parent.objectName==='itemCal2'){
+                num=2
+                return
+            }
+            num=-1
+        }
+        style: CalendarStyle {
+            dayDelegate: Rectangle{
+                color: styleData.selected ? app.c2 : (styleData.visibleMonth && styleData.valid ? "#111" : "#666");
+                Label {
+                    text: styleData.date.getDate()
+                    anchors.centerIn: parent
+                    color: styleData.valid ? (styleData.selected ?app.c1:app.c2) : app.c4
+                }
+                Rectangle {
+                    width: parent.width
+                    height: 1
+                    color: app.c3
+                    anchors.bottom: parent.bottom
+                }
+                Rectangle {
+                    width: 1
+                    height: parent.height
+                    color: app.c3
+                    anchors.right: parent.right
+                }
+                MouseArea{
+                    anchors.fill: parent
+                    onDoubleClicked: {
+                        calendario.setTextInput=true
+                        calendario.selectedDate=styleData.date
+                        if(calendario.parent===itemCalFN){
+                            r.dateForOpenFN=new Date(styleData.date.getTime())
+                        }
+                        if(calendario.parent===itemCalFC){
+                            r.dateForOpenFC=new Date(styleData.date.getTime())
+                        }
+                        //cal2.parent.visible=false
+                    }
+                }
+            }
+        }
+        onSelectedDateChanged: {
+            if(setTextInput){
+                var d = selectedDate
+                let dia=''+d.getDate()
+                let mes=''+parseInt(d.getMonth()+1)
+                if(parseInt(dia)<10){
+                    dia='0'+dia
+                }
+                if(parseInt(mes)<10){
+                    mes='0'+mes
+                }
+                let an=d.getFullYear()
+                let s=''+dia+'/'+mes+'/'+an
+                //uLogView.showLog('set!'+cal.num)
+
+                if(calendario.num===1){
+                    r.dateForOpenFN=new Date(d.getTime())
+                    tiFechaNac.text=s
+                    calendario.parent=r
+                }
+                if(calendario.num===2){
+                    r.dateForOpenFC=new Date(d.getTime())
+                    tiFechaCert.text=s
+                    calendario.parent=r
+                }
+            }
+            setTextInput=true
+        }
+        MouseArea{
+            anchors.fill: parent
+            z: calendario.z-1
+        }
+    }
+
+
     Component.onCompleted: {
         tiFolio.focus=true
         r.dateForOpenFN=new Date(Date.now())
@@ -585,122 +595,83 @@ Item {
         tiFechaCert.text=''
         tiFolio.focus=true
         r.dateForOpenFN=new Date(Date.now())
-        r.dateForOpenFC=r.dateForOpenFN
-        itemCalFN.visible=false
-        itemCalFC.visible=false
-        r.currentCal=cal1
+        r.dateForOpenFC=new Date(Date.now())
+        //itemCalFN.visible=false
+        //itemCalFC.visible=false
+        //r.currentCal=cal1
         labelStatus.text='Formulario limpiado.'
     }
 
+    function showCal(num){
+        //tiFolio.textInput.focus=false
+        //tiGrado.textInput.focus=false
+        //tiNombre.textInput.focus=false
+
+        if(num===1){
+            calendario.parent=itemCalFN
+        }
+        if(num===2){
+            calendario.parent=itemCalFC
+        }
+    }
+
     function upForm(){
-        if(!itemCalFN.visible&&!itemCalFC.visible){
+        if(calendario.parent===r){
             return
         }
-        if(itemCalFN.visible){
-            r.currentCal=cal1
-        }
-        if(itemCalFC.visible){
-            r.currentCal=cal2
-        }
-        if(r.currentCal){
-            var ayer = r.currentCal.selectedDate;
-            ayer.setDate(ayer.getDate() - 1);
-            //r.currentCal.hide=true
-            r.currentCal.setTextInput=false
-            r.currentCal.selectedDate=ayer
-            //r.currentCal.hide=false
-        }
+        var fecha = calendario.selectedDate;
+        fecha.setDate(fecha.getDate() - 1);
+        calendario.setTextInput=false
+        calendario.selectedDate=fecha
     }
     function downForm(){
-        if(!itemCalFN.visible&&!itemCalFC.visible){
+        if(calendario.parent===r){
             return
         }
-        if(itemCalFN.visible){
-            r.currentCal=cal1
-        }
-        if(itemCalFC.visible){
-            r.currentCal=cal2
-        }
-        if(r.currentCal){
-            var ayer = r.currentCal.selectedDate;
-            ayer.setDate(ayer.getDate() + 1);
-            r.currentCal.setTextInput=false
-            r.currentCal.selectedDate=ayer
-        }
+        var fecha = calendario.selectedDate;
+        fecha.setDate(fecha.getDate() + 1);
+        calendario.setTextInput=false
+        calendario.selectedDate=fecha
     }
     function rightForm(){
-        if(!itemCalFN.visible&&!itemCalFC.visible){
+        if(calendario.parent===r){
             return
         }
-        if(itemCalFN.visible){
-            r.currentCal=cal1
-        }
-        if(itemCalFC.visible){
-            r.currentCal=cal2
-        }
-        if(r.currentCal){
-            var ahora = r.currentCal.selectedDate;
-            ahora.setMonth(ahora.getMonth() + 1);
-            r.currentCal.setTextInput=false
-            r.currentCal.selectedDate=ahora
-        }
+        var fecha = calendario.selectedDate;
+        fecha.setMonth(fecha.getMonth() + 1);
+        calendario.setTextInput=false
+        calendario.selectedDate=fecha
     }
     function leftForm(){
         if(botReg.focus){
             botClear.focus=true
             return
         }
-        if(!itemCalFN.visible&&!itemCalFC.visible){
+        if(calendario.parent===r){
             return
         }
-        if(itemCalFN.visible){
-            r.currentCal=cal1
-        }
-        if(itemCalFC.visible){
-            r.currentCal=cal2
-        }
-        if(r.currentCal){
-            var ahora = r.currentCal.selectedDate;
-            ahora.setMonth(ahora.getMonth() - 1);
-            r.currentCal.setTextInput=false
-            r.currentCal.selectedDate=ahora
-            r.dateForOpenFN=cal1.selectedDate
-            r.dateForOpenFC=cal2.selectedDate
-        }
+        var fecha = calendario.selectedDate;
+        fecha.setMonth(fecha.getMonth() - 1);
+        calendario.setTextInput=false
+        calendario.selectedDate=fecha
     }
     function shiftRightForm(){
-        if(!itemCalFN.visible&&!itemCalFC.visible){
+        if(calendario.parent===r){
             return
         }
-        if(itemCalFN.visible){
-            r.currentCal=cal1
-        }
-        if(itemCalFC.visible){
-            r.currentCal=cal2
-        }
-        if(r.currentCal){
-            var ahora = r.currentCal.selectedDate;
-            ahora.setYear(ahora.getFullYear() + 1);
-            r.currentCal.setTextInput=false
-            r.currentCal.selectedDate=ahora
-        }
+        var fecha = calendario.selectedDate;
+        fecha.setYear(fecha.getFullYear() + 1);
+        calendario.setTextInput=false
+        calendario.selectedDate=fecha
     }
     function shiftLeftForm(){
-        if(!itemCalFN.visible&&!itemCalFC.visible){
+        if(calendario.parent===r){
             return
         }
-        if(itemCalFN.visible){
-            r.currentCal=cal1
-        }
-        if(itemCalFC.visible){
-            r.currentCal=cal2
-        }
-        if(r.currentCal){
-            var ahora = r.currentCal.selectedDate;
-            ahora.setYear(ahora.getFullYear() - 1);
-            r.currentCal.setTextInput=false
-            r.currentCal.selectedDate=ahora
-        }
+        var fecha = calendario.selectedDate;
+        fecha.setYear(fecha.getFullYear() - 1);
+        calendario.setTextInput=false
+        calendario.selectedDate=fecha
     }
     function enterForm(){
         if(botClear.focus){
@@ -711,51 +682,35 @@ Item {
             botReg.clicked()
             return
         }
-        if(!itemCalFN.visible&&tiFechaNac.focus){
-            //showCal(itemCalFN, 1)
-            //itemCalFN.visible=true
+        if(calendario.parent===r){
             return
         }
-        if(!itemCalFC.visible&&tiFechaCert.focus){
-            //showCal(itemCalFC, 2)
-            //itemCalFC.visible=true
+        let d = calendario.selectedDate
+        let dia=''+d.getDate()
+        if(d.getDate()<10){
+            dia='0'+dia
+        }
+        let mes=''+parseInt(d.getMonth()+1)
+        if(parseInt(d.getMonth()+1)<10){
+            mes='0'+mes
+        }
+        let an=''+d.getFullYear()
+        let s=''+dia+'/'+mes+'/'+an
+        if(calendario.parent===itemCalFN){
+            tiFechaNac.text=s
+            r.dateForOpenFN=new Date(calendario.selectedDate.getTime())
+            calendario.parent=itemCalFC
             return
         }
-        if(r.currentCal){
-            let d = r.currentCal.selectedDate
-            let dia=''+d.getDate()
-            if(d.getDate()<10){
-                dia='0'+dia
-            }
-            let mes=''+parseInt(d.getMonth()+1)
-            if(parseInt(d.getMonth()+1)<10){
-                mes='0'+mes
-            }
-            let an=''+d.getFullYear()
-            let s=''+dia+'/'+mes+'/'+an
-            if(itemCalFN.visible){
-                tiFechaNac.text=s
-                itemCalFN.visible=false
-                return
-            }
-            if(itemCalFC.visible){
-                tiFechaCert.text=s
-                itemCalFC.visible=false
-                botReg.focus=true
-                return
-            }
+        if(calendario.parent===itemCalFC){
+            tiFechaCert.text=s
+            r.dateForOpenFC=new Date(calendario.selectedDate.getTime())
+            calendario.parent=r
+            botReg.focus=true
         }
     }
     function escForm(){
-        if(itemCalFN.visible){
-            tiFechaNac.text=itemCalFN.prevDateString
-            tiNombre.textInput.focus=true
-        }
-        if(itemCalFC.visible){
-            tiFechaCert.text=itemCalFC.prevDateString
-            tiNombre.textInput.focus=true
-        }
-        itemCalFN.visible=false
-        itemCalFC.visible=false
+        calendario.parent=r
+        tiFolio.textInput.focus=true
     }
 }
