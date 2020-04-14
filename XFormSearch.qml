@@ -53,7 +53,7 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             UTextInput{
                 id: tiSearch
-                label: 'Buscar:'
+                label: rbCod.checked?'Buscar Folio:':'Buscar Grado:'
                 width: app.fs*18
                 //                Keys.onDownPressed: {
                 //                    toutFocus.start()
@@ -329,7 +329,9 @@ Item {
                                         }
                                         v7=checked
                                         setBtnDeleteText()
-                                        lv.focus=true
+                                        if(!tiSearch.textInput.focus){
+                                            lv.focus=true
+                                        }
                                         let allSelected=true
                                         for(var i=0;i<lm.count; i++){
                                             if(!lm.get(i).v7){
