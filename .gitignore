@@ -1,0 +1,3 @@
+bds/*
+admins/*.key
+!admins/pass1.key
