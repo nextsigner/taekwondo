@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.0
 import Qt.labs.settings 1.0
+import "func.js" as JS
 
 Item {
     id: r
@@ -13,6 +14,7 @@ Item {
         cbSelectedAll.checked=selectedAll
         if(!cbSelectedAll.setearTodos&&!selectedAll){
             cbSelectedAll.setearTodos=true
+            setBtnDeleteText()
             return
         }
         for(var i=0;i<lm.count; i++){
@@ -53,11 +55,8 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             UTextInput{
                 id: tiSearch
-                label: rbCod.checked?'Buscar Folio:':'Buscar Grado:'
-                width: app.fs*18
-                //                Keys.onDownPressed: {
-                //                    toutFocus.start()
-                //                }
+                label: rbCod.checked?'Buscar Folio:':'Buscar Nombre:'
+                width: app.fs*18            
                 KeyNavigation.down: lv
                 KeyNavigation.tab: lv
                 itemNextFocus: lv
@@ -190,6 +189,7 @@ Item {
                                 //r.selectedAll=checked
                                 if(!setearTodos){
                                     cbSelectedAll.setearTodos=true
+                                    setBtnDeleteText()
                                     return
                                 }
                                 for(var i=0;i<lm.count; i++){
@@ -213,6 +213,7 @@ Item {
                                 for(var i=0;i<lm.count; i++){
                                     lm.get(i).v7=cbSelectedAll.checked
                                 }
+                                setBtnDeleteText()
                             }
                         }
                     }
@@ -348,7 +349,7 @@ Item {
                                                 r.idsSelected.push(parseInt(v1))
                                             }
                                         }else{
-                                            r.idsSelected.pop(parseInt(v1))
+                                            r.idsSelected = JS.removeItemFromArr(r.idsSelected, parseInt(v1))
                                         }
                                         //cant.text=r.idsSelected.toString()
 
@@ -438,6 +439,9 @@ Item {
                         Component.onCompleted: {
                             if(idsSelected.indexOf(parseInt(v1))>=0){
                                 xRowDes.selected=true
+                            }else{
+                                cbSelectedAll.setearTodos=false
+                                cbSelectedAll.checked=false
                             }
                         }
                     }
@@ -498,6 +502,8 @@ Item {
         //console.log('Sql count result: '+rows.length)
         cant.text='Resultados: '+rows.length
         if(r.idsSelected.length===0||!cbSelToTop.checked){
+            //cbSelectedAll.setearTodos=false
+            //cbSelectedAll.checked=false
             for(i=0;i<rows.length;i++){
                 lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[2], rows[i].col[3], rows[i].col[4], rows[i].col[5]))
             }

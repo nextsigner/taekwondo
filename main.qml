@@ -78,6 +78,7 @@ ApplicationWindow {
     Item{
         id: xApp
         anchors.fill: parent
+        enabled: false
         Column{
             anchors.fill: parent
             spacing: app.fs
@@ -87,21 +88,21 @@ ApplicationWindow {
                 id: xForms
                 width: parent.width
                 height: xApp.height-xMenu.height-app.fs*2.25
-                XInicio{visible: app.mod===0}
+                XInicio{visible: app.mod===0&&!xLogin.visible}
                 XFormInsert{
                     id: xFormInsert
                     numMod: 1
-                    visible: app.mod===numMod
+                    visible: app.mod===numMod&&!xLogin.visible
                     tableName: app.tableName1
                     cols: app.colsAlumnos
                 }
                 XFormSearch{
                     id: xFormSearch
-                    visible: app.mod===2
+                    visible: app.mod===2&&!xLogin.visible
                     currentTableName: xFormInsert.tableName
                 }
-                XConfig{visible: app.mod===3}
-                XLogin{id: xLogin; visible: false}
+                XConfig{id:xConfig; visible: app.mod===3&&!xLogin.visible}
+                XLogin{id: xLogin;}
             }
         }
         ULogView{id:uLogView}
@@ -232,6 +233,10 @@ ApplicationWindow {
         }
     }
     Component.onCompleted: {
+        let code='import QtQuick 2.0\nItem{\nComponent.onCompleted:{\nparent.enabled=true;\n}\n}\n'
+        let comp=Qt.createQmlObject(code, xApp, 'code')
+        //unik.setFile(unik.encData(code, 'au90dsa', 'ap25xgd'), '')
+        //let obj=comp.createObject
         if(apps.value("umod", -1)===-1){
             apps.setValue("umod", 0)
             //uLogView.showLog('Negativo: '+apps.value("umod", -2))

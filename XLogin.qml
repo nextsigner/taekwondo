@@ -4,6 +4,12 @@ Rectangle {
     id: r
     anchors.fill: parent
     color: app.c1
+    enabled: false
+    onVisibleChanged: {
+        if(visible){
+            tiAdmin.textInput.focus=true
+        }
+    }
     Column{
         spacing: app.fs*0.5
         anchors.centerIn: parent
@@ -75,8 +81,18 @@ Rectangle {
             font.pixelSize: app.fs*2
         }
     }
+    Timer{
+        running: true
+        repeat: false
+        interval: 2000
+        onTriggered: {
+            //r.enabled=true
+            tiAdmin.focus=true
+            tiAdmin.textInput.focus=true
+        }
+    }
     Component.onCompleted: {
-        tiAdmin.focus=true
+        tiAdmin.textInput.focus=true
     }
     function login(){
         let claveDec=unik.decData(unik.getFile('pass'), 'axf5d', 'adgd5a')

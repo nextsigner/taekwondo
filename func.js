@@ -41,3 +41,9 @@ function setFolders(){
     //apps.bdFileName=''
     //apps.bdFileName=unik.currentFolderPath()+'/bds/p.sqlite'
 }
+
+function removeItemFromArr(arr, item){
+    var i = arr.indexOf( item );
+    arr.splice( i, 1 );
+    return arr;
+}

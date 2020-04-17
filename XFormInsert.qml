@@ -11,7 +11,7 @@ Item {
     property string tableName: ''
     property string uCodInserted: ''
     property var cols: []
-    property bool calsVisible: itemCalFN.visible||itemCalFC.visible
+    property bool calsVisible: calendario.parent!==r
     property var currentCalFN
     property var currentCalFC
     property var uDateFNSelected
@@ -385,6 +385,7 @@ Item {
                 color: styleData.selected ? app.c2 : (styleData.visibleMonth && styleData.valid ? "#111" : "#666");
                 Label {
                     text: styleData.date.getDate()
+                    font.pixelSize: app.fs
                     anchors.centerIn: parent
                     color: styleData.valid ? (styleData.selected ?app.c1:app.c2) : app.c4
                 }
@@ -402,7 +403,7 @@ Item {
                 }
                 MouseArea{
                     anchors.fill: parent
-                    onDoubleClicked: {
+                    onClicked: {
                         calendario.setTextInput=true
                         calendario.selectedDate=styleData.date
                         if(calendario.parent===itemCalFN){
@@ -449,8 +450,6 @@ Item {
             z: calendario.z-1
         }
     }
-
-
     Component.onCompleted: {
         tiFolio.focus=true
         r.dateForOpenFN=new Date(Date.now())
@@ -472,6 +471,7 @@ Item {
         return rows.length
     }
     function insert(){
+        uLogView.text=''
         if(tiFolio.text===''||tiGrado.text===''||tiNombre.text===''||tiFechaNac.text===''||tiFechaCert.text===''){
             uLogView.showLog('Error!\nNo se han introducido todos los datos requeridos.\nPara registrar este alumno es necesario completar el formulario en su totalidad.')
             if(tiFolio.text===''){
@@ -489,6 +489,7 @@ Item {
             if(tiFechaCert.text===''){
                 uLogView.showLog('Faltan los datos de fecha de certificado.')
             }
+            uLogView.showLog('Presionar Escape para cerrar estas panel de advertencias.')
             return
         }
         if(r.tableName===''){
@@ -527,6 +528,7 @@ Item {
         //uLogView.showLog('Registro Insertado: '+insertado)
     }
     function modify(){
+        uLogView.text=''
         if(tiFolio.text===''||tiGrado.text===''||tiNombre.text===''||tiFechaNac.text===''||tiFechaCert.text===''){
             uLogView.showLog('Error!\nNo se han introducido todos los datos requeridos.\nPara registrar este alumno es necesario completar el formulario en su totalidad.')
             if(tiFolio.text===''){
@@ -544,6 +546,7 @@ Item {
             if(tiFechaCert.text===''){
                 uLogView.showLog('Faltan los datos de fecha de certificado.')
             }
+            uLogView.showLog('Presionar Escape para cerrar estas panel de advertencias.')
             return
         }
         if(r.tableName===''){
