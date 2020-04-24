@@ -106,12 +106,12 @@ ApplicationWindow {
                 }
                 XFormInsertCert{
                     id: xFormInsertCert
-                    numMod: 3
+                    numMod: xMenu.arrayMenuNames.length===5?3:-1
                     visible: app.mod===numMod&&!xLogin.visible
                     tableName: app.tableName2
                     cols: app.colsCertificados
                 }
-                XConfig{id:xConfig; visible: app.mod===4&&!xLogin.visible}
+                XConfig{id:xConfig; visible: xFormInsertCert.numMod===3?app.mod===4:app.mod===3&&!xLogin.visible}
                 XLogin{id: xLogin;
                     //visible: false
                 }
