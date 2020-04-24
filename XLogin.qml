@@ -18,9 +18,21 @@ Rectangle {
             font.pixelSize: app.fs*2
             anchors.horizontalCenter: parent.horizontalCenter
         }
-        Item{width: 1;height: app.fs*2}
         Column{
             spacing: app.fs
+            Rectangle{
+                width: app.fs*12
+                height: width
+                radius: width*0.5
+                clip: true
+                anchors.horizontalCenter: parent.horizontalCenter
+                Image{
+                    width: parent.width*0.7
+                    height: width
+                    source: './img/admin_icon.png'
+                    anchors.centerIn: parent
+                }
+            }
             Row{
                 anchors.right: parent.right
                 spacing: app.fs
@@ -51,6 +63,7 @@ Rectangle {
                 }
                 UTextInput{
                     id: tiContrasenia
+                    textInput.echoMode: TextInput.Password
                     label: ''
                     fontSize: app.fs*2
                     width: app.fs*20
@@ -86,7 +99,7 @@ Rectangle {
         repeat: false
         interval: 2000
         onTriggered: {
-            //r.enabled=true
+            r.enabled=true
             tiAdmin.focus=true
             tiAdmin.textInput.focus=true
         }
@@ -95,7 +108,28 @@ Rectangle {
         tiAdmin.textInput.focus=true
     }
     function login(){
-        let claveDec=unik.decData(unik.getFile('pass'), 'axf5d', 'adgd5a')
+        let eu=false
+        let nf=-1
+        for(let i=1;i<100;i++){
+            if(!unik.fileExist('./admins/pass'+i+'.key')){
+                //continue
+            }else{
+                let ad=''+unik.decData(unik.getFile('./admins/pass'+i+'.key'), 'axf5d', 'adgd5a')
+                let mad=ad.split('|')
+                if(mad.length===2){
+                    if(tiAdmin.text===''+mad[0]){
+                        nf=i
+                        eu=true
+                        break
+                    }
+                }
+            }
+        }
+        if(!eu){
+            status.text='Administrador o contraseña incorrecta.'
+            return
+        }
+        let claveDec=unik.decData(unik.getFile('./admins/pass'+nf+'.key'), 'axf5d', 'adgd5a')
         let clave=tiAdmin.text+'|'+tiContrasenia.text
         if(clave===claveDec){
             r.visible=false

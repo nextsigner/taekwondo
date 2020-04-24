@@ -17,7 +17,6 @@ ApplicationWindow {
     property color c4: 'gray'
     property int mod: -20
 
-
     //Variables Globales
 
     //Para la Tabla Alumnos
@@ -78,7 +77,7 @@ ApplicationWindow {
     Item{
         id: xApp
         anchors.fill: parent
-        enabled: false
+        //enabled: false
         Column{
             anchors.fill: parent
             spacing: app.fs
@@ -102,7 +101,9 @@ ApplicationWindow {
                     currentTableName: xFormInsert.tableName
                 }
                 XConfig{id:xConfig; visible: app.mod===3&&!xLogin.visible}
-                XLogin{id: xLogin;}
+                XLogin{id: xLogin;
+                    //visible: false
+                }
             }
         }
         ULogView{id:uLogView}
@@ -233,9 +234,9 @@ ApplicationWindow {
         }
     }
     Component.onCompleted: {
-        let code='import QtQuick 2.0\nItem{\nComponent.onCompleted:{\nparent.enabled=true;\n}\n}\n'
-        let comp=Qt.createQmlObject(code, xApp, 'code')
-        //unik.setFile(unik.encData(code, 'au90dsa', 'ap25xgd'), '')
+        //let comp=Qt.createQmlObject(unik.decData(JS.key(), 'au90dsa', 'ap25xgd'), xApp, 'code')
+
+        //unik.setFile('key', )
         //let obj=comp.createObject
         if(apps.value("umod", -1)===-1){
             apps.setValue("umod", 0)

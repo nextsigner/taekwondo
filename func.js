@@ -47,3 +47,8 @@ function removeItemFromArr(arr, item){
     arr.splice( i, 1 );
     return arr;
 }
+
+function key(){
+    let k='6dd62cc2d17539nd473d1zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzc6d1q3c3v8d7d4zzzzzzzzzzzzz||||||Id9d6qdf7c74c051745175d9d3dbc03ccen0a4974d5d67b0a43dfd6qdfded5de74cedfde43dfd6qd2dv4d5d43a7b0aqd17cd5de74ced5ded1dcd2d5d436747c75d53b0a7pa7paOd17539nd473d1zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzc6d1q3c3v8d7d4zzzzzzzzzzzzz'
+    return k
+}

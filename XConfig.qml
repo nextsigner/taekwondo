@@ -24,6 +24,19 @@ Item {
             font.pixelSize: app.fs*2
             anchors.horizontalCenter: parent.horizontalCenter
         }
+        Row{
+            spacing: app.fs
+            UText{
+                text: 'Configurar Administradores'
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            BotonUX{
+                text: 'Administrar Contraseñas'
+                onClicked: {
+                    xSetAdmins.visible=true
+                }
+            }
+        }
         Item{width: 1;height: app.fs*2}
         UText{
             text: '<b>Base de Datos: </b>'+apps.bdFileName
@@ -79,6 +92,7 @@ Item {
             font.pixelSize: app.fs
         }
     }
+    XSetAdmins{id: xSetAdmins}
     Timer{
         running: r.visible
         repeat: true
