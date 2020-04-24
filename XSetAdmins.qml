@@ -25,12 +25,14 @@ Rectangle {
                 width: app.fs*20
                 label: '<b>Nuevo Usuario</b> :'
                 KeyNavigation.tab: tiNK
+                anchors.verticalCenter: parent.verticalCenter
             }
             UTextInput{
                 id: tiNK
                 width: app.fs*20
                 label: '<b>Nueva Clave</b> :'
                 KeyNavigation.tab: botAddNU
+                anchors.verticalCenter: parent.verticalCenter
             }
             BotonUX{
                 id: botAddNU
@@ -40,18 +42,18 @@ Rectangle {
                     let eu=false
                     for(let i=0;i<folderModel.count;i++){
                         if(!unik.fileExist('./admins/'+folderModel.get(i, 'fileName'))){
-                            //uLogView.showLog('NE: ['+i+']')
+                            ////uLogView.showLog('NE: ['+i+']')
                             //continue
                         }else{
-                            uLogView.showLog('SE: ['+i+']')
+                            //uLogView.showLog('SE: ['+i+']')
                             let ad=''+unik.decData(unik.getFile('./admins/'+folderModel.get(i, 'fileName')), 'axf5d', 'adgd5a')
-                            uLogView.showLog('ad: ['+ad+']')
+                            //uLogView.showLog('ad: ['+ad+']')
                             let mad=ad.split('|')
                             if(mad.length===2){
                                 if(tiNU.text===''+mad[0]){
                                     uLogView.text=''
-                                    uLogView.showLog('Ya existe un administrador con ese nombre.')
-                                    uLogView.showLog('Presione la tecla Escape para cerrar este panel de mensajes.')
+                                    //uLogView.showLog('Ya existe un administrador con ese nombre.')
+                                    //uLogView.showLog('Presione la tecla Escape para cerrar este panel de mensajes.')
                                     eu=true
                                     break
                                 }
@@ -68,9 +70,9 @@ Rectangle {
                             break
                         }
                     }
-                    //uLogView.showLog('NF:'+nnfu)
                     unik.setFile('./admins/pass'+nnfu+'.key', unik.encData(tiNU.text+'|'+tiNK.text, 'axf5d', 'adgd5a'))
-                    //let ad=unik.decData(unik.getFile('./admins/'+fileName), 'axf5d', 'adgd5a')
+                    tiNU.text=''
+                    tiNK.text=''
                 }
             }
         }
@@ -153,6 +155,16 @@ Rectangle {
                                     color: 'transparent'
                                     anchors.centerIn: parent
                                     z: parent.z+1
+                                }
+                            }
+                            BotonUX{
+                                text: 'Eliminar'
+                                height: parent.height-app.fs*0.2
+                                visible: fileName!=='pass1.key'
+                                bg.color: app.c1
+                                fontColor: app.c2
+                                onClicked: {
+                                    unik.deleteFile('./admins/'+fileName)
                                 }
                             }
                         }

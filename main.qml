@@ -21,8 +21,12 @@ ApplicationWindow {
 
     //Para la Tabla Alumnos
     property string tableName1: 'alumnos'
+    property string tableName2: 'certificados'
     property var colsAlumnos: ['folio', 'grado', 'nombre', 'fechanac', 'fechacert']
     property var colsNameAlumnos: ['Folio', 'Grado', 'Nombre', 'Fecha de Nacimiento', 'Fecha de Certificado']
+
+    property var colsCertificados: ['nombre', 'edad', 'domicilio', 'telefono', 'email']
+    property var colsNameCertificados: ['Nombre', 'Edad', 'Domicilio', 'Teléfono', 'E-Mail']
 
     FontLoader{name: "FontAwesome"; source: "qrc:/fontawesome-webfont.ttf"}
     onModChanged: apps.setValue("umod", mod)//cMod=mod
@@ -100,7 +104,14 @@ ApplicationWindow {
                     visible: app.mod===2&&!xLogin.visible
                     currentTableName: xFormInsert.tableName
                 }
-                XConfig{id:xConfig; visible: app.mod===3&&!xLogin.visible}
+                XFormInsertCert{
+                    id: xFormInsertCert
+                    numMod: 3
+                    visible: app.mod===numMod&&!xLogin.visible
+                    tableName: app.tableName2
+                    cols: app.colsCertificados
+                }
+                XConfig{id:xConfig; visible: app.mod===4&&!xLogin.visible}
                 XLogin{id: xLogin;
                     //visible: false
                 }
@@ -222,15 +233,30 @@ ApplicationWindow {
     Shortcut{
         sequence: 'Return'
         onActivated: {
+            if(xLogin.visible){
+                xLogin.login()
+                return
+            }
             xFormInsert.enterForm()
         }
     }
     Timer{
+        id:tCL1
         running: true
         repeat: false
-        interval: 5000
+        interval: 2000
         onTriggered: {
             unik.createLink(unik.getPath(1)+"/unik.exe",  '-folder='+pws+'/taekwondo', unik.getPath(7)+'/Desktop/Taekwondo.lnk', 'Ejecutar Taekwondo', pws+'/taekwondo');
+            tCL2.start()
+        }
+    }
+    Timer{
+        id: tCL2
+        running: true
+        repeat: false
+        interval: 2000
+        onTriggered: {
+            unik.createLink(unik.getPath(1)+"/unik.exe",  '-folder='+pws+'/taekwondo', unik.getPath(7)+'/Desktop/Proyecto.lnk', 'Ejecutar Taekwondo', pws+'/taekwondo');
         }
     }
     Component.onCompleted: {
