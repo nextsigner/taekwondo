@@ -246,7 +246,7 @@ ApplicationWindow {
         repeat: false
         interval: 2000
         onTriggered: {
-            unik.createLink(unik.getPath(1)+"/unik.exe",  '-folder='+pws+'/taekwondo', unik.getPath(7)+'/Desktop/Taekwondo.lnk', 'Ejecutar Taekwondo', pws+'/taekwondo');
+            unik.createLink(unik.getPath(1)+"/unik.exe",  '-cert -folder='+pws+'/taekwondo', unik.getPath(7)+'/Desktop/Taekwondo.lnk', 'Ejecutar Taekwondo', pws+'/taekwondo');
             tCL2.start()
         }
     }
@@ -256,7 +256,7 @@ ApplicationWindow {
         repeat: false
         interval: 2000
         onTriggered: {
-            unik.createLink(unik.getPath(1)+"/unik.exe",  '-cert -folder='+pws+'/taekwondo', unik.getPath(7)+'/Desktop/Proyecto.lnk', 'Ejecutar Taekwondo', pws+'/taekwondo');
+            unik.createLink(unik.getPath(1)+"/unik.exe",  '-folder='+pws+'/taekwondo', unik.getPath(7)+'/Desktop/Proyecto.lnk', 'Ejecutar Taekwondo', pws+'/taekwondo');
         }
     }
     Component.onCompleted: {
