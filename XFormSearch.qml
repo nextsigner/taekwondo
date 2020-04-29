@@ -124,8 +124,8 @@ Item {
             UText{text: '<b>Ordenar por:</b>';anchors.verticalCenter: parent.verticalCenter}
             ComboBox{
                 id: cbPor
-                model: app.colsNameAlumnos
-                currentIndex: app.colsNameAlumnos.indexOf(usFormSearch.searchBy)
+                model: app.colsNameCertificados
+                currentIndex: app.colsNameCertificados.indexOf(usFormSearch.searchBy)
                 anchors.verticalCenter: parent.verticalCenter
                 onCurrentTextChanged:{
                     usFormSearch.searchBy=currentText
@@ -218,7 +218,7 @@ Item {
                         }
                     }
                     Repeater{
-                        model: app.colsNameAlumnos
+                        model: app.colsNameCertificados
                         Rectangle{
                             width: xRowTitDes.width*xRowTitDes.anchos[index+1]
                             height:xRowTitDes.height
@@ -226,7 +226,7 @@ Item {
                             border.color: app.c4
                             color: app.c2
                             UText{
-                                text: '<b>'+(''+app.colsNameAlumnos[index]).replace(/ /g, '<br />')+'</b>'
+                                text: '<b>'+(''+app.colsNameCertificados[index]).replace(/ /g, '<br />')+'</b>'
                                 anchors.centerIn: parent
                                 color: app.c1//xRowTitDes.fontColor
                                 horizontalAlignment: Text.AlignHCenter
@@ -391,7 +391,7 @@ Item {
                                 }
                             }
                             Repeater{
-                                model: app.colsNameAlumnos
+                                model: app.colsNameCertificados
                                 Rectangle{
                                     width: xRowDes.width*xRowTitDes.anchos[index+1]
                                     height:xRowDes.height
@@ -479,7 +479,7 @@ Item {
         if(usFormSearch.orderBy===''){
             sOrderByAndAsc+='id desc'
         }else{
-            sOrderByAndAsc+=app.colsAlumnos[cbPor.currentIndex]+' '+ascDesc
+            sOrderByAndAsc+=app.colsCertificados[cbPor.currentIndex]+' '+ascDesc
         }
 
         //lm.append(lm.addDato('-10', tiSearch.text, '', '','',''))

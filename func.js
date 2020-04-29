@@ -19,11 +19,21 @@ function setBd() {
     let sql='CREATE TABLE IF NOT EXISTS '+app.tableName1
         +'('
         +'id INTEGER PRIMARY KEY AUTOINCREMENT,'
-        +app.colsAlumnos[0]+' TEXT NOT NULL,'
-        +app.colsAlumnos[1]+' TEXT NOT NULL,'
-        +app.colsAlumnos[2]+' TEXT NOT NULL,'
-        +app.colsAlumnos[3]+' NUMERIC NOT NULL,'
-        +app.colsAlumnos[4]+' NUMERIC NOT NULL'
+        +app.colsCertificados[0]+' TEXT NOT NULL,'
+        +app.colsCertificados[1]+' TEXT NOT NULL,'
+        +app.colsCertificados[2]+' TEXT NOT NULL,'
+        +app.colsCertificados[3]+' NUMERIC NOT NULL,'
+        +app.colsCertificados[4]+' NUMERIC NOT NULL'
+        +')'
+    unik.sqlQuery(sql)
+    sql='CREATE TABLE IF NOT EXISTS '+app.tableName2
+        +'('
+        +'id INTEGER PRIMARY KEY AUTOINCREMENT,'
+        +app.colsDatosAlumnos[0]+' NUMERICO NOT NULL,'
+        +app.colsDatosAlumnos[1]+' TEXT NOT NULL,'
+        +app.colsDatosAlumnos[2]+' TEXT NOT NULL,'
+        +app.colsDatosAlumnos[3]+' TEXT  NOT NULL,'
+        +app.colsDatosAlumnos[4]+' TEXT  NOT NULL'
         +')'
     unik.sqlQuery(sql)
     //console.log('Ejecutado: '+ejecutado)

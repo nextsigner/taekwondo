@@ -20,13 +20,13 @@ ApplicationWindow {
     //Variables Globales
 
     //Para la Tabla Alumnos
-    property string tableName1: 'alumnos'
-    property string tableName2: 'certificados'
-    property var colsAlumnos: ['folio', 'grado', 'nombre', 'fechanac', 'fechacert']
-    property var colsNameAlumnos: ['Folio', 'Grado', 'Nombre', 'Fecha de Nacimiento', 'Fecha de Certificado']
+    property string tableName1: 'certificados'
+    property string tableName2: 'alumnos'
+    property var colsCertificados: ['folio', 'grado', 'nombre', 'fechanac', 'fechacert']
+    property var colsNameCertificados: ['Folio', 'Grado', 'Nombre', 'Fecha de Nacimiento', 'Fecha de Certificado']
 
-    property var colsCertificados: ['nombre', 'edad', 'domicilio', 'telefono', 'email']
-    property var colsNameCertificados: ['Nombre', 'Edad', 'Domicilio', 'Teléfono', 'E-Mail']
+    property var colsDatosAlumnos: ['idalumno', 'edad', 'domicilio', 'telefono', 'email']
+    property var colsNameDatosAlumnos: ['Nombre', 'Edad', 'Domicilio', 'Teléfono', 'E-Mail']
 
     FontLoader{name: "FontAwesome"; source: "qrc:/fontawesome-webfont.ttf"}
     onModChanged: apps.setValue("umod", mod)//cMod=mod
@@ -97,23 +97,23 @@ ApplicationWindow {
                     numMod: 1
                     visible: app.mod===numMod&&!xLogin.visible
                     tableName: app.tableName1
-                    cols: app.colsAlumnos
+                    cols: app.colsCertificados
                 }
                 XFormSearch{
                     id: xFormSearch
                     visible: app.mod===2&&!xLogin.visible
                     currentTableName: xFormInsert.tableName
                 }
-                XFormInsertCert{
-                    id: xFormInsertCert
-                    numMod: xMenu.arrayMenuNames.length===5?3:-1
+                XFormInsertDatosAl{
+                    id: xFormInsertDatosAl
+                    numMod: 3//xMenu.arrayMenuNames.length===5?3:-1
                     visible: app.mod===numMod&&!xLogin.visible
                     tableName: app.tableName2
-                    cols: app.colsCertificados
+                    cols: app.colsDatosAlumnos
                 }
-                XConfig{id:xConfig; visible: xFormInsertCert.numMod===3?app.mod===4:app.mod===3&&!xLogin.visible}
+                XConfig{id:xConfig; visible: app.mod===5&&!xLogin.visible}
                 XLogin{id: xLogin;
-                    //visible: false
+                   visible: false
                 }
             }
         }
