@@ -9,6 +9,7 @@ Column{
     height: app.fs*20
     visible: lm.count>0
     property alias listModel: lm
+    signal idSelected(int id)
     Item{
         width: lv.width
         height: app.fs*4-app.fs*0.25
@@ -35,17 +36,19 @@ Column{
                             //r.selectedAll=checked
                             if(!setearTodos){
                                 cbSelectedAll.setearTodos=true
-                                setBtnDeleteText()
+                                //setBtnDeleteText()
                                 return
                             }
                             for(var i=0;i<lm.count; i++){
                                 lm.get(i).v7=checked
                             }
-                            setBtnDeleteText()
+                            //setBtnDeleteText()
                         }
                     }
                     MouseArea{
                         anchors.fill: parent
+                        enabled: false
+                        opacity: 0.0
                         onClicked: {
                             cbSelectedAll.checked=!cbSelectedAll.checked
                             r.idsSelected=[]
@@ -59,7 +62,7 @@ Column{
                             for(var i=0;i<lm.count; i++){
                                 lm.get(i).v7=cbSelectedAll.checked
                             }
-                            setBtnDeleteText()
+                            //setBtnDeleteText()
                         }
                     }
                 }
@@ -170,33 +173,31 @@ Column{
                                 anchors.centerIn: parent
                                 onCheckedChanged: {
                                     if(!checked){
-                                        cbSelectedAll.setearTodos=false
-                                        cbSelectedAll.checked=false
+                                       // cbSelectedAll.setearTodos=false
+                                        //cbSelectedAll.checked=false
                                         //r.selectedAll=false
                                     }
-                                    v7=checked
-                                    setBtnDeleteText()
-                                    if(!tiSearch.textInput.focus){
-                                        lv.focus=true
-                                    }
+                                    idSelected(v1)
+                                    //setBtnDeleteText()
+//                                    if(!tiSearch.textInput.focus){
+//                                        lv.focus=true
+//                                    }
                                     let allSelected=true
                                     for(var i=0;i<lm.count; i++){
-                                        if(!lm.get(i).v7){
-                                            allSelected=false
-                                            break
-                                        }
+                                        lm.get(i).v7=false
                                     }
-                                    if(allSelected){
-                                        cbSelectedAll.setearTodos=false
-                                        cbSelectedAll.checked=allSelected
-                                    }
-                                    if(checked){
-                                        if(r.idsSelected.indexOf(parseInt(v1))<0){
-                                            r.idsSelected.push(parseInt(v1))
-                                        }
-                                    }else{
-                                        r.idsSelected = JS.removeItemFromArr(r.idsSelected, parseInt(v1))
-                                    }
+                                    v7=checked
+//                                    if(allSelected){
+//                                        cbSelectedAll.setearTodos=false
+//                                        cbSelectedAll.checked=allSelected
+//                                    }
+//                                    if(checked){
+//                                        if(r.idsSelected.indexOf(parseInt(v1))<0){
+//                                            r.idsSelected.push(parseInt(v1))
+//                                        }
+//                                    }else{
+//                                        r.idsSelected = JS.removeItemFromArr(r.idsSelected, parseInt(v1))
+//                                    }
                                     //cant.text=r.idsSelected.toString()
 
                                 }
@@ -211,14 +212,14 @@ Column{
                                     anchors.fill: parent
                                     onDoubleClicked: {
                                         lv.currentIndex=index
-                                        setBtnDeleteText()
+                                        //setBtnDeleteText()
                                     }
                                     onClicked: {
                                         cbRow.checked=!cbRow.checked
-                                        if(cbSelToTop.checked){
-                                            search()
-                                        }
-                                        setBtnDeleteText()
+//                                        if(cbSelToTop.checked){
+//                                            search()
+//                                        }
+                                        //setBtnDeleteText()
                                     }
                                 }
                                 Rectangle{
@@ -252,24 +253,6 @@ Column{
                                     color: xRowDes.fontColor
                                     horizontalAlignment: Text.AlignHCenter
                                     //color: index===3||index===4?'red':'blue'
-                                    visible: false
-                                    Component.onCompleted: {
-                                        if(index===3||index===4){
-                                            let d=new Date(parseInt(xRowDes.arrayModeloDatos[index]))
-                                            let dia=''+d.getDate()
-                                            if(d.getDate()<10){
-                                                dia='0'+dia
-                                            }
-                                            let mes=''+parseInt(d.getMonth()+1)
-                                            if(d.getMonth()+1<10){
-                                                mes='0'+mes
-                                            }
-                                            let an=''+d.getFullYear()
-                                            let s=''+dia+'/'+mes+'/'+an
-                                            text=s
-                                        }
-                                        visible=true
-                                    }
                                 }
                             }
                         }

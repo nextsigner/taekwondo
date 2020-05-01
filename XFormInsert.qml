@@ -20,6 +20,10 @@ Item {
     property var uMinDate
     property var dateForOpenFN
     property var dateForOpenFC
+
+
+    property int cIdAlumno: -1
+
     onVisibleChanged: {
         if(visible){
             updateGui()
@@ -56,14 +60,37 @@ Item {
                 }
             }
             onSeted: {
+                r.cIdAlumno=-1
                 loadList()
             }
         }
-        XListViewAl{id: xListViewAl}
+        XListViewAl{
+            id: xListViewAl
+            onIdSelected: {
+                //uLogView.showLog('ID:' + id)
+                r.cIdAlumno=id
+            }
+        }
+        BotonUX{
+            id: botCC
+            text: 'Crear Certificado'
+            height: app.fs*2
+            KeyNavigation.tab: botReg
+            visible: xListViewAl.listModel.count>0&&!colDatosCertificado.visible
+            anchors.right: parent.right
+            onClicked: {
+                if(r.cIdAlumno>=0){
+                    xListViewAl.visible=false
+                    colDatosCertificado.visible=true
+                }
+            }
+            UnikFocus{}
+        }
         Column{
             id: colDatosCertificado
             spacing: app.fs*0.5
             visible: false
+            anchors.horizontalCenter: parent.horizontalCenter
             Row{
                 spacing: app.fs
                 UTextInput{
@@ -466,9 +493,9 @@ Item {
         r.dateForOpenFC=new Date(Date.now())
     }
     function loadList(){
-        let sql = 'select * from '+xFormInsertDatosAl.tableName+' where nombre=\''+tiNombre.text+'\''
+        let sql = 'select * from '+xFormInsertDatosAl.tableName+' where nombre like \'%'+tiNombre.text+'%\''
         let rows=unik.getSqlData(sql)
-        uLogView.showLog('rows: '+sql)
+        //uLogView.showLog('rows: '+sql)
         if(rows.length>0){
             for(var i=0;i<rows.length;i++){
                 xListViewAl.listModel.append(xListViewAl.listModel.addDato(rows[i].col[0],rows[i].col[1],rows[i].col[2],rows[i].col[3], rows[i].col[4], rows[i].col[5]))
@@ -538,7 +565,8 @@ Item {
                 '\''+tiGrado.text+'\','+
                 '\''+tiNombre.text+'\','+
                 ''+dateFN.getTime()+','+
-                '\''+dateFC.getTime()+'\''+
+                ''+dateFC.getTime()+','+
+                ''+r.cIdAlumno+''+
                 ')'
         let insertado = unik.sqlQuery(sql)
         if(insertado){

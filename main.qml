@@ -22,7 +22,7 @@ ApplicationWindow {
     //Para la Tabla Alumnos
     property string tableName1: 'certificados'
     property string tableName2: 'alumnos'
-    property var colsCertificados: ['folio', 'grado', 'nombre', 'fechanac', 'fechacert']
+    property var colsCertificados: ['folio', 'grado', 'nombre', 'fechanac', 'fechacert', 'idalumno']
     property var colsNameCertificados: ['Folio', 'Grado', 'Nombre', 'Fecha de Nacimiento', 'Fecha de Certificado']
 
     property var colsDatosAlumnos: ['nombre', 'edad', 'domicilio', 'telefono', 'email']

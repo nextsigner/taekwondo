@@ -23,7 +23,8 @@ function setBd() {
         +app.colsCertificados[1]+' TEXT NOT NULL,'
         +app.colsCertificados[2]+' TEXT NOT NULL,'
         +app.colsCertificados[3]+' NUMERIC NOT NULL,'
-        +app.colsCertificados[4]+' NUMERIC NOT NULL'
+    +app.colsCertificados[4]+' NUMERIC NOT NULL,'
+        +app.colsCertificados[5]+' NUMERIC NOT NULL'
         +')'
     unik.sqlQuery(sql)
     sql='CREATE TABLE IF NOT EXISTS '+app.tableName2
