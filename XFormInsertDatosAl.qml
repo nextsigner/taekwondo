@@ -36,79 +36,73 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
         }
         Item{width: 1;height: app.fs*2}
-        UTextInput{
-            id: tiNombre
-            label: 'Buscar Nombre: '
-            width: r.width*0.5+app.fs
-            maximumLength: 50
-            //regularExp: RegExpValidator{regExp: /^\d+(\.\d{1,2})?$/ }
-            KeyNavigation.tab: tiDomicilio
-            onTextChanged: {
-                let sql = 'select * from '+xFormInsert.tableName+' where nombre=\''+tiNombre.text+'\''
-                let rows=unik.getSqlData(sql)
-                uLogView.showLog('rows: '+sql)
-                if(rows.length>0){
-                    r.currentIdAlumno=rows[0].col[0]
-                    tiDomicilio.text=rows[0].col[1]
-                    tiEdad.text=rows[0].col[2]
-                    tiTel.text=rows[0].col[3]
-                    tiEMail.text=rows[0].col[4]
-                    r.modificando=true
-                }
-            }
-            textInput.onFocusChanged: {
-                if(textInput.focus){
-                    textInput.selectAll()
-                }
-            }
-        }
-        UText{
-            text:  !r.modificando?'<b>Información</b>':'<b>Modificando Registro de Alumno</b>'
-            font.pixelSize: app.fs
-            anchors.horizontalCenter: parent.horizontalCenter
-        }
-        UTextInput{
-            id: tiDomicilio
-            label: 'Domicilio: '
-            width: tiNombre.width
-            maximumLength: 10
-            textInput.clip: false
-            KeyNavigation.tab: tiEdad
-        }
-        Row{
-            z:labelCount.z+100
+        Column{
+            id:colFormInsertDatoAl
+            //visible: false
             spacing: app.fs*0.5
-            UTextInput{
-                id: tiEdad
-                label: 'Edad: '
-                width: tiNombre.width*0.5-app.fs*0.25
-                maximumLength: 10
-                textInput.clip: false
-                KeyNavigation.tab: tiTel
+            UText{
+                text:  !r.modificando?'<b>Información</b>':'<b>Modificando Registro de Alumno</b>'
+                font.pixelSize: app.fs
+                anchors.horizontalCenter: parent.horizontalCenter
             }
             UTextInput{
-                id: tiTel
-                label: 'Teléfono: '
-                width: tiNombre.width*0.5-app.fs*0.25
-                maximumLength: 10
-                textInput.clip: false
-                KeyNavigation.tab: tiEMail
+                id: tiNombre
+                label: 'Nombre: '
+                width: r.width*0.5+app.fs
+                maximumLength: 50
+                //regularExp: RegExpValidator{regExp: /^\d+(\.\d{1,2})?$/ }
+                KeyNavigation.tab: tiDomicilio
+                onTextChanged: {
+
+                }
+                textInput.onFocusChanged: {
+                    if(textInput.focus){
+                        textInput.selectAll()
+                    }
+                }
             }
-        }
-        Row{
-            z:labelCount.z+100
-            spacing: app.fs*1.5
             UTextInput{
-                id: tiEMail
-                label: 'E-Mail: '
+                id: tiDomicilio
+                label: 'Domicilio: '
                 width: tiNombre.width
                 maximumLength: 10
                 textInput.clip: false
-                KeyNavigation.tab: botReg
+                KeyNavigation.tab: tiEdad
             }
+            Row{
+                z:labelCount.z+100
+                spacing: app.fs*0.5
+                UTextInput{
+                    id: tiEdad
+                    label: 'Edad: '
+                    width: tiNombre.width*0.5-app.fs*0.25
+                    maximumLength: 10
+                    textInput.clip: false
+                    KeyNavigation.tab: tiTel
+                }
+                UTextInput{
+                    id: tiTel
+                    label: 'Teléfono: '
+                    width: tiNombre.width*0.5-app.fs*0.25
+                    maximumLength: 10
+                    textInput.clip: false
+                    KeyNavigation.tab: tiEMail
+                }
+            }
+            Row{
+                z:labelCount.z+100
+                spacing: app.fs*1.5
+                UTextInput{
+                    id: tiEMail
+                    label: 'E-Mail: '
+                    width: tiNombre.width
+                    maximumLength: 10
+                    textInput.clip: false
+                    KeyNavigation.tab: botReg
+                }
+            }
+            Item{width: 1;height: app.fs*2}
         }
-
-        Item{width: 1;height: app.fs*2}
         UText{
             id: labelCount
             width: r.width*0.5-tiNombre.width-app.fs*2
@@ -157,7 +151,7 @@ Item {
                 height: app.fs*2
                 onClicked: {
                     if(!r.modificando){
-                            insert()
+                        insert()
                     }else{
                         modify()
                         r.modificando=false
@@ -166,7 +160,7 @@ Item {
                 KeyNavigation.tab: tiNombre
                 Keys.onReturnPressed: {
                     if(!r.modificando){
-                            insert()
+                        insert()
                     }else{
                         modify()
                         r.modificando=false
@@ -201,6 +195,19 @@ Item {
         return rows.length
     }
     function insert(){
+        let sql = 'select * from '+xFormInsert.tableName+' where nombre=\''+tiNombre.text+'\''
+        let rows=unik.getSqlData(sql)
+        //uLogView.showLog('rows: '+sql)
+        if(rows.length>0){
+           unik.speak('Ya existe un alumno con este nombre.')
+            /*r.currentIdAlumno=rows[0].col[0]
+            tiDomicilio.text=rows[0].col[1]
+            tiEdad.text=rows[0].col[2]
+            tiTel.text=rows[0].col[3]
+            tiEMail.text=rows[0].col[4]
+            r.modificando=true*/
+            return
+        }
         uLogView.text=''
         if(tiNombre.text===''||tiDomicilio.text===''||tiEdad.text===''||tiTel.text===''||tiEMail.text===''){
             uLogView.showLog('Error!\nNo se han introducido todos los datos requeridos.\nPara registrar los datos de este alumno es necesario completar el formulario en su totalidad.')
@@ -230,14 +237,14 @@ Item {
             uLogView.showLog('Cols is empty!')
             return
         }
-        let sql = 'select '+r.cols[0]+' from '+r.tableName+' where '+r.cols[0]+'=\''+tiNombre.text+'\''
-        let rows = unik.getSqlData(sql)
+        sql = 'select '+r.cols[0]+' from '+r.tableName+' where '+r.cols[0]+'=\''+tiNombre.text+'\''
+        rows = unik.getSqlData(sql)
         if(rows.length>=1){
             uLogView.showLog('Error! No se han podido registrar los datos alumno con este número de folio.\nYa existe un alumno con el folio '+tiFolio.text)
             return
         }
         sql = 'insert into '+r.tableName+'('+r.cols+')values('+
-                '\''+r.currentIdAlumno+'\','+
+                '\''+tiNombre.text+'\','+
                 '\''+tiDomicilio.text+'\','+
                 '\''+tiEdad.text+'\','+
                 '\''+tiTel.text+'\','+
@@ -327,18 +334,7 @@ Item {
         labelStatus.text='Formulario limpiado.'
     }
 
-    function showCal(num){
-        //tiFolio.textInput.focus=false
-        //tiGrado.textInput.focus=false
-        //tiNombre.textInput.focus=false
 
-        if(num===1){
-            calendario.parent=itemCalFN
-        }
-        if(num===2){
-            calendario.parent=itemCalFC
-        }
-    }
 
     function upForm(){
         if(calendario.parent===r){
@@ -377,8 +373,6 @@ Item {
         }
         var fecha = calendario.selectedDate;
         fecha.setMonth(fecha.getMonth() - 1);
-        calendario.setTextInput=false
-        calendario.selectedDate=fecha
     }
     function shiftRightForm(){
         if(calendario.parent===r){
@@ -406,32 +400,6 @@ Item {
         if(botReg.focus){
             botReg.clicked()
             return
-        }
-        if(calendario.parent===r){
-            return
-        }
-        let d = calendario.selectedDate
-        let dia=''+d.getDate()
-        if(d.getDate()<10){
-            dia='0'+dia
-        }
-        let mes=''+parseInt(d.getMonth()+1)
-        if(parseInt(d.getMonth()+1)<10){
-            mes='0'+mes
-        }
-        let an=''+d.getFullYear()
-        let s=''+dia+'/'+mes+'/'+an
-        if(calendario.parent===itemCalFN){
-            tiFechaNac.text=s
-            r.dateForOpenFN=new Date(calendario.selectedDate.getTime())
-            calendario.parent=itemCalFC
-            return
-        }
-        if(calendario.parent===itemCalFC){
-            tiFechaCert.text=s
-            r.dateForOpenFC=new Date(calendario.selectedDate.getTime())
-            calendario.parent=r
-            botReg.focus=true
         }
     }
     function escForm(){

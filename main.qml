@@ -25,7 +25,7 @@ ApplicationWindow {
     property var colsCertificados: ['folio', 'grado', 'nombre', 'fechanac', 'fechacert']
     property var colsNameCertificados: ['Folio', 'Grado', 'Nombre', 'Fecha de Nacimiento', 'Fecha de Certificado']
 
-    property var colsDatosAlumnos: ['idalumno', 'edad', 'domicilio', 'telefono', 'email']
+    property var colsDatosAlumnos: ['nombre', 'edad', 'domicilio', 'telefono', 'email']
     property var colsNameDatosAlumnos: ['Nombre', 'Edad', 'Domicilio', 'Teléfono', 'E-Mail']
 
     FontLoader{name: "FontAwesome"; source: "qrc:/fontawesome-webfont.ttf"}
@@ -110,6 +110,11 @@ ApplicationWindow {
                     visible: app.mod===numMod&&!xLogin.visible
                     tableName: app.tableName2
                     cols: app.colsDatosAlumnos
+                }
+                XFormSearchAl{
+                    id: xFormSearchAl
+                    visible: app.mod===4&&!xLogin.visible
+                    currentTableName: xFormInsert.tableName
                 }
                 XConfig{id:xConfig; visible: app.mod===5&&!xLogin.visible}
                 XLogin{id: xLogin;
@@ -237,7 +242,14 @@ ApplicationWindow {
                 xLogin.login()
                 return
             }
-            xFormInsert.enterForm()
+            if(xFormInsert.visible){
+                xFormInsert.enterForm()
+                return
+            }
+            if(xFormInsertDatosAl.visible){
+                xFormInsertDatosAl.enterForm()
+                return
+            }
         }
     }
     Timer{

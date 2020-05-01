@@ -41,58 +41,7 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
         }
         Item{width: 1;height: app.fs*2}
-        Row{
-            spacing: app.fs
-            UTextInput{
-                id: tiFolio
-                label: 'Folio: '
-                width: app.fs*12
-                maximumLength: 10
-                KeyNavigation.tab: tiGrado
-                property string uCodExist: ''
-                textInput.onFocusChanged: {
-                    if(textInput.focus){
-                        calendario.parent=r
-                        textInput.selectAll()
-                    }
-                }
-                onTextChanged: {
-                    if(r.modificando)return
-                    //tCheckCodExist.restart()
-                }
-                Timer{
-                    id: tCheckCodExist
-                    running: false
-                    repeat: false
-                    interval: 3000
-                    onTriggered: {
-                        let ce=r.codExist()
-                        if(tiFolio.text!==r.uCodInserted&&ce&&tiFolio.text!==tiFolio.uCodExist){
-                            let msg='<b>Atención!: </b>El código actual ya existe.'
-                            unik.speak(msg.replace(/<[^>]*>?/gm, ''))
-                            labelStatus.text=msg
-                        }
-                        if(!ce){
-                            r.modificando=false
-                        }
-                        tiFolio.uCodExist=tiFolio.text
-                    }
-                }
-            }
-            UTextInput{
-                id: tiGrado
-                label: 'Grado: '
-                width: r.width*0.5-tiFolio.width//-app.fs*2
-                maximumLength: 250
-                KeyNavigation.tab: tiNombre
-                textInput.onFocusChanged: {
-                    if(textInput.focus){
-                        calendario.parent=r
-                        textInput.selectAll()
-                    }
-                }
-            }
-        }
+
         UTextInput{
             id: tiNombre
             label: 'Nombre: '
@@ -106,83 +55,144 @@ Item {
                     textInput.selectAll()
                 }
             }
+            onSeted: {
+                loadList()
+            }
         }
-        Row{
-            z:labelCount.z+100
-            spacing: app.fs*1.5
-            UTextInput{
-                id: tiFechaNac
-                label: 'Fecha de Nacimiento: '
-                width: tiNombre.width*0.5-app.fs*0.5
-                maximumLength: 10
-                textInput.enabled: false
-                textInput.clip: false
-                //regularExp: RegExpValidator{regExp: /^([1-9])([0-9]{10})/ }
-                KeyNavigation.tab: itemCalFC
-                MouseArea{
-                    anchors.fill: parent
-                    onClicked:{
-                        showCal(1)
+        XListViewAl{id: xListViewAl}
+        Column{
+            id: colDatosCertificado
+            spacing: app.fs*0.5
+            visible: false
+            Row{
+                spacing: app.fs
+                UTextInput{
+                    id: tiFolio
+                    label: 'Folio: '
+                    width: app.fs*12
+                    maximumLength: 10
+                    KeyNavigation.tab: tiGrado
+                    property string uCodExist: ''
+                    textInput.onFocusChanged: {
+                        if(textInput.focus){
+                            calendario.parent=r
+                            textInput.selectAll()
+                        }
+                    }
+                    onTextChanged: {
+                        if(r.modificando)return
+                        //tCheckCodExist.restart()
+                    }
+                    Timer{
+                        id: tCheckCodExist
+                        running: false
+                        repeat: false
+                        interval: 3000
+                        onTriggered: {
+                            let ce=r.codExist()
+                            if(tiFolio.text!==r.uCodInserted&&ce&&tiFolio.text!==tiFolio.uCodExist){
+                                let msg='<b>Atención!: </b>El código actual ya existe.'
+                                unik.speak(msg.replace(/<[^>]*>?/gm, ''))
+                                labelStatus.text=msg
+                            }
+                            if(!ce){
+                                r.modificando=false
+                            }
+                            tiFolio.uCodExist=tiFolio.text
+                        }
                     }
                 }
-                Item{
-                    id: itemCalFN
-                    width: itemCalFC.width
-                    height: app.fs*20
-                    anchors.right: parent.right
-                    anchors.rightMargin: app.fs*6.5
-                    anchors.verticalCenter: parent.verticalCenter
-                    objectName: 'itemCal1'
-                    property string prevDateString:''
-                    KeyNavigation.tab: itemCalFC
-                    onFocusChanged: {
-                        if(focus)showCal(1)
-                    }
-                    onVisibleChanged: {
-                        if(visible&&tiFechaNac.text!==''){
-                            prevDateString=tiFechaNac.text
+                UTextInput{
+                    id: tiGrado
+                    label: 'Grado: '
+                    width: r.width*0.5-tiFolio.width//-app.fs*2
+                    maximumLength: 250
+                    KeyNavigation.tab: tiNombre
+                    textInput.onFocusChanged: {
+                        if(textInput.focus){
+                            calendario.parent=r
+                            textInput.selectAll()
                         }
                     }
                 }
             }
-            UTextInput{
-                id: tiFechaCert
-                label: 'Fecha de Certificado: '
-                width: tiNombre.width*0.5-app.fs
-                maximumLength: 10
-                textInput.enabled: false
-                textInput.clip: false
-                MouseArea{
-                    anchors.fill: parent
-                    onClicked:{
-                        showCal(2)
+            Row{
+                z:labelCount.z+100
+                spacing: app.fs*1.5
+                UTextInput{
+                    id: tiFechaNac
+                    label: 'Fecha de Nacimiento: '
+                    width: tiNombre.width*0.5-app.fs*0.5
+                    maximumLength: 10
+                    textInput.enabled: false
+                    textInput.clip: false
+                    //regularExp: RegExpValidator{regExp: /^([1-9])([0-9]{10})/ }
+                    KeyNavigation.tab: itemCalFC
+                    MouseArea{
+                        anchors.fill: parent
+                        onClicked:{
+                            showCal(1)
+                        }
+                    }
+                    Item{
+                        id: itemCalFN
+                        width: itemCalFC.width
+                        height: app.fs*20
+                        anchors.right: parent.right
+                        anchors.rightMargin: app.fs*6.5
+                        anchors.verticalCenter: parent.verticalCenter
+                        objectName: 'itemCal1'
+                        property string prevDateString:''
+                        KeyNavigation.tab: itemCalFC
+                        onFocusChanged: {
+                            if(focus)showCal(1)
+                        }
+                        onVisibleChanged: {
+                            if(visible&&tiFechaNac.text!==''){
+                                prevDateString=tiFechaNac.text
+                            }
+                        }
                     }
                 }
-                Item{
-                    id: itemCalFC
-                    width: r.width-col1.x-tiFechaCert.x-tiFechaCert.width
-                    height: app.fs*20
-                    anchors.left: parent.right
-                    anchors.leftMargin: 0
-                    anchors.verticalCenter: parent.verticalCenter
-                    objectName: 'itemCal2'
-                    KeyNavigation.tab: botReg
-                    property string prevDateString: ''
-                    onFocusChanged: {
-                        if(focus)showCal(2)
-                        //                        if(!focus&&!itemCalFN.focus){
-                        //                            calendario.parent=r
-                        //                        }
+                UTextInput{
+                    id: tiFechaCert
+                    label: 'Fecha de Certificado: '
+                    width: tiNombre.width*0.5-app.fs
+                    maximumLength: 10
+                    textInput.enabled: false
+                    textInput.clip: false
+                    MouseArea{
+                        anchors.fill: parent
+                        onClicked:{
+                            showCal(2)
+                        }
+                    }
+                    Item{
+                        id: itemCalFC
+                        width: r.width-col1.x-tiFechaCert.x-tiFechaCert.width
+                        height: app.fs*20
+                        anchors.left: parent.right
+                        anchors.leftMargin: 0
+                        anchors.verticalCenter: parent.verticalCenter
+                        objectName: 'itemCal2'
+                        KeyNavigation.tab: botReg
+                        property string prevDateString: ''
+                        onFocusChanged: {
+                            if(focus)showCal(2)
+                            //                        if(!focus&&!itemCalFN.focus){
+                            //                            calendario.parent=r
+                            //                        }
+                        }
                     }
                 }
             }
-        }
-        Item{width: 1;height: app.fs*2}
-        UText{
-            id: labelCount
-            width: r.width*0.5-tiFolio.width-app.fs*2
-            height: contentHeight
-            wrapMode: Text.WordWrap
+            Item{width: 1;height: app.fs*2}
+            UText{
+                id: labelCount
+                width: r.width*0.5-tiFolio.width-app.fs*2
+                height: contentHeight
+                wrapMode: Text.WordWrap
+            }
         }
         Item{
             width: r.width*0.5-app.fs
@@ -455,6 +465,19 @@ Item {
         r.dateForOpenFN=new Date(Date.now())
         r.dateForOpenFC=new Date(Date.now())
     }
+    function loadList(){
+        let sql = 'select * from '+xFormInsertDatosAl.tableName+' where nombre=\''+tiNombre.text+'\''
+        let rows=unik.getSqlData(sql)
+        uLogView.showLog('rows: '+sql)
+        if(rows.length>0){
+            for(var i=0;i<rows.length;i++){
+                xListViewAl.listModel.append(xListViewAl.listModel.addDato(rows[i].col[0],rows[i].col[1],rows[i].col[2],rows[i].col[3], rows[i].col[4], rows[i].col[5]))
+            }
+            xListViewAl.visible=true
+        }else{
+            xListViewAl.visible=false
+        }
+    }
     function codExist(){
         let sql = 'select * from '+r.tableName+' where folio=\''+tiFolio.text+'\''
         let rows = unik.getSqlData(sql)
@@ -677,6 +700,10 @@ Item {
         calendario.selectedDate=fecha
     }
     function enterForm(){
+        if(tiNombre.textInput.focus){
+            loadList()
+            return
+        }
         if(botClear.focus){
             clear()
             return

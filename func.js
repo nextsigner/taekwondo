@@ -29,7 +29,7 @@ function setBd() {
     sql='CREATE TABLE IF NOT EXISTS '+app.tableName2
         +'('
         +'id INTEGER PRIMARY KEY AUTOINCREMENT,'
-        +app.colsDatosAlumnos[0]+' NUMERICO NOT NULL,'
+        +app.colsDatosAlumnos[0]+' TEXT NOT NULL,'
         +app.colsDatosAlumnos[1]+' TEXT NOT NULL,'
         +app.colsDatosAlumnos[2]+' TEXT NOT NULL,'
         +app.colsDatosAlumnos[3]+' TEXT  NOT NULL,'
