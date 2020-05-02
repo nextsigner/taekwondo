@@ -23,11 +23,12 @@ Item {
 
 
     property int cIdAlumno: -1
+    property string cNom: ''
 
     onVisibleChanged: {
         if(visible){
             updateGui()
-            tiFolio.focus=visible
+            tiNombre.focus=visible
         }else{
             tiFolio.focus=false
             tiGrado.focus=false
@@ -67,8 +68,9 @@ Item {
         XListViewAl{
             id: xListViewAl
             onIdSelected: {
-                //uLogView.showLog('ID:' + id)
+                //uLogView.showLog('ID:' + id+' Nombre: '+nom)
                 r.cIdAlumno=id
+                r.cNom=nom
             }
         }
         BotonUX{
@@ -91,6 +93,7 @@ Item {
             spacing: app.fs*0.5
             visible: false
             anchors.horizontalCenter: parent.horizontalCenter
+            z: xBtns.z+1000
             Row{
                 spacing: app.fs
                 UTextInput{
@@ -196,7 +199,7 @@ Item {
                     }
                     Item{
                         id: itemCalFC
-                        width: r.width-col1.x-tiFechaCert.x-tiFechaCert.width
+                        width: r.width-colDatosCertificado.x-tiFechaCert.x-tiFechaCert.width-app.fs
                         height: app.fs*20
                         anchors.left: parent.right
                         anchors.leftMargin: 0
@@ -222,6 +225,7 @@ Item {
             }
         }
         Item{
+            id: xLS
             width: r.width*0.5-app.fs
             height: 1
             UText{
@@ -235,6 +239,7 @@ Item {
         }
         Item{width: 1;height: app.fs*2}
         Row{
+            id: xBtns
             spacing: app.fs
             anchors.right: parent.right
             BotonUX{
@@ -388,6 +393,12 @@ Item {
             if(parent===r){
                 //selectedDate=new Date(Date.now())
                 return
+            }else{
+                tiNombre.focus=false
+                tiFolio.focus=false
+                tiFechaNac.focus=false
+                tiFechaCert.focus=false
+                calendario.focus=true
             }
             if(parent===itemCalFN){
                 if(tiFechaNac.text.length<2){
@@ -482,13 +493,18 @@ Item {
             }
             setTextInput=true
         }
+        Rectangle{
+            anchors.fill: parent
+            color: app.c1
+            z: parent.z-1
+        }
         MouseArea{
             anchors.fill: parent
             z: calendario.z-1
         }
     }
     Component.onCompleted: {
-        tiFolio.focus=true
+        tiNombre.focus=true
         r.dateForOpenFN=new Date(Date.now())
         r.dateForOpenFC=new Date(Date.now())
     }
@@ -563,7 +579,7 @@ Item {
         sql = 'insert into '+r.tableName+'('+r.cols+')values('+
                 '\''+tiFolio.text+'\','+
                 '\''+tiGrado.text+'\','+
-                '\''+tiNombre.text+'\','+
+                '\''+r.cNom+'\','+
                 ''+dateFN.getTime()+','+
                 ''+dateFC.getTime()+','+
                 ''+r.cIdAlumno+''+
@@ -647,7 +663,7 @@ Item {
         tiNombre.text=''
         tiFechaNac.text=''
         tiFechaCert.text=''
-        tiFolio.focus=true
+        tiNombre.focus=true
         r.dateForOpenFN=new Date(Date.now())
         r.dateForOpenFC=new Date(Date.now())
         //itemCalFN.visible=false
@@ -688,6 +704,7 @@ Item {
         calendario.selectedDate=fecha
     }
     function rightForm(){
+        //uLogView.showLog('R!')
         if(calendario.parent===r){
             return
         }

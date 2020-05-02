@@ -6,7 +6,7 @@ Item{
     width: parent.width
     height: minimalista?app.fs*0.5:app.fs*1.4
     property bool minimalista: menuSettings.minimalista
-    property var arrayMenuNames: ['Inicio', 'Registrar Certificado', 'Buscar Certificado', 'Registrar Datos Alumno', 'Buscar Alumno', 'Configurar']
+    property var arrayMenuNames: ['Inicio', 'Registrar Datos Alumno', 'Buscar Alumno', 'Registrar Certificado', 'Buscar Certificado', 'Configurar']
     Settings{
         id: menuSettings
         fileName: pws+'/'+app.moduleName+'/'+app.moduleName+'_xmenu'

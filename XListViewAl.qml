@@ -9,7 +9,7 @@ Column{
     height: app.fs*20
     visible: lm.count>0
     property alias listModel: lm
-    signal idSelected(int id)
+    signal idSelected(int id, string nom)
     Item{
         width: lv.width
         height: app.fs*4-app.fs*0.25
@@ -177,7 +177,7 @@ Column{
                                         //cbSelectedAll.checked=false
                                         //r.selectedAll=false
                                     }
-                                    idSelected(v1)
+                                    idSelected(v1,v2)
                                     //setBtnDeleteText()
 //                                    if(!tiSearch.textInput.focus){
 //                                        lv.focus=true

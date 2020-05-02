@@ -94,26 +94,26 @@ ApplicationWindow {
                 XInicio{visible: app.mod===0&&!xLogin.visible}
                 XFormInsert{
                     id: xFormInsert
-                    numMod: 1
+                    numMod: 3
                     visible: app.mod===numMod&&!xLogin.visible
                     tableName: app.tableName1
                     cols: app.colsCertificados
                 }
                 XFormSearch{
                     id: xFormSearch
-                    visible: app.mod===2&&!xLogin.visible
+                    visible: app.mod===4&&!xLogin.visible
                     currentTableName: xFormInsert.tableName
                 }
                 XFormInsertDatosAl{
                     id: xFormInsertDatosAl
-                    numMod: 3//xMenu.arrayMenuNames.length===5?3:-1
+                    numMod: 1//xMenu.arrayMenuNames.length===5?3:-1
                     visible: app.mod===numMod&&!xLogin.visible
                     tableName: app.tableName2
                     cols: app.colsDatosAlumnos
                 }
                 XFormSearchAl{
                     id: xFormSearchAl
-                    visible: app.mod===4&&!xLogin.visible
+                    visible: app.mod===2&&!xLogin.visible
                     currentTableName: xFormInsert.tableName
                 }
                 XConfig{id:xConfig; visible: app.mod===5&&!xLogin.visible}
