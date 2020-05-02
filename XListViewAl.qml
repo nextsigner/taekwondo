@@ -10,6 +10,9 @@ Column{
     visible: lm.count>0
     property alias listModel: lm
     signal idSelected(int id, string nom)
+    onVisibleChanged: {
+        lv.focus=visible
+    }
     Item{
         width: lv.width
         height: app.fs*4-app.fs*0.25
@@ -147,9 +150,9 @@ Column{
                     Keys.onSpacePressed: {
                         lv.currentIndex=index
                         cbRow.checked=!cbRow.checked
-                        if(cbSelToTop.checked){
-                            search()
-                        }
+//                        if(cbSelToTop.checked){
+//                            search()
+//                        }
                         //uLogView.showLog('Spacing'+index)
                     }
                     onSelectedChanged: {

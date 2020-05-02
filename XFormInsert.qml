@@ -392,6 +392,7 @@ Item {
             setTextInput=false
             if(parent===r){
                 //selectedDate=new Date(Date.now())
+                calendario.focus=false
                 return
             }else{
                 tiNombre.focus=false
