@@ -258,6 +258,11 @@ Item {
             r.uCodInserted=tiNombre.text
         }
         clear()
+        sql='select id from alumnos order by id desc limit 1'
+        rows=unik.getSqlData(sql)
+        let d=new Date(Date.now())
+        let event=''+app.cAdmin+' ha insertado un registro de alumno'
+        JS.setEvent(event, 'alumnos', rows[0].col[0], d.getTime())
         //uLogView.showLog('Registro Insertado: '+insertado)
     }
     function modify(){

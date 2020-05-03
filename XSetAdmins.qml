@@ -13,9 +13,19 @@ Rectangle {
     Column{
         spacing: app.fs
         anchors.centerIn: r
-        UText{
-            text: 'Configurar Administradores'
-            font.pixelSize: app.fs*2
+        Row{
+            spacing: app.fs
+            BotonUX{
+                text: 'Atras'
+                onClicked: {
+                    r.visible=false
+                }
+            }
+            UText{
+                text: 'Configurar Administradores'
+                font.pixelSize: app.fs*2
+                anchors.verticalCenter: parent.verticalCenter
+            }
         }
 
         Row{
