@@ -18,6 +18,7 @@ ApplicationWindow {
     property int mod: -20
 
     //Variables Globales
+    property string cAdmin: 'Sistema'
 
     //Para la Tabla Alumnos
     property string tableName1: 'certificados'

@@ -36,6 +36,12 @@ Item {
                     xSetAdmins.visible=true
                 }
             }
+            BotonUX{
+                text: 'Eventos de Administradores'
+                onClicked: {
+                    xListViewEvents.visible=true
+                }
+            }
         }
         Item{width: 1;height: app.fs*2}
         UText{
@@ -93,6 +99,10 @@ Item {
         }
     }
     XSetAdmins{id: xSetAdmins}
+    XListViewEvents{
+        id: xListViewEvents;visible:false
+        anchors.fill: parent
+    }
     Timer{
         running: r.visible
         repeat: true

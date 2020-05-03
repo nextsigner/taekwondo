@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
+import "func.js" as JS
 
 Item {
     id: r
@@ -593,6 +594,11 @@ Item {
             r.uCodInserted=tiFolio.text
         }
         clear()
+        sql='select id from certificados order by id desc limit 1'
+        rows=unik.getSqlData(sql)
+        let d=new Date(Date.now())
+        let event=''+app.cAdmin+' ha insertado un certificado'
+        JS.setEvent(event, 'certificados', rows[0].col[0], d.getTime())
         //uLogView.showLog('Registro Insertado: '+insertado)
     }
     function modify(){
@@ -746,6 +752,11 @@ Item {
         calendario.selectedDate=fecha
     }
     function enterForm(){
+        if(botCC.focus){
+            botCC.clicked()
+            tiFolio.focus=true
+            return
+        }
         if(tiNombre.textInput.focus){
             loadList()
             return

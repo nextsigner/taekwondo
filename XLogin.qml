@@ -132,6 +132,7 @@ Rectangle {
         let claveDec=unik.decData(unik.getFile('./admins/pass'+nf+'.key'), 'axf5d', 'adgd5a')
         let clave=tiAdmin.text+'|'+tiContrasenia.text
         if(clave===claveDec){
+            app.cAdmin=tiAdmin.text
             r.visible=false
         }else{
             status.text='Administrador o contraseña incorrecta.'

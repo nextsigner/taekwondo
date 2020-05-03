@@ -37,7 +37,21 @@ function setBd() {
         +app.colsDatosAlumnos[4]+' TEXT  NOT NULL'
         +')'
     unik.sqlQuery(sql)
+    sql='CREATE TABLE IF NOT EXISTS eventos'
+        +'('
+        +'id INTEGER PRIMARY KEY AUTOINCREMENT,'
+        +'evento TEXT NOT NULL,'
+        +' tablaefectada TEXT NOT NULL,'
+        +'idafectado NUMERIC NOT NULL,'
+        +'ms NUMERIC  NOT NULL'
+        +')'
+    unik.sqlQuery(sql)
     //console.log('Ejecutado: '+ejecutado)
+}
+
+function setEvent(e, t, i, m){
+    let sql='insert into eventos(evento, tablaefectada, idafectado, ms)values(\''+e+'\',\''+t+'\','+i+','+m+')'
+    unik.sqlQuery(sql)
 }
 
 function setFolders(){   

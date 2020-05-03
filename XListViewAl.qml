@@ -106,7 +106,7 @@ Column{
             width: parent.width
             height: parent.height
             clip: true
-            //KeyNavigation.tab: tiSearch
+            KeyNavigation.tab: botCC
             Keys.onDownPressed: downRow()
             Keys.onUpPressed: upRow()
             boundsBehavior: ListView.StopAtBounds
