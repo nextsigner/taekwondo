@@ -235,7 +235,7 @@ Item {
             height: 1
             UText{
                 id: labelStatus
-                text: 'Esperando a que se registren alumnos.'
+                text: 'Esperando a que se registren certificados.'
                 width: r.width
                 height: contentHeight
                 wrapMode: Text.WordWrap
@@ -247,6 +247,16 @@ Item {
             id: xBtns
             spacing: app.fs
             anchors.right: parent.right
+            BotonUX{
+                id: botCancel
+                text: 'Cancelar'
+                height: app.fs*2
+                KeyNavigation.tab: botReg
+                onClicked: {
+                    cancel()
+                }
+                UnikFocus{}
+            }
             BotonUX{
                 id: botClear
                 text: 'Limpiar'
@@ -673,7 +683,7 @@ Item {
     function clear(){
         tiFolio.text=''
         tiGrado.text=''
-        tiNombre.text=''
+        //tiNombre.text=''
         tiFechaNac.text=''
         tiFechaCert.text=''
         tiNombre.focus=true
@@ -686,6 +696,22 @@ Item {
         colDatosCertificado.visible=false
         xListViewAl.listModel.clear()
        labelStatus.text='Formulario limpiado.'
+    }
+    function cancel(){
+        tiFolio.text=''
+        tiGrado.text=''
+        //tiNombre.text=''
+        tiFechaNac.text=''
+        tiFechaCert.text=''
+        tiNombre.focus=true
+        r.dateForOpenFN=new Date(Date.now())
+        r.dateForOpenFC=new Date(Date.now())
+        r.cIdAlumno=-1
+        r.cNom=''
+        botCC.visible=false
+        xListViewAl.visible=false
+        tiNombre.enabled=true
+        colDatosCertificado.visible=false
     }
 
     function showCal(num){
