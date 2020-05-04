@@ -76,22 +76,36 @@ Item {
                 botCC.visible=true
             }
         }
-        BotonUX{
-            id: botCC
-            text: 'Crear Certificado'
-            height: app.fs*2
-            KeyNavigation.tab: botReg
-            visible: xListViewAl.listModel.count>0
+        Row{
+            spacing: app.fs
             anchors.right: parent.right
-            onClicked: {
-                if(r.cIdAlumno>=0){
-                    tiNombre.text=r.cNom
-                    tiNombre.enabled=false
-                    xListViewAl.visible=false
-                    colDatosCertificado.visible=true
+            BotonUX{
+                id: botCancel
+                text: 'Cancelar'
+                height: app.fs*2
+                KeyNavigation.tab: botReg
+                visible: botCC.visible
+                onClicked: {
+                    cancel()
                 }
+                UnikFocus{}
             }
-            UnikFocus{}
+            BotonUX{
+                id: botCC
+                text: 'Crear Certificado'
+                height: app.fs*2
+                KeyNavigation.tab: botReg
+                visible: xListViewAl.listModel.count>0
+                onClicked: {
+                    if(r.cIdAlumno>=0){
+                        tiNombre.text=r.cNom
+                        tiNombre.enabled=false
+                        xListViewAl.visible=false
+                        colDatosCertificado.visible=true
+                    }
+                }
+                UnikFocus{}
+            }
         }
         Column{
             id: colDatosCertificado
@@ -247,16 +261,6 @@ Item {
             id: xBtns
             spacing: app.fs
             anchors.right: parent.right
-            BotonUX{
-                id: botCancel
-                text: 'Cancelar'
-                height: app.fs*2
-                KeyNavigation.tab: botReg
-                onClicked: {
-                    cancel()
-                }
-                UnikFocus{}
-            }
             BotonUX{
                 id: botClear
                 text: 'Limpiar'
@@ -525,6 +529,7 @@ Item {
         r.dateForOpenFC=new Date(Date.now())
     }
     function loadList(){
+        xListViewAl.listModel.clear()
         let sql = 'select * from '+xFormInsertDatosAl.tableName+' where nombre like \'%'+tiNombre.text+'%\''
         let rows=unik.getSqlData(sql)
         //uLogView.showLog('rows: '+sql)
@@ -584,12 +589,12 @@ Item {
         }
         let sql=''
         let rows
-//        let sql = 'select '+r.cols[0]+' from '+r.tableName+' where '+r.cols[0]+'=\''+tiFolio.text+'\''
-//        let rows = unik.getSqlData(sql)
-//        if(rows.length>=1){
-//            uLogView.showLog('Error! No se puede registrar el alumno con este número de folio.\nYa existe un alumno con el folio '+tiFolio.text)
-//            return
-//        }
+        //        let sql = 'select '+r.cols[0]+' from '+r.tableName+' where '+r.cols[0]+'=\''+tiFolio.text+'\''
+        //        let rows = unik.getSqlData(sql)
+        //        if(rows.length>=1){
+        //            uLogView.showLog('Error! No se puede registrar el alumno con este número de folio.\nYa existe un alumno con el folio '+tiFolio.text)
+        //            return
+        //        }
         let m0DFN=tiFechaNac.text.split('/')
         let m0DFC=tiFechaCert.text.split('/')
         let dateFN= new Date(parseInt(m0DFN[2]), parseInt(m0DFN[1] - 1), parseInt(m0DFN[0]))
@@ -695,7 +700,7 @@ Item {
         tiNombre.enabled=true
         colDatosCertificado.visible=false
         xListViewAl.listModel.clear()
-       labelStatus.text='Formulario limpiado.'
+        labelStatus.text='Formulario limpiado.'
     }
     function cancel(){
         tiFolio.text=''
