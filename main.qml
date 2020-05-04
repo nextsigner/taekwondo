@@ -295,7 +295,9 @@ ApplicationWindow {
         /*for(var i=0;i<100;i++){
             d.setHours(d.getHours()+26*h)
             d2.setHours(d2.getHours()+60*h)
-            let sql='insert into alumnos(folio, grado, nombre, fechanac, fechacert)values(\'adasdf'+i+'\',\'32'+i+'\',\'gdgg'+i+'\',\''+d.getTime()+'\',\''+d2.getTime()+'\')'
+            //let sql='insert into alumnos(folio, grado, nombre, fechanac, fechacert)values(\'adasdf'+i+'\',\'32'+i+'\',\'gdgg'+i+'\',\''+d.getTime()+'\',\''+d2.getTime()+'\')'
+            //'nombre', 'edad', 'domicilio', 'telefono', 'email']
+            let sql='insert into alumnos(nombre, edad, domicilio, telefono, email)values(\'nom'+i+'\',\''+i+'\', \'dom'+i+'\',  \'tel'+i+'\',\'email '+i+'\')'
             unik.sqlQuery(sql)
             //unik.
             h++

@@ -491,10 +491,18 @@ Item {
     }
 
     function deleteRows(){
-        for(var i=0;i<lv.children[0].children.length; i++){
-            let id=lv.children[0].children[i].rowId
+//        for(var i=0;i<lv.children[0].children.length; i++){
+//            let id=lv.children[0].children[i].rowId
+//            //uLogView.showLog('s: '+lv.children[0].children[i].selected)
+//            if(id&&lv.children[0].children[i].selected){
+//                let sql='delete from '+app.tableName2+' where id='+id
+//                unik.sqlQuery(sql)
+//            }
+//        }
+        for(var i=0;i<lm.count; i++){
+            let id=lm.get(i).v1
             //uLogView.showLog('s: '+lv.children[0].children[i].selected)
-            if(id&&lv.children[0].children[i].selected){
+            if(lm.get(i).v7){
                 let sql='delete from '+app.tableName2+' where id='+id
                 unik.sqlQuery(sql)
             }
