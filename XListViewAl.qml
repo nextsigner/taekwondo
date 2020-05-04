@@ -6,7 +6,7 @@ import "func.js" as JS
 Column{
     id: r
     width: parent.parent.width-app.fs
-    height: app.fs*20
+    height: app.fs*12
     visible: lm.count>0
     property alias listModel: lm
     signal idSelected(int id, string nom)

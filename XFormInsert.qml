@@ -85,6 +85,8 @@ Item {
             anchors.right: parent.right
             onClicked: {
                 if(r.cIdAlumno>=0){
+                    tiNombre.text=r.cNom
+                    tiNombre.enabled=false
                     xListViewAl.visible=false
                     colDatosCertificado.visible=true
                 }
@@ -680,6 +682,7 @@ Item {
         r.cIdAlumno=-1
         r.cNom=''
         botCC.visible=false
+        tiNombre.enabled=true
         xListViewAl.listModel.clear()
        labelStatus.text='Formulario limpiado.'
     }
