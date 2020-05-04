@@ -683,6 +683,7 @@ Item {
         r.cNom=''
         botCC.visible=false
         tiNombre.enabled=true
+        colDatosCertificado.visible=false
         xListViewAl.listModel.clear()
        labelStatus.text='Formulario limpiado.'
     }
