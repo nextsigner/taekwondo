@@ -27,7 +27,6 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
             }
         }
-
         Row{
             spacing: app.fs
             UTextInput{

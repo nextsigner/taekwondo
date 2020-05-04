@@ -63,6 +63,7 @@ Item {
             }
             onSeted: {
                 r.cIdAlumno=-1
+                botCC.visible=false
                 loadList()
             }
         }
@@ -72,6 +73,7 @@ Item {
                 //uLogView.showLog('ID:' + id+' Nombre: '+nom)
                 r.cIdAlumno=id
                 r.cNom=nom
+                botCC.visible=true
             }
         }
         BotonUX{
@@ -79,7 +81,7 @@ Item {
             text: 'Crear Certificado'
             height: app.fs*2
             KeyNavigation.tab: botReg
-            visible: xListViewAl.listModel.count>0&&!colDatosCertificado.visible
+            visible: xListViewAl.listModel.count>0
             anchors.right: parent.right
             onClicked: {
                 if(r.cIdAlumno>=0){
