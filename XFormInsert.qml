@@ -571,6 +571,7 @@ Item {
             return
         }
         let sql=''
+        let rows
 //        let sql = 'select '+r.cols[0]+' from '+r.tableName+' where '+r.cols[0]+'=\''+tiFolio.text+'\''
 //        let rows = unik.getSqlData(sql)
 //        if(rows.length>=1){
@@ -676,6 +677,8 @@ Item {
         tiNombre.focus=true
         r.dateForOpenFN=new Date(Date.now())
         r.dateForOpenFC=new Date(Date.now())
+        r.cIdAlumno=-1
+        r.cNom=''
         //itemCalFN.visible=false
         //itemCalFC.visible=false
         //r.currentCal=cal1
