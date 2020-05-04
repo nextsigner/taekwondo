@@ -679,10 +679,9 @@ Item {
         r.dateForOpenFC=new Date(Date.now())
         r.cIdAlumno=-1
         r.cNom=''
-        //itemCalFN.visible=false
-        //itemCalFC.visible=false
-        //r.currentCal=cal1
-        labelStatus.text='Formulario limpiado.'
+        botCC.visible=false
+        xListViewAl.listModel.clear()
+       labelStatus.text='Formulario limpiado.'
     }
 
     function showCal(num){
