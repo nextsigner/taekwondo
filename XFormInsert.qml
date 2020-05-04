@@ -570,12 +570,13 @@ Item {
             uLogView.showLog('Cols is empty!')
             return
         }
-        let sql = 'select '+r.cols[0]+' from '+r.tableName+' where '+r.cols[0]+'=\''+tiFolio.text+'\''
-        let rows = unik.getSqlData(sql)
-        if(rows.length>=1){
-            uLogView.showLog('Error! No se puede registrar el alumno con este número de folio.\nYa existe un alumno con el folio '+tiFolio.text)
-            return
-        }
+        let sql=''
+//        let sql = 'select '+r.cols[0]+' from '+r.tableName+' where '+r.cols[0]+'=\''+tiFolio.text+'\''
+//        let rows = unik.getSqlData(sql)
+//        if(rows.length>=1){
+//            uLogView.showLog('Error! No se puede registrar el alumno con este número de folio.\nYa existe un alumno con el folio '+tiFolio.text)
+//            return
+//        }
         let m0DFN=tiFechaNac.text.split('/')
         let m0DFC=tiFechaCert.text.split('/')
         let dateFN= new Date(parseInt(m0DFN[2]), parseInt(m0DFN[1] - 1), parseInt(m0DFN[0]))
