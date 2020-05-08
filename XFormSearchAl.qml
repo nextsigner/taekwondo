@@ -278,7 +278,7 @@ Item {
                         }
                         MouseArea{
                             anchors.fill: parent
-                            onDoubleClicked: xFormInsert.loadModify(v1, v2, v3, v4, v5, v6)
+                            onDoubleClicked: xFormInsertDatosAl.loadModify(v1, v2, v3, v4, v5, v6)
                         }
                         Row{
                             anchors.centerIn: parent

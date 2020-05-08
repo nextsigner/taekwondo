@@ -268,22 +268,23 @@ Item {
     }
     function modify(){
         uLogView.text=''
-        if(tiFolio.text===''||tiGrado.text===''||tiNombre.text===''||tiFechaNac.text===''||tiFechaCert.text===''){
+        uLogView.text=''
+        if(tiNombre.text===''||tiDomicilio.text===''||tiEdad.text===''||tiTel.text===''||tiEMail.text===''){
             uLogView.showLog('Error!\nNo se han introducido todos los datos requeridos.\nPara registrar los datos de este alumno es necesario completar el formulario en su totalidad.')
-            if(tiFolio.text===''){
-                uLogView.showLog('Faltan los datos de folio.')
-            }
-            if(tiGrado.text===''){
-                uLogView.showLog('Faltan los datos de grado.')
-            }
             if(tiNombre.text===''){
                 uLogView.showLog('Faltan los datos de nombre.')
             }
-            if(tiFechaNac.text===''){
-                uLogView.showLog('Faltan los datos de fecha de nacimiento.')
+            if(tiDomicilio.text===''){
+                uLogView.showLog('Faltan los datos de Domicilio.')
             }
-            if(tiFechaCert.text===''){
-                uLogView.showLog('Faltan los datos de fecha de certificado.')
+            if(tiEdad.text===''){
+                uLogView.showLog('Faltan los datos de edad.')
+            }
+            if(tiTel.text===''){
+                uLogView.showLog('Faltan los datos de teléfono.')
+            }
+            if(tiEMail.text===''){
+                uLogView.showLog('Faltan los datos de email.')
             }
             uLogView.showLog('Presionar Escape para cerrar estas panel de advertencias.')
             return
@@ -297,15 +298,16 @@ Item {
             return
         }
         let sql = 'update '+r.tableName+' set '+
-            app.colsDatosAlumnos[0]+'=\''+tiFolio.text+'\','+
-            app.colsDatosAlumnos[1]+'=\''+tiGrado.text+'\','+
-            app.colsDatosAlumnos[2]+'=\''+tiNombre.text+'\','+
-            app.colsDatosAlumnos[3]+'=\''+tiFechaNac.text+'\','+
-            app.colsDatosAlumnos[4]+'=\''+tiFechaCert.text+'\''+
+            app.colsDatosAlumnos[0]+'=\''+tiNombre.text+'\','+
+            app.colsDatosAlumnos[1]+'=\''+tiDomicilio.text+'\','+
+            app.colsDatosAlumnos[2]+'=\''+tiEdad.text+'\','+
+            app.colsDatosAlumnos[3]+'=\''+tiTel.text+'\','+
+            app.colsDatosAlumnos[4]+'=\''+tiEMail.text+'\''+
             ' where id='+r.pIdAModificar
+        //uLogView.showLog('MOD: '+sql)
         let insertado = unik.sqlQuery(sql)
         if(insertado){
-            let msg='Se ha modificado el registro del alumno con folio '+tiFolio.text
+            let msg='Se ha modificado el registro del alumno con nombre '+tiNombre.text
             unik.speak(msg)
             labelStatus.text=msg
         }else{
@@ -315,19 +317,23 @@ Item {
             r.uCodInserted=tiFolio.text
         }
         clear()
+        let d=new Date(Date.now())
+        let event=''+app.cAdmin+' ha modificado un registro de alumno'
+        JS.setEvent(event, 'alumnos', r.pIdAModificar, d.getTime())
         //uLogView.showLog('Registro Insertado: '+insertado)
     }
     function updateGui(){
-        labelCount.text=!r.modificando?'Creando el registro número '+parseInt(getCount() + 1):'Modificando el registro con folio '+tiFolio.text
+        labelCount.text=!r.modificando?'Creando el registro número '+parseInt(getCount() + 1):'Modificando el registro con Nombre '+tiNombre.text
     }
     function loadModify(p1, p2, p3, p4, p5, p6){
         r.modificando=true
         app.mod=r.numMod
-        tiFolio.text=p2
-        tiGrado.text=p3
-        tiNombre.text=p4
-        tiFechaNac.text=p5
-        tiFechaCert.text=p6
+        r.pIdAModificar=p1
+        tiNombre.text=p2
+        tiDomicilio.text=p3
+        tiEdad.text=p4
+        tiTel.text=p5
+        tiEMail.text=p6
     }
     function clear(){
         tiNombre.text=''
