@@ -267,7 +267,7 @@ Item {
                 }
                 ListModel{
                     id: lm
-                    function addDato(p1, p2, p3, p4, p5, p6){
+                    function addDato(p1, p2, p3, p4, p5, p6, p7){
                         return{
                             v1: p1,
                             v2: p2,
@@ -275,7 +275,8 @@ Item {
                             v4:p4,
                             v5: p5,
                             v6: p6,
-                            v7: false
+                            v7: false,
+                            v8: p7
                         }
                     }
                 }
@@ -308,7 +309,7 @@ Item {
                         }
                         MouseArea{
                             anchors.fill: parent
-                            onDoubleClicked: xFormInsert.loadModify(v1, v2, v3, v4, v5, v6)
+                            onDoubleClicked: xFormInsert.loadModify(v1, v2, v3, v4, v5, v6, v8)
                         }
                         Row{
                             anchors.centerIn: parent
@@ -505,22 +506,21 @@ Item {
             //cbSelectedAll.setearTodos=false
             //cbSelectedAll.checked=false
             for(i=0;i<rows.length;i++){
-                lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[2], rows[i].col[3], rows[i].col[4], rows[i].col[5]))
+                lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[2], rows[i].col[3], rows[i].col[4], rows[i].col[5], rows[i].col[6]))
             }
         }else{
             for(i=0;i<rows.length;i++){
                 if(r.idsSelected.indexOf(parseInt(rows[i].col[0]))>=0){
                     //uLogView.showLog('id: '+rows[i].col[0])
-                    lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[2], rows[i].col[3], rows[i].col[4], rows[i].col[5]))
+                    lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[2], rows[i].col[3], rows[i].col[4], rows[i].col[5], rows[i].col[6]))
                 }
             }
             for(i=0;i<rows.length;i++){
                 if(r.idsSelected.indexOf(parseInt(rows[i].col[0]))<0){
-                    lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[2], rows[i].col[3], rows[i].col[4], rows[i].col[5]))
+                    lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[2], rows[i].col[3], rows[i].col[4], rows[i].col[5], rows[i].col[6]))
                 }
             }
         }
-
     }
     function deleteRows(){
 //        for(var i=0;i<lv.children[0].children.length; i++){

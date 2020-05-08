@@ -652,13 +652,19 @@ Item {
             uLogView.showLog('Cols is empty!')
             return
         }
+        let m0DFN=tiFechaNac.text.split('/')
+        let m0DFC=tiFechaCert.text.split('/')
+        let dateFN= new Date(parseInt(m0DFN[2]), parseInt(m0DFN[1] - 1), parseInt(m0DFN[0]))
+        let dateFC= new Date(parseInt(m0DFC[2]), parseInt(m0DFC[1] - 1), parseInt(m0DFC[0]))
         let sql = 'update '+r.tableName+' set '+
-            app.colsAlumnos[0]+'=\''+tiFolio.text+'\','+
-            app.colsAlumnos[1]+'=\''+tiGrado.text+'\','+
-            app.colsAlumnos[2]+'=\''+tiNombre.text+'\','+
-            app.colsAlumnos[3]+'=\''+tiFechaNac.text+'\','+
-            app.colsAlumnos[4]+'=\''+tiFechaCert.text+'\''+
-            ' where id='+r.pIdAModificar
+            app.colsCertificados[0]+'=\''+tiFolio.text+'\','+
+            app.colsCertificados[1]+'=\''+tiGrado.text+'\','+
+            app.colsCertificados[2]+'=\''+tiNombre.text+'\','+
+            app.colsCertificados[3]+'='+dateFN.getTime()+','+
+            app.colsCertificados[4]+'='+dateFC.getTime()+''+
+            ' where idalumno='+r.pIdAModificar
+        //uLogView.showLog('MOD: '+sql)
+        //console.log(sql)
         let insertado = unik.sqlQuery(sql)
         if(insertado){
             let msg='Se ha modificado el registro del alumno con folio '+tiFolio.text
@@ -676,14 +682,20 @@ Item {
     function updateGui(){
         labelCount.text=!r.modificando?'Creando el registro número '+parseInt(getCount() + 1):'Modificando el registro con folio '+tiFolio.text
     }
-    function loadModify(p1, p2, p3, p4, p5, p6){
+    function loadModify(p1, p2, p3, p4, p5, p6, p7){
         r.modificando=true
         app.mod=r.numMod
+        r.pIdAModificar=p7
+        colDatosCertificado.visible=true
         tiFolio.text=p2
         tiGrado.text=p3
         tiNombre.text=p4
-        tiFechaNac.text=p5
-        tiFechaCert.text=p6
+        let d1=new Date(parseInt(p5))
+        let f1=''+d1.getDate()+'/'+parseInt(d1.getMonth()+1)+'/'+d1.getFullYear()
+        tiFechaNac.text=f1
+        let d2=new Date(parseInt(p6))
+        let f2=''+d2.getDate()+'/'+parseInt(d2.getMonth()+1)+'/'+d2.getFullYear()
+        tiFechaCert.text=f2
     }
     function clear(){
         tiFolio.text=''
