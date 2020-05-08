@@ -66,7 +66,7 @@ Item {
                 id: tiDomicilio
                 label: 'Domicilio: '
                 width: tiNombre.width
-                maximumLength: 10
+                maximumLength: 50
                 textInput.clip: false
                 KeyNavigation.tab: tiEdad
             }
@@ -77,7 +77,7 @@ Item {
                     id: tiEdad
                     label: 'Edad: '
                     width: tiNombre.width*0.5-app.fs*0.25
-                    maximumLength: 10
+                    maximumLength: 3
                     textInput.clip: false
                     KeyNavigation.tab: tiTel
                 }
@@ -85,7 +85,7 @@ Item {
                     id: tiTel
                     label: 'Teléfono: '
                     width: tiNombre.width*0.5-app.fs*0.25
-                    maximumLength: 10
+                    maximumLength: 20
                     textInput.clip: false
                     KeyNavigation.tab: tiEMail
                 }
@@ -97,7 +97,7 @@ Item {
                     id: tiEMail
                     label: 'E-Mail: '
                     width: tiNombre.width
-                    maximumLength: 10
+                    maximumLength: 50
                     textInput.clip: false
                     KeyNavigation.tab: botReg
                 }

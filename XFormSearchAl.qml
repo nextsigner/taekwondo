@@ -56,7 +56,7 @@ Item {
             UTextInput{
                 id: tiSearch
                 label: 'Buscar Nombre:'
-                width: app.fs*18            
+                width: app.fs*18
                 KeyNavigation.down: lv
                 KeyNavigation.tab: lv
                 itemNextFocus: lv
@@ -83,6 +83,13 @@ Item {
                 height: app.fs*2
                 visible: false
                 onClicked: deleteRows()
+            }
+            BotonUX{
+                id: botModify
+                text: 'Modificar Registro'
+                height: app.fs*2
+                visible: false
+                onClicked: modifyRow()
             }
         }
         Row{
@@ -491,14 +498,14 @@ Item {
     }
 
     function deleteRows(){
-//        for(var i=0;i<lv.children[0].children.length; i++){
-//            let id=lv.children[0].children[i].rowId
-//            //uLogView.showLog('s: '+lv.children[0].children[i].selected)
-//            if(id&&lv.children[0].children[i].selected){
-//                let sql='delete from '+app.tableName2+' where id='+id
-//                unik.sqlQuery(sql)
-//            }
-//        }
+        //        for(var i=0;i<lv.children[0].children.length; i++){
+        //            let id=lv.children[0].children[i].rowId
+        //            //uLogView.showLog('s: '+lv.children[0].children[i].selected)
+        //            if(id&&lv.children[0].children[i].selected){
+        //                let sql='delete from '+app.tableName2+' where id='+id
+        //                unik.sqlQuery(sql)
+        //            }
+        //        }
         for(var i=0;i<lm.count; i++){
             let id=lm.get(i).v1
             //uLogView.showLog('s: '+lv.children[0].children[i].selected)
@@ -539,9 +546,25 @@ Item {
             botDelete.text='Eliminar '+cantSel +' Registros'
             botDelete.visible=true
         }
+         if(cantSel===0){
+             botModify.visible=false
+         }else{
+             if(cantSel===1){
+                botModify.visible=true
+             }
+         }
+
         //uLogView.showLog('Cantidad: '+cantSel)
     }
-
+    function modifyRow(){
+        for(var i=0;i<lm.count; i++){
+            if(lm.get(i).v7){
+                xFormInsertDatosAl.loadModify(lm.get(i).v1, lm.get(i).v2, lm.get(i).v3, lm.get(i).v4, lm.get(i).v5,  lm.get(i).v6)
+                break
+            }
+        }
+        r.idsSelected=[]
+    }
     function upRow(){
         if(lv.currentIndex===0){
             lv.contentY=lm.count*app.fs*2-lv.height
