@@ -156,7 +156,6 @@ Item {
                         insert()
                     }else{
                         modify()
-                        r.modificando=false
                     }
                 }
                 KeyNavigation.tab: tiNombre
@@ -321,6 +320,7 @@ Item {
             let msg='Se ha modificado el registro del alumno con nombre '+tiNombre.text
             unik.speak(msg)
             labelStatus.text=msg
+            r.modificando=false
         }else{
             let msg='El alumno con el folio '+tiFolio.text+' no ha sido modificado correctamente.'
             unik.speak(msg)
