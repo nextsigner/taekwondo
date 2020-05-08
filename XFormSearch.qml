@@ -30,6 +30,7 @@ Item {
             search()
             lv.currentIndex=usFormSearch.uCurrentIndex
         }
+        setBtnDeleteText()
     }
     Settings{
         id: usFormSearch

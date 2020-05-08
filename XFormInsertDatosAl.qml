@@ -8,6 +8,7 @@ Item {
     anchors.fill: parent
     property int numMod
     property bool modificando: false
+    property string cNombreAModificar: ''
     property int pIdAModificar: -1
     property string tableName: ''
     property string uCodInserted: ''
@@ -200,7 +201,7 @@ Item {
         let rows=unik.getSqlData(sql)
         //uLogView.showLog('rows: '+sql)
         if(rows.length>0){
-           unik.speak('Ya existe un alumno con este nombre.')
+            unik.speak('Ya existe un alumno con este nombre.')
             /*r.currentIdAlumno=rows[0].col[0]
             tiDomicilio.text=rows[0].col[1]
             tiEdad.text=rows[0].col[2]
@@ -267,6 +268,15 @@ Item {
         //uLogView.showLog('Registro Insertado: '+insertado)
     }
     function modify(){
+        if(tiNombre.text!===r.cNombreAModificar){
+            let sql = 'select * from '+xFormInsert.tableName+' where nombre=\''+tiNombre.text+'\''
+            let rows=unik.getSqlData(sql)
+            //uLogView.showLog('rows: '+sql)
+            if(rows.length>0){
+                unik.speak('Ya existe un alumno con este nombre.')
+                return
+            }
+        }
         uLogView.text=''
         uLogView.text=''
         if(tiNombre.text===''||tiDomicilio.text===''||tiEdad.text===''||tiTel.text===''||tiEMail.text===''){
@@ -297,13 +307,13 @@ Item {
             uLogView.showLog('Cols is empty!')
             return
         }
-        let sql = 'update '+r.tableName+' set '+
-            app.colsDatosAlumnos[0]+'=\''+tiNombre.text+'\','+
-            app.colsDatosAlumnos[1]+'=\''+tiDomicilio.text+'\','+
-            app.colsDatosAlumnos[2]+'=\''+tiEdad.text+'\','+
-            app.colsDatosAlumnos[3]+'=\''+tiTel.text+'\','+
-            app.colsDatosAlumnos[4]+'=\''+tiEMail.text+'\''+
-            ' where id='+r.pIdAModificar
+        sql = 'update '+r.tableName+' set '+
+                app.colsDatosAlumnos[0]+'=\''+tiNombre.text+'\','+
+                app.colsDatosAlumnos[1]+'=\''+tiDomicilio.text+'\','+
+                app.colsDatosAlumnos[2]+'=\''+tiEdad.text+'\','+
+                app.colsDatosAlumnos[3]+'=\''+tiTel.text+'\','+
+                app.colsDatosAlumnos[4]+'=\''+tiEMail.text+'\''+
+                ' where id='+r.pIdAModificar
         //uLogView.showLog('MOD: '+sql)
         let insertado = unik.sqlQuery(sql)
         if(insertado){
@@ -330,6 +340,7 @@ Item {
         app.mod=r.numMod
         r.pIdAModificar=p1
         tiNombre.text=p2
+        r.cNombreAModificar=p2
         tiDomicilio.text=p3
         tiEdad.text=p4
         tiTel.text=p5
