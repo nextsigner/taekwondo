@@ -30,6 +30,7 @@ Item {
             search()
             lv.currentIndex=usFormSearch.uCurrentIndex
         }
+        setBtnDeleteText()
     }
     Settings{
         id: usFormSearch
@@ -278,10 +279,12 @@ Item {
                             if(cbSelToTop.checked){
                                 search()
                             }
+                            setBtnDeleteText()
                             //uLogView.showLog('Spacing'+index)
                         }
                         onSelectedChanged: {
                             cbRow.checked=selected
+                            setBtnDeleteText()
                         }
                         MouseArea{
                             anchors.fill: parent
@@ -306,7 +309,6 @@ Item {
                                             //r.selectedAll=false
                                         }
                                         v7=checked
-                                        setBtnDeleteText()
                                         if(!tiSearch.textInput.focus){
                                             lv.focus=true
                                         }
@@ -328,8 +330,7 @@ Item {
                                         }else{
                                             r.idsSelected = JS.removeItemFromArr(r.idsSelected, parseInt(v1))
                                         }
-                                        //cant.text=r.idsSelected.toString()
-
+                                        setBtnDeleteText()
                                     }
                                     Timer{
                                         id: tSearchSelToTop
@@ -546,14 +547,11 @@ Item {
             botDelete.text='Eliminar '+cantSel +' Registros'
             botDelete.visible=true
         }
-         if(cantSel===0){
-             botModify.visible=false
+         if(cantSel===1){
+             botModify.visible=true
          }else{
-             if(cantSel===1){
-                botModify.visible=true
-             }
+                botModify.visible=false
          }
-
         //uLogView.showLog('Cantidad: '+cantSel)
     }
     function modifyRow(){

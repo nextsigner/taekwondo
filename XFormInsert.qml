@@ -42,7 +42,7 @@ Item {
         spacing: app.fs*0.5
         anchors.centerIn: parent
         UText{
-            text:  !r.modificando?'<b>Registro de Certificados</b>':'<b>Modificando Registro de Alumno</b>'
+            text:  !r.modificando?'<b>Registro de Certificados</b>':'<b>Modificando Certificado de Alumno</b>'
             font.pixelSize: app.fs*2
             anchors.horizontalCenter: parent.horizontalCenter
         }
