@@ -662,7 +662,7 @@ Item {
             app.colsCertificados[2]+'=\''+tiNombre.text+'\','+
             app.colsCertificados[3]+'='+dateFN.getTime()+','+
             app.colsCertificados[4]+'='+dateFC.getTime()+''+
-            ' where idalumno='+r.pIdAModificar
+            ' where id='+r.pIdAModificar
         //uLogView.showLog('MOD: '+sql)
         //console.log(sql)
         let insertado = unik.sqlQuery(sql)
@@ -685,7 +685,7 @@ Item {
     function loadModify(p1, p2, p3, p4, p5, p6, p7){
         r.modificando=true
         app.mod=r.numMod
-        r.pIdAModificar=p7
+        r.pIdAModificar=p1
         colDatosCertificado.visible=true
         tiFolio.text=p2
         tiGrado.text=p3
