@@ -84,6 +84,13 @@ Item {
                 visible: false
                 onClicked: deleteRows()
             }
+            BotonUX{
+                id: botModify
+                text: 'Modificar Registro'
+                height: app.fs*2
+                visible: false
+                onClicked: modifyRow()
+            }
         }
         Row{
             id: rowRBX
@@ -571,7 +578,21 @@ Item {
             botDelete.text='Eliminar '+cantSel +' Registros'
             botDelete.visible=true
         }
+        if(cantSel===1){
+            botModify.visible=true
+        }else{
+               botModify.visible=false
+        }
         //uLogView.showLog('Cantidad: '+cantSel)
+    }
+    function modifyRow(){
+        for(var i=0;i<lm.count; i++){
+            if(lm.get(i).v7){
+                xFormInsert.loadModify(lm.get(i).v1, lm.get(i).v2, lm.get(i).v3, lm.get(i).v4, lm.get(i).v5,  lm.get(i).v6,  lm.get(i).v8)
+                break
+            }
+        }
+        r.idsSelected=[]
     }
 
     function upRow(){
