@@ -268,8 +268,9 @@ Item {
         //uLogView.showLog('Registro Insertado: '+insertado)
     }
     function modify(){
+        let sql
         if(tiNombre.text!==r.cNombreAModificar){
-            let sql = 'select * from '+xFormInsert.tableName+' where nombre=\''+tiNombre.text+'\''
+            sql = 'select * from '+xFormInsert.tableName+' where nombre=\''+tiNombre.text+'\''
             let rows=unik.getSqlData(sql)
             //uLogView.showLog('rows: '+sql)
             if(rows.length>0){
