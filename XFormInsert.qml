@@ -8,6 +8,7 @@ Item {
     anchors.fill: parent
     property int numMod
     property bool modificando: false
+    property string cFolioAModificar: ''
     property int pIdAModificar: -1
     property string tableName: ''
     property string uCodInserted: ''
@@ -623,6 +624,16 @@ Item {
         //uLogView.showLog('Registro Insertado: '+insertado)
     }
     function modify(){
+        let sql
+        if(tiFolio.text!==r.cFolioAModificar){
+            sql = 'select * from '+xFormInsert.tableName+' where folio=\''+tiFolio.text+'\''
+            let rows=unik.getSqlData(sql)
+            //uLogView.showLog('rows: '+sql)
+            if(rows.length>0){
+                unik.speak('Ya existe un certificado  con este folio.')
+                return
+            }
+        }
         uLogView.text=''
         if(tiFolio.text===''||tiGrado.text===''||tiNombre.text===''||tiFechaNac.text===''||tiFechaCert.text===''){
             uLogView.showLog('Error!\nNo se han introducido todos los datos requeridos.\nPara registrar este alumno es necesario completar el formulario en su totalidad.')
@@ -656,7 +667,7 @@ Item {
         let m0DFC=tiFechaCert.text.split('/')
         let dateFN= new Date(parseInt(m0DFN[2]), parseInt(m0DFN[1] - 1), parseInt(m0DFN[0]))
         let dateFC= new Date(parseInt(m0DFC[2]), parseInt(m0DFC[1] - 1), parseInt(m0DFC[0]))
-        let sql = 'update '+r.tableName+' set '+
+        sql = 'update '+r.tableName+' set '+
             app.colsCertificados[0]+'=\''+tiFolio.text+'\','+
             app.colsCertificados[1]+'=\''+tiGrado.text+'\','+
             app.colsCertificados[2]+'=\''+tiNombre.text+'\','+
@@ -688,6 +699,7 @@ Item {
         r.pIdAModificar=p1
         colDatosCertificado.visible=true
         tiFolio.text=p2
+        r.cFolioAModificar=p2
         tiGrado.text=p3
         tiNombre.text=p4
         let d1=new Date(parseInt(p5))
