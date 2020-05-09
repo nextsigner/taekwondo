@@ -72,28 +72,21 @@ Item {
         }
         XListViewAl{
             id: xListViewAl
+            onVisibleChanged: {
+                if(visible)botCancel.visible=true
+            }
+            onIdDesSelected: r.cIdAlumno=-1
             onIdSelected: {
                 //uLogView.showLog('ID:' + id+' Nombre: '+nom)
                 r.cIdAlumno=id
                 r.cNom=nom
                 botCC.visible=true
+                botCancel.visible=true
             }
         }
         Row{
             spacing: app.fs
             anchors.horizontalCenter: parent.horizontalCenter
-            //anchors.right: parent.right
-            BotonUX{
-                id: botCancel
-                text: 'Cancelar'
-                height: app.fs*2
-                KeyNavigation.tab: botReg
-                visible: botCC.visible
-                onClicked: {
-                    cancel()
-                }
-                UnikFocus{}
-            }
             BotonUX{
                 id: botCC
                 text: 'Crear Certificado'
@@ -106,6 +99,8 @@ Item {
                         tiNombre.enabled=false
                         xListViewAl.visible=false
                         colDatosCertificado.visible=true
+                        botCC.visible=false
+                        botCancel.visible=true
                     }
                 }
                 UnikFocus{}
@@ -247,20 +242,19 @@ Item {
                 wrapMode: Text.WordWrap
             }
         }
-        Item{
-            id: xLS
-            width: r.width*0.5-app.fs
-            height: 1
-            UText{
-                id: labelStatus
-                text: 'Esperando a que se registren certificados.'
-                width: r.width
-                height: contentHeight
-                wrapMode: Text.WordWrap
-                anchors.verticalCenter: parent.verticalCenter
-            }
-        }
         Item{width: 1;height: app.fs*2}
+        BotonUX{
+            id: botCancel
+            text: 'Cancelar'
+            height: app.fs*2
+            KeyNavigation.tab: botReg
+            visible: false
+            anchors.right: parent.right
+            onClicked: {
+                cancel()
+            }
+            UnikFocus{}
+        }
         Row{
             id: xBtns
             spacing: app.fs
@@ -318,6 +312,19 @@ Item {
                     }
                 }
                 UnikFocus{}
+            }
+        }
+        Item{
+            id: xLS
+            width: r.width*0.5-app.fs
+            height: 1
+            UText{
+                id: labelStatus
+                text: 'Esperando a que se registren certificados.'
+                width: r.width
+                height: contentHeight
+                wrapMode: Text.WordWrap
+                anchors.verticalCenter: parent.verticalCenter
             }
         }
         UText{
@@ -541,8 +548,10 @@ Item {
                 xListViewAl.listModel.append(xListViewAl.listModel.addDato(rows[i].col[0],rows[i].col[1],rows[i].col[2],rows[i].col[3], rows[i].col[4], rows[i].col[5]))
             }
             xListViewAl.visible=true
+            botCancel.visible=true
         }else{
             xListViewAl.visible=false
+            botCancel.visible=false
         }
     }
     function codExist(){
@@ -670,19 +679,19 @@ Item {
         let dateFN= new Date(parseInt(m0DFN[2]), parseInt(m0DFN[1] - 1), parseInt(m0DFN[0]))
         let dateFC= new Date(parseInt(m0DFC[2]), parseInt(m0DFC[1] - 1), parseInt(m0DFC[0]))
         sql = 'update '+r.tableName+' set '+
-            app.colsCertificados[0]+'=\''+tiFolio.text+'\','+
-            app.colsCertificados[1]+'=\''+tiGrado.text+'\','+
-            app.colsCertificados[2]+'=\''+tiNombre.text+'\','+
-            app.colsCertificados[3]+'='+dateFN.getTime()+','+
-            app.colsCertificados[4]+'='+dateFC.getTime()+''+
-            ' where id='+r.pIdAModificar
+                app.colsCertificados[0]+'=\''+tiFolio.text+'\','+
+                app.colsCertificados[1]+'=\''+tiGrado.text+'\','+
+                app.colsCertificados[2]+'=\''+tiNombre.text+'\','+
+                app.colsCertificados[3]+'='+dateFN.getTime()+','+
+                app.colsCertificados[4]+'='+dateFC.getTime()+''+
+                ' where id='+r.pIdAModificar
         //uLogView.showLog('MOD: '+sql)
         //console.log(sql)
         let insertado = unik.sqlQuery(sql)
         if(insertado){
             let msg='Se ha modificado el registro del alumno con folio '+tiFolio.text
             unik.speak(msg)
-            labelStatus.text=msg            
+            labelStatus.text=msg
             r.modificando=false
         }else{
             let msg='El alumno con el folio '+tiFolio.text+' no ha sido modificado correctamente.'

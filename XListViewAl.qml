@@ -10,6 +10,7 @@ Column{
     visible: lm.count>0
     property alias listModel: lm
     signal idSelected(int id, string nom)
+    signal idDesSelected
     onVisibleChanged: {
         lv.focus=visible
     }
@@ -176,11 +177,10 @@ Column{
                                 anchors.centerIn: parent
                                 onCheckedChanged: {
                                     if(!checked){
-                                       // cbSelectedAll.setearTodos=false
-                                        //cbSelectedAll.checked=false
-                                        //r.selectedAll=false
+                                       idDesSelected()
+                                    }else{
+                                        idSelected(v1,v2)
                                     }
-                                    idSelected(v1,v2)
                                     //setBtnDeleteText()
 //                                    if(!tiSearch.textInput.focus){
 //                                        lv.focus=true
