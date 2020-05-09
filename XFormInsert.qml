@@ -848,6 +848,7 @@ Item {
             return
         }
         if(tiNombre.textInput.focus){
+            botCC.visible=false
             loadList()
             return
         }
