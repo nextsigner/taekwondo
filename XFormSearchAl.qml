@@ -532,6 +532,7 @@ Item {
     }
     function setBtnDeleteText(){
         //uLogView.showLog('setBtnDeleteText()')
+       botModify.visible=false
         let cantSel=0
         for(var i=0;i<lm.count; i++){
             if(lm.get(i).v7){

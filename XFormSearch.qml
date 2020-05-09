@@ -539,6 +539,7 @@ Item {
 //                unik.sqlQuery(sql)
 //            }
 //        }
+        botModify.visible=false
         for(var i=0;i<lm.count; i++){
             let id=lm.get(i).v1
             //uLogView.showLog('s: '+lv.children[0].children[i].selected)
