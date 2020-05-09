@@ -28,9 +28,14 @@ Item {
 
     onVisibleChanged: {
         if(visible){
-            updateGui()
-            tiNombre.focus=visible
-            tiNombre.text=''
+            if(!modificando){
+                updateGui()
+                tiNombre.focus=visible
+                tiNombre.text=''
+            }else{
+                tiFolio.focus=true
+                tiNombre.enabled=false
+            }
         }else{
             tiFolio.focus=false
             tiGrado.focus=false
@@ -257,11 +262,11 @@ Item {
             onClicked: {
                 if(r.modificando){
                     r.modificando=false
-//                    colDatosCertificado.visible=false
-//                    tiNombre.text=''
-//                    tiNombre.focus=true
-//                    clear()
-//                    return
+                    //                    colDatosCertificado.visible=false
+                    //                    tiNombre.text=''
+                    //                    tiNombre.focus=true
+                    //                    clear()
+                    //                    return
                 }
                 visible=false
                 tiNombre.text=''
@@ -285,19 +290,19 @@ Item {
                 }
                 UnikFocus{}
             }
-//            BotonUX{
-//                id: botCancelarModificar
-//                text: 'Cancelar'
-//                height: app.fs*2
-//                visible: r.modificando
-//                onClicked: {
-//                    r.modificando=false
-//                    colDatosCertificado.visible=false
-//                    tiNombre.text=''
-//                    tiNombre.focus=true
-//                    clear()
-//                }
-//            }
+            //            BotonUX{
+            //                id: botCancelarModificar
+            //                text: 'Cancelar'
+            //                height: app.fs*2
+            //                visible: r.modificando
+            //                onClicked: {
+            //                    r.modificando=false
+            //                    colDatosCertificado.visible=false
+            //                    tiNombre.text=''
+            //                    tiNombre.focus=true
+            //                    clear()
+            //                }
+            //            }
             BotonUX{
                 id: botReg
                 text: !r.modificando?'Guardar Registro':'Modificar Registro'
@@ -753,6 +758,7 @@ Item {
         tiGrado.text=p3
         tiNombre.text=p4
         tiNombre.textInput.enabled=false
+        tiFolio.focus=true
         let d1=new Date(parseInt(p5))
         let f1=''+d1.getDate()+'/'+parseInt(d1.getMonth()+1)+'/'+d1.getFullYear()
         tiFechaNac.text=f1

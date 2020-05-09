@@ -590,6 +590,7 @@ Item {
     function modifyRow(){
         for(var i=0;i<lm.count; i++){
             if(lm.get(i).v7){
+                xFormInsert.modificando=true
                 xFormInsert.loadModify(lm.get(i).v1, lm.get(i).v2, lm.get(i).v3, lm.get(i).v4, lm.get(i).v5,  lm.get(i).v6,  lm.get(i).v8)
                 break
             }
