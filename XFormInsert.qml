@@ -63,7 +63,7 @@ Item {
                     textInput.selectAll()
                 }
             }
-            onTextChanged: {
+            textInput.onTextChanged: {
                 r.cIdAlumno=-1
                 botCC.visible=false
             }
