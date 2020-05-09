@@ -30,45 +30,7 @@ Column{
                     height:xRowTitDes.height
                     border.width: 2
                     border.color: app.c2
-                    color: app.c1
-                    CheckBox{
-                        id: cbSelectedAll
-                        anchors.centerIn: parent
-                        property bool setearTos: true
-                        onClicked: cbSelectedAll.setearTodos=true
-                        onCheckedChanged: {
-                            //r.selectedAll=checked
-                            if(!setearTodos){
-                                cbSelectedAll.setearTodos=true
-                                //setBtnDeleteText()
-                                return
-                            }
-                            for(var i=0;i<lm.count; i++){
-                                lm.get(i).v7=checked
-                            }
-                            //setBtnDeleteText()
-                        }
-                    }
-                    MouseArea{
-                        anchors.fill: parent
-                        enabled: false
-                        opacity: 0.0
-                        onClicked: {
-                            cbSelectedAll.checked=!cbSelectedAll.checked
-                            r.idsSelected=[]
-                            search()
-                            /*if(!cbSelectedAll.checked){
-
-                        }else{
-                            r.idsSelected=[]
-                            cbSelToTop.checked=false
-                        }*/
-                            for(var i=0;i<lm.count; i++){
-                                lm.get(i).v7=cbSelectedAll.checked
-                            }
-                            //setBtnDeleteText()
-                        }
-                    }
+                    color: 'transparent'
                 }
                 Repeater{
                     model: app.colsNameDatosAlumnos
@@ -151,18 +113,18 @@ Column{
                     Keys.onSpacePressed: {
                         lv.currentIndex=index
                         cbRow.checked=!cbRow.checked
-//                        if(cbSelToTop.checked){
-//                            search()
-//                        }
+                        //                        if(cbSelToTop.checked){
+                        //                            search()
+                        //                        }
                         //uLogView.showLog('Spacing'+index)
                     }
                     onSelectedChanged: {
                         cbRow.checked=selected
                     }
-//                    MouseArea{
-//                        anchors.fill: parent
-//                        onDoubleClicked: xFormInsert.loadModify(v1, v2, v3, v4, v5, v6)
-//                    }
+                    //                    MouseArea{
+                    //                        anchors.fill: parent
+                    //                        onDoubleClicked: xFormInsert.loadModify(v1, v2, v3, v4, v5, v6)
+                    //                    }
                     Row{
                         anchors.centerIn: parent
                         Rectangle{
@@ -177,30 +139,30 @@ Column{
                                 anchors.centerIn: parent
                                 onCheckedChanged: {
                                     if(!checked){
-                                       idDesSelected()
+                                        idDesSelected()
                                     }else{
                                         idSelected(v1,v2)
                                     }
                                     //setBtnDeleteText()
-//                                    if(!tiSearch.textInput.focus){
-//                                        lv.focus=true
-//                                    }
+                                    //                                    if(!tiSearch.textInput.focus){
+                                    //                                        lv.focus=true
+                                    //                                    }
                                     let allSelected=true
                                     for(var i=0;i<lm.count; i++){
                                         lm.get(i).v7=false
                                     }
                                     v7=checked
-//                                    if(allSelected){
-//                                        cbSelectedAll.setearTodos=false
-//                                        cbSelectedAll.checked=allSelected
-//                                    }
-//                                    if(checked){
-//                                        if(r.idsSelected.indexOf(parseInt(v1))<0){
-//                                            r.idsSelected.push(parseInt(v1))
-//                                        }
-//                                    }else{
-//                                        r.idsSelected = JS.removeItemFromArr(r.idsSelected, parseInt(v1))
-//                                    }
+                                    //                                    if(allSelected){
+                                    //                                        cbSelectedAll.setearTodos=false
+                                    //                                        cbSelectedAll.checked=allSelected
+                                    //                                    }
+                                    //                                    if(checked){
+                                    //                                        if(r.idsSelected.indexOf(parseInt(v1))<0){
+                                    //                                            r.idsSelected.push(parseInt(v1))
+                                    //                                        }
+                                    //                                    }else{
+                                    //                                        r.idsSelected = JS.removeItemFromArr(r.idsSelected, parseInt(v1))
+                                    //                                    }
                                     //cant.text=r.idsSelected.toString()
 
                                 }
@@ -219,9 +181,9 @@ Column{
                                     }
                                     onClicked: {
                                         cbRow.checked=!cbRow.checked
-//                                        if(cbSelToTop.checked){
-//                                            search()
-//                                        }
+                                        //                                        if(cbSelToTop.checked){
+                                        //                                            search()
+                                        //                                        }
                                         //setBtnDeleteText()
                                     }
                                 }
@@ -269,12 +231,12 @@ Column{
                     //                            anchors.leftMargin: app.fs*0.5
                     //                        }
                     Component.onCompleted: {
-//                        if(idsSelected.indexOf(parseInt(v1))>=0){
-//                            xRowDes.selected=true
-//                        }else{
-//                            cbSelectedAll.setearTodos=false
-//                            cbSelectedAll.checked=false
-//                        }
+                        //                        if(idsSelected.indexOf(parseInt(v1))>=0){
+                        //                            xRowDes.selected=true
+                        //                        }else{
+                        //                            cbSelectedAll.setearTodos=false
+                        //                            cbSelectedAll.checked=false
+                        //                        }
                     }
                 }
             }
