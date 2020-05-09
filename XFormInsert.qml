@@ -143,7 +143,7 @@ Item {
                         onTriggered: {
                             let ce=r.codExist()
                             if(tiFolio.text!==r.uCodInserted&&ce&&tiFolio.text!==tiFolio.uCodExist){
-                                let msg='<b>Atención!: </b>El código actual ya existe.'
+                                let msg='<b>Atención!: </b>El folio actual ya existe.'
                                 unik.speak(msg.replace(/<[^>]*>?/gm, ''))
                                 labelStatus.text=msg
                             }
@@ -158,7 +158,7 @@ Item {
                     id: tiGrado
                     label: 'Grado: '
                     width: r.width*0.5-tiFolio.width//-app.fs*2
-                    maximumLength: 250
+                    maximumLength: 50
                     KeyNavigation.tab: tiNombre
                     textInput.onFocusChanged: {
                         if(textInput.focus){
@@ -383,7 +383,6 @@ Item {
                     id: txt
                     color:app.c2
                     font.pixelSize: app.fs
-                    text: '<br /><b style="font-size:'+app.fs+'px;">Id único del registro: </b><span style="font-size:'+app.fs+'px;">'+vaid+'</span><br /><br /><b style="font-size:'+app.fs+'px;">Folio: </b><span style="font-size:'+app.fs+'px;">'+vafolio+'</span><br /><b  style="font-size:'+app.fs*1.4+'px;">Grado: </b><span style="font-size:'+app.fs+'px;">'+vagrado+'</span><br /><b style="font-size:'+app.fs+'px;">Nombre: </b> <span style="font-size:'+app.fs+'px;">'+vanom+'</span><br /><b>Fecha de Nacimiento: </b>'+vafechanac+'<br /><b>Fecha de Certificado: </b>'+vafechacert+'<br />'
                     textFormat: Text.RichText
                     width: parent.width-app.fs
                     wrapMode: Text.WordWrap
@@ -405,8 +404,12 @@ Item {
                             tiFolio.text=vafolio
                             tiGrado.text=vagrado
                             tiNombre.text=vanom
-                            tiFechaNac.text=vafechanac
-                            tiFechaCert.text=vafechacert
+                            let d1=new Date(parseInt(vafechanac))
+                            let d2=new Date(parseInt(vafechacert))
+                            let f1=''+d1.getDate()+'/'+parseInt(d1.getMonth()+1)+'/'+d1.getFullYear()
+                            let f2=''+d2.getDate()+'/'+parseInt(d2.getMonth()+1)+'/'+d2.getFullYear()
+                            tiFechaNac.text=f1
+                            tiFechaCert.text=f2
                             tiFolio.focus=true
                             r.modificando=true
                             r.pIdAModificar=parseInt(vaid)
@@ -422,7 +425,15 @@ Item {
                     }
                 }
             }
-            Component.onCompleted: botCodExistsMod.focus=true
+            Component.onCompleted: {
+                botCodExistsMod.focus=true
+                let d1=new Date(parseInt(vafechanac))
+                let d2=new Date(parseInt(vafechacert))
+                let f1=''+d1.getDate()+'/'+parseInt(d1.getMonth()+1)+'/'+d1.getFullYear()
+                let f2=''+d2.getDate()+'/'+parseInt(d2.getMonth()+1)+'/'+d2.getFullYear()
+                let txtFinal='<br /><b style="font-size:'+app.fs+'px;">Id único del registro: </b><span style="font-size:'+app.fs+'px;">'+vaid+'</span><br /><br /><b style="font-size:'+app.fs+'px;">Folio: </b><span style="font-size:'+app.fs+'px;">'+vafolio+'</span><br /><b  style="font-size:'+app.fs+'px;">Grado: </b><span style="font-size:'+app.fs+'px;">'+vagrado+'</span><br /><b style="font-size:'+app.fs+'px;">Nombre: </b> <span style="font-size:'+app.fs+'px;">'+vanom+'</span><br /><b>Fecha de Nacimiento: </b>'+f1+'<br /><b>Fecha de Certificado: </b>'+f2+'<br />'
+                txt.text=txtFinal
+            }
         }
     }
     Calendar{
