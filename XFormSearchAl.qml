@@ -507,6 +507,7 @@ Item {
         //                unik.sqlQuery(sql)
         //            }
         //        }
+        botModify.visible=false
         for(var i=0;i<lm.count; i++){
             let id=lm.get(i).v1
             //uLogView.showLog('s: '+lv.children[0].children[i].selected)
@@ -532,7 +533,6 @@ Item {
     }
     function setBtnDeleteText(){
         //uLogView.showLog('setBtnDeleteText()')
-       botModify.visible=false
         let cantSel=0
         for(var i=0;i<lm.count; i++){
             if(lm.get(i).v7){
