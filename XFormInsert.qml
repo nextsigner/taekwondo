@@ -23,7 +23,6 @@ Item {
     property var dateForOpenFN
     property var dateForOpenFC
 
-
     property int cIdAlumno: -1
     property string cNom: ''
 
@@ -251,6 +250,8 @@ Item {
             visible: false
             anchors.right: parent.right
             onClicked: {
+                visible=false
+                clear()
                 cancel()
             }
             UnikFocus{}
@@ -283,6 +284,7 @@ Item {
                 id: botReg
                 text: !r.modificando?'Guardar Registro':'Modificar Registro'
                 height: app.fs*2
+                visible: colDatosCertificado.visible
                 onClicked: {
                     if(!r.modificando){
                         if(codExist()){
@@ -724,7 +726,7 @@ Item {
     function clear(){
         tiFolio.text=''
         tiGrado.text=''
-        //tiNombre.text=''
+        tiNombre.text=''
         tiFechaNac.text=''
         tiFechaCert.text=''
         tiNombre.focus=true
