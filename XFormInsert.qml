@@ -753,6 +753,7 @@ Item {
         let d2=new Date(parseInt(p6))
         let f2=''+d2.getDate()+'/'+parseInt(d2.getMonth()+1)+'/'+d2.getFullYear()
         tiFechaCert.text=f2
+        botCancel.visible=true
     }
     function clear(){
         if(!colDatosCertificado.visible){
