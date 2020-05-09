@@ -119,7 +119,7 @@ ApplicationWindow {
                 }
                 XConfig{id:xConfig; visible: app.mod===5&&!xLogin.visible}
                 XLogin{id: xLogin;
-                   visible: false
+                   //visible: false
                 }
             }
         }
