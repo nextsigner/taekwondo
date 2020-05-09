@@ -31,6 +31,7 @@ Item {
         if(visible){
             updateGui()
             tiNombre.focus=visible
+            tiNombre.text=''
         }else{
             tiFolio.focus=false
             tiGrado.focus=false
