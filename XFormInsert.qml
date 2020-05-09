@@ -735,6 +735,8 @@ Item {
         colDatosCertificado.visible=false
         tiNombre.text=''
         tiNombre.focus=true
+        botCancel.visible=true
+        labelStatus.text=''
         clear()
         //uLogView.showLog('Registro Insertado: '+insertado)
     }
