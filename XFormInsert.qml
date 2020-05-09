@@ -251,7 +251,7 @@ Item {
             anchors.right: parent.right
             onClicked: {
                 visible=false
-                clear()
+                tiNombre.text=''
                 cancel()
             }
             UnikFocus{}
@@ -265,6 +265,7 @@ Item {
                 text: 'Limpiar'
                 height: app.fs*2
                 KeyNavigation.tab: botReg
+                visible: tiNombre.text!==''
                 onClicked: {
                     clear()
                 }
@@ -323,10 +324,12 @@ Item {
             UText{
                 id: labelStatus
                 text: 'Esperando a que se registren certificados.'
-                width: r.width
-                height: contentHeight
+                //width: contentWidth
+                //height: contentHeight
                 wrapMode: Text.WordWrap
-                anchors.verticalCenter: parent.verticalCenter
+                anchors.centerIn: parent
+                //anchors.verticalCenter: parent.verticalCenter
+                //anchors.horizontalCenter: parent.horizontalCenter
             }
         }
         UText{
@@ -724,9 +727,12 @@ Item {
         tiFechaCert.text=f2
     }
     function clear(){
+        if(!colDatosCertificado.visible){
+            tiNombre.text=''
+            return
+        }
         tiFolio.text=''
         tiGrado.text=''
-        tiNombre.text=''
         tiFechaNac.text=''
         tiFechaCert.text=''
         tiNombre.focus=true
