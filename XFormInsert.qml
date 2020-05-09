@@ -732,6 +732,9 @@ Item {
             labelStatus.text=msg
             r.uCodInserted=tiFolio.text
         }
+        colDatosCertificado.visible=false
+        tiNombre.text=''
+        tiNombre.focus=true
         clear()
         //uLogView.showLog('Registro Insertado: '+insertado)
     }
