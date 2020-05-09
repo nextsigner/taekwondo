@@ -284,6 +284,9 @@ Item {
                 visible: r.modificando
                 onClicked: {
                     r.modificando=false
+                    colDatosCertificado.visible=false
+                    tiNombre.text=''
+                    tiNombre.focus=true
                     clear()
                 }
             }
