@@ -98,6 +98,7 @@ Item {
                         tiNombre.enabled=false
                         xListViewAl.visible=false
                         colDatosCertificado.visible=true
+                        tiFolio.focus=true
                         botCC.visible=false
                         botCancel.visible=true
                     }
@@ -252,6 +253,7 @@ Item {
             onClicked: {
                 visible=false
                 tiNombre.text=''
+                labelStatus.text=''
                 cancel()
             }
             UnikFocus{}
@@ -337,7 +339,7 @@ Item {
             width: parent.width
             height: app.fs*2
             wrapMode: Text.WordWrap
-            opacity: itemCalFC.visible||itemCalFN.visible?1.0:0.0
+            opacity: calendario.parent!==r?1.0:0.0
             text: 'Presionar arriba o abajo para cambiar día.\nPresionar derecha o izquierda para cambiar mes.\nPresionar Shift+derecha o Shift+izquierda para cambiar de año.'
         }
 
@@ -735,15 +737,15 @@ Item {
         tiGrado.text=''
         tiFechaNac.text=''
         tiFechaCert.text=''
-        tiNombre.focus=true
+        tiFolio.focus=true
         r.dateForOpenFN=new Date(Date.now())
         r.dateForOpenFC=new Date(Date.now())
-        r.cIdAlumno=-1
-        r.cNom=''
+        //r.cIdAlumno=-1
+        //r.cNom=''
         botCC.visible=false
         tiNombre.enabled=true
-        colDatosCertificado.visible=false
-        xListViewAl.listModel.clear()
+        //colDatosCertificado.visible=false
+        //xListViewAl.listModel.clear()
         labelStatus.text='Formulario limpiado.'
     }
     function cancel(){
