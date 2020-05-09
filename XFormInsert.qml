@@ -57,6 +57,7 @@ Item {
             maximumLength: 50
             //regularExp: RegExpValidator{regExp: /^\d+(\.\d{1,2})?$/ }
             KeyNavigation.tab: itemCalFN
+            anchors.horizontalCenter: parent.horizontalCenter
             textInput.onFocusChanged: {
                 if(textInput.focus){
                     calendario.parent=r
@@ -80,7 +81,8 @@ Item {
         }
         Row{
             spacing: app.fs
-            anchors.right: parent.right
+            anchors.horizontalCenter: parent.horizontalCenter
+            //anchors.right: parent.right
             BotonUX{
                 id: botCancel
                 text: 'Cancelar'
