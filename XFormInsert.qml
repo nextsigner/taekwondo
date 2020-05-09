@@ -255,6 +255,14 @@ Item {
             visible: false
             anchors.right: parent.right
             onClicked: {
+                if(r.modificando){
+                    r.modificando=false
+//                    colDatosCertificado.visible=false
+//                    tiNombre.text=''
+//                    tiNombre.focus=true
+//                    clear()
+//                    return
+                }
                 visible=false
                 tiNombre.text=''
                 labelStatus.text=''
@@ -277,19 +285,19 @@ Item {
                 }
                 UnikFocus{}
             }
-            BotonUX{
-                id: botCancelarModificar
-                text: 'Cancelar'
-                height: app.fs*2
-                visible: r.modificando
-                onClicked: {
-                    r.modificando=false
-                    colDatosCertificado.visible=false
-                    tiNombre.text=''
-                    tiNombre.focus=true
-                    clear()
-                }
-            }
+//            BotonUX{
+//                id: botCancelarModificar
+//                text: 'Cancelar'
+//                height: app.fs*2
+//                visible: r.modificando
+//                onClicked: {
+//                    r.modificando=false
+//                    colDatosCertificado.visible=false
+//                    tiNombre.text=''
+//                    tiNombre.focus=true
+//                    clear()
+//                }
+//            }
             BotonUX{
                 id: botReg
                 text: !r.modificando?'Guardar Registro':'Modificar Registro'
@@ -431,7 +439,7 @@ Item {
                 let d2=new Date(parseInt(vafechacert))
                 let f1=''+d1.getDate()+'/'+parseInt(d1.getMonth()+1)+'/'+d1.getFullYear()
                 let f2=''+d2.getDate()+'/'+parseInt(d2.getMonth()+1)+'/'+d2.getFullYear()
-                let txtFinal='<br /><b style="font-size:'+app.fs+'px;">Id único del registro: </b><span style="font-size:'+app.fs+'px;">'+vaid+'</span><br /><br /><b style="font-size:'+app.fs+'px;">Folio: </b><span style="font-size:'+app.fs+'px;">'+vafolio+'</span><br /><b  style="font-size:'+app.fs+'px;">Grado: </b><span style="font-size:'+app.fs+'px;">'+vagrado+'</span><br /><b style="font-size:'+app.fs+'px;">Nombre: </b> <span style="font-size:'+app.fs+'px;">'+vanom+'</span><br /><b>Fecha de Nacimiento: </b>'+f1+'<br /><b>Fecha de Certificado: </b>'+f2+'<br />'
+                let txtFinal='<b style="font-size:'+app.fs+'px;">Folio: </b><span style="font-size:'+app.fs+'px;">'+vafolio+'</span><br /><b  style="font-size:'+app.fs+'px;">Grado: </b><span style="font-size:'+app.fs+'px;">'+vagrado+'</span><br /><b style="font-size:'+app.fs+'px;">Nombre: </b> <span style="font-size:'+app.fs+'px;">'+vanom+'</span><br /><b>Fecha de Nacimiento: </b>'+f1+'<br /><b>Fecha de Certificado: </b>'+f2+'<br />'
                 txt.text=txtFinal
             }
         }
