@@ -26,6 +26,7 @@ Item {
     onVisibleChanged: {
         lv.focus=visible
         tiSearch.text=''
+        r.idsSelected=[]
         if(visible&&tiSearch.text===''){
             search()
             lv.currentIndex=usFormSearch.uCurrentIndex
@@ -486,12 +487,12 @@ Item {
             for(i=0;i<rows.length;i++){
                 if(r.idsSelected.indexOf(parseInt(rows[i].col[0]))>=0){
                     //uLogView.showLog('id: '+rows[i].col[0])
-                    lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[2], rows[i].col[3], rows[i].col[4], rows[i].col[5]))
+                    lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[3], rows[i].col[2], rows[i].col[4], rows[i].col[5]))
                 }
             }
             for(i=0;i<rows.length;i++){
                 if(r.idsSelected.indexOf(parseInt(rows[i].col[0]))<0){
-                    lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[2], rows[i].col[3], rows[i].col[4], rows[i].col[5]))
+                    lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[3], rows[i].col[2], rows[i].col[4], rows[i].col[5]))
                 }
             }
         }
@@ -564,6 +565,7 @@ Item {
         for(var i=0;i<lm.count; i++){
             if(lm.get(i).v7){
                 xFormInsertDatosAl.loadModify(lm.get(i).v1, lm.get(i).v2, lm.get(i).v3, lm.get(i).v4, lm.get(i).v5,  lm.get(i).v6)
+                r.idsSelected=[]
                 break
             }
         }

@@ -71,6 +71,7 @@ Item {
             textInput.onTextChanged: {
                 r.cIdAlumno=-1
                 botCC.visible=false
+                labelStatus.text=''
             }
             onSeted: {
                 r.cIdAlumno=-1
@@ -666,7 +667,6 @@ Item {
         }
         clear()
         botCancel.visible=false
-        botClear.visible=false
         tiNombre.text=''
         tiNombre.enabled=true
         tiNombre.focus=true

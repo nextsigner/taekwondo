@@ -342,8 +342,8 @@ Item {
         r.pIdAModificar=p1
         tiNombre.text=p2
         r.cNombreAModificar=p2
-        tiDomicilio.text=p3
-        tiEdad.text=p4
+        tiDomicilio.text=p4
+        tiEdad.text=p3
         tiTel.text=p5
         tiEMail.text=p6
     }
