@@ -665,6 +665,9 @@ Item {
             r.uCodInserted=tiFolio.text
         }
         clear()
+        tiNombre.enabled=true
+        tiNombre.focus=true
+        colDatosCertificado.visible=false
         sql='select id from certificados order by id desc limit 1'
         rows=unik.getSqlData(sql)
         let d=new Date(Date.now())
