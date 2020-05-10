@@ -31,7 +31,7 @@ Item {
             if(!modificando){
                 updateGui()
                 tiNombre.focus=visible
-                tiNombre.text=''
+                //tiNombre.text=''
             }else{
                 tiFolio.focus=true
                 tiNombre.enabled=false
