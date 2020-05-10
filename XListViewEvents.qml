@@ -11,7 +11,7 @@ Rectangle{
     onVisibleChanged: {
         //lv.focus=visible
         lm.clear()
-        let sql='select * from eventos'
+        let sql='select * from eventos order by id desc'
         let rows=unik.getSqlData(sql)
         for(var i=0;i<rows.length;i++){
             lm.append(lm.addDato(rows[i].col[1], rows[i].col[2], rows[i].col[3], rows[i].col[4]))
