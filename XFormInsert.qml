@@ -30,7 +30,7 @@ Item {
         if(visible){
             if(!modificando){
                 updateGui()
-                tiNombre.focus=visible
+                tiFocus.focus=visible
                 //tiNombre.text=''
             }else{
                 tiFolio.focus=true
