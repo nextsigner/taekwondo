@@ -525,7 +525,7 @@ Item {
             }
             for(i=0;i<rows.length;i++){
                 if(r.idsSelected.indexOf(parseInt(rows[i].col[0]))<0){
-                    lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[2], rows[i].col[3], rows[i].col[4], rows[i].col[5], rows[i].col[6]))
+                    lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[3], rows[i].col[2], rows[i].col[4], rows[i].col[5], rows[i].col[6]))
                 }
             }
         }
