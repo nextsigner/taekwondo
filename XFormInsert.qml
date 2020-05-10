@@ -665,6 +665,9 @@ Item {
             r.uCodInserted=tiFolio.text
         }
         clear()
+        botCancel.visible=false
+        botClear.visible=false
+        tiNombre.text=''
         tiNombre.enabled=true
         tiNombre.focus=true
         colDatosCertificado.visible=false
