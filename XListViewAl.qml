@@ -80,6 +80,12 @@ Column{
             onCurrentIndexChanged: {
                 //usFormSearch.uCurrentIndex=currentIndex
             }
+            Rectangle{
+                anchors.fill: parent
+                border.width: 2
+                border.color: app.c2
+                color: 'transparent'
+            }
             ListModel{
                 id: lm
                 function addDato(p1, p2, p3, p4, p5, p6){
@@ -139,19 +145,25 @@ Column{
                                 anchors.centerIn: parent
                                 onCheckedChanged: {
                                     if(!checked){
+                                        let allSelected=true
+                                        for(var i=0;i<lm.count; i++){
+                                            lm.get(i).v7=false
+                                        }
+                                        v7=checked
                                         idDesSelected()
                                     }else{
+                                        let allSelected=true
+                                        for(var i=0;i<lm.count; i++){
+                                            lm.get(i).v7=false
+                                        }
+                                        v7=checked
                                         idSelected(v1,v2)
                                     }
                                     //setBtnDeleteText()
                                     //                                    if(!tiSearch.textInput.focus){
                                     //                                        lv.focus=true
                                     //                                    }
-                                    let allSelected=true
-                                    for(var i=0;i<lm.count; i++){
-                                        lm.get(i).v7=false
-                                    }
-                                    v7=checked
+
                                     //                                    if(allSelected){
                                     //                                        cbSelectedAll.setearTodos=false
                                     //                                        cbSelectedAll.checked=allSelected
