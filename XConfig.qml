@@ -146,7 +146,7 @@ Item {
                 }else{
                     //uLogView.showLog('Sqlite: '+fn1)
                     let fs=(''+files).replace('file:///', '')
-                    let folderCurrentBds=""+pws+"/mascontrol/bds"
+                    let folderCurrentBds=""+pws+"/taekwondo/bds"
                     let folderBds=""+folder+""
                     let nBd=(""+folderCurrentBds+"/"+fn1).replace(/\//g, "\\\\")
 
@@ -183,7 +183,7 @@ Item {
             let bdFN='productos_'+dia+'_'+mes+'_'+anio[anio.length-2]+anio[anio.length-1]+'_'+hora+'_'+minuto+'_'+segundos+'.sqlite'
 
             let fs=(''+folder).replace('file:///', '')
-            let folderCurrentBds=""+pws+"/mascontrol/bds"
+            let folderCurrentBds=""+pws+"/taekwondo/bds"
             let folderBds=""+fs+""
             let currentBd=apps.bdFileName.indexOf('\\')<0?(""+folderCurrentBds+"/"+apps.bdFileName).replace(/\//g, "\\\\"):""+apps.bdFileName
 
@@ -236,7 +236,7 @@ Item {
                     xMsgCopiando.m='La copia de seguridad se ha realizado con éxito.'
                     botCerrarXMsgCopiando.visible=true
                 }else{
-                    let folderBds=""+pws+"/mascontrol/bds"
+                    let folderBds=""+pws+"/taekwondo/bds"
                     let bd=""+folderBds+"/"+xMsgCopiando.file
                     if(!unik.fileExist(bd)){
                         unik.speak('Error. El archivo seleccionado no se ha copiado correctamente.')

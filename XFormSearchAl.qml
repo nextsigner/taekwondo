@@ -480,7 +480,7 @@ Item {
             //cbSelectedAll.setearTodos=false
             //cbSelectedAll.checked=false
             for(i=0;i<rows.length;i++){
-                lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[2], rows[i].col[3], rows[i].col[4], rows[i].col[5]))
+                lm.append(lm.addDato(rows[i].col[0], rows[i].col[1], rows[i].col[3], rows[i].col[2], rows[i].col[4], rows[i].col[5]))
             }
         }else{
             for(i=0;i<rows.length;i++){
