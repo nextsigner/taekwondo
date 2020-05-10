@@ -517,7 +517,7 @@ Item {
                 sql='delete from '+app.tableName1+' where idalumno=\''+id+'\''
                 unik.sqlQuery(sql)
                 let d=new Date(Date.now())
-                let event=''+app.cAdmin+' ha eliminado el alumno'
+                let event=''+app.cAdmin+' ha eliminado un alumno'
                 JS.setEvent(event, 'alumnos', id, d.getTime())
             }
         }

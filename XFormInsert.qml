@@ -760,7 +760,7 @@ Item {
         r.cFolioAModificar=p2
         tiGrado.text=p3
         tiNombre.text=p4
-        tiNombre.textInput.enabled=false
+        //tiNombre.textInput.enabled=false
         tiFolio.focus=true
         let d1=new Date(parseInt(p5))
         let f1=''+d1.getDate()+'/'+parseInt(d1.getMonth()+1)+'/'+d1.getFullYear()
