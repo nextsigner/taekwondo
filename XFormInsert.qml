@@ -743,6 +743,9 @@ Item {
         botCancel.visible=false
         labelStatus.text=''
         clear()
+        let d=new Date(Date.now())
+        let event=''+app.cAdmin+' ha modificado un certificado'
+        JS.setEvent(event, 'certificados', r.pIdAModificar, d.getTime())
         //uLogView.showLog('Registro Insertado: '+insertado)
     }
     function updateGui(){
