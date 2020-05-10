@@ -30,7 +30,12 @@ Item {
         if(visible){
             if(!modificando){
                 updateGui()
-                tiFolio.focus=visible
+                if(!colDatosCertificado.visible){
+                    tiNombre.focus=true
+                }else{
+                    tiFolio.focus=true
+                }
+
                 //tiNombre.text=''
             }else{
                 tiFolio.focus=true
@@ -584,7 +589,7 @@ Item {
         //uLogView.showLog('rows: '+sql)
         if(rows.length>0){
             for(var i=0;i<rows.length;i++){
-                xListViewAl.listModel.append(xListViewAl.listModel.addDato(rows[i].col[0],rows[i].col[1],rows[i].col[2],rows[i].col[3], rows[i].col[4], rows[i].col[5]))
+                xListViewAl.listModel.append(xListViewAl.listModel.addDato(rows[i].col[0],rows[i].col[1],rows[i].col[3],rows[i].col[2], rows[i].col[4], rows[i].col[5]))
             }
             xListViewAl.visible=true
             botCancel.visible=true
