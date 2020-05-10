@@ -514,6 +514,8 @@ Item {
             if(lm.get(i).v7){
                 let sql='delete from '+app.tableName2+' where id='+id
                 unik.sqlQuery(sql)
+                sql='delete from '+app.tableName1+' where idalumno=\''+id+'\''
+                unik.sqlQuery(sql)
             }
         }
         botDelete.visible=false
