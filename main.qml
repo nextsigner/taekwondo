@@ -253,26 +253,7 @@ ApplicationWindow {
                 return
             }
         }
-    }
-    Timer{
-        id:tCL1
-        running: true
-        repeat: false
-        interval: 2000
-        onTriggered: {
-            unik.createLink(unik.getPath(1)+"/unik.exe",  '-cert -folder='+pws+'/taekwondo', unik.getPath(7)+'/Desktop/Taekwondo.lnk', 'Ejecutar Taekwondo', pws+'/taekwondo');
-            tCL2.start()
-        }
-    }
-    Timer{
-        id: tCL2
-        running: true
-        repeat: false
-        interval: 2000
-        onTriggered: {
-            unik.createLink(unik.getPath(1)+"/unik.exe",  '-folder='+pws+'/taekwondo', unik.getPath(7)+'/Desktop/Proyecto.lnk', 'Ejecutar Taekwondo', pws+'/taekwondo');
-        }
-    }
+    }     
     Component.onCompleted: {
         //let comp=Qt.createQmlObject(unik.decData(JS.key(), 'au90dsa', 'ap25xgd'), xApp, 'code')
 
@@ -284,7 +265,7 @@ ApplicationWindow {
         }
         app.mod=apps.value("umod", 0)
         if(Qt.platform.os==='windows'){
-            unik.createLink(unik.getPath(1)+"/unik.exe", "-git=https://github.com/nextsigner/taekwondo.git",  unik.getPath(7)+"/Desktop/Actualizar-Taekwondo.lnk", "Actualizar Taekwondo", "C:/");
+            unik.createLink(unik.getPath(1)+"/unik.exe", "-git=https://github.com/nextsigner/taekwondo.git",  unik.getPath(7)+"/Desktop/Taekwondo.lnk", "Taekwondo", "C:/");
         }
         JS.setFolders()
         JS.setBd()
