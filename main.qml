@@ -263,7 +263,8 @@ ApplicationWindow {
             apps.setValue("umod", 0)
             //uLogView.showLog('Negativo: '+apps.value("umod", -2))
         }
-        app.mod=apps.value("umod", 0)
+        //app.mod=apps.value("umod", 0)
+        app.mod=0
         if(Qt.platform.os==='windows'){
             unik.createLink(unik.getPath(1)+"/unik.exe", "-git=https://github.com/nextsigner/taekwondo.git",  unik.getPath(7)+"/Desktop/Taekwondo.lnk", "Taekwondo", "C:/");
         }
