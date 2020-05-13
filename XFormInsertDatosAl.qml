@@ -241,7 +241,7 @@ Item {
         sql = 'select '+r.cols[0]+' from '+r.tableName+' where '+r.cols[0]+'=\''+tiNombre.text+'\''
         rows = unik.getSqlData(sql)
         if(rows.length>=1){
-            uLogView.showLog('Error! No se han podido registrar los datos alumno con este número de folio.\nYa existe un alumno con el folio '+tiFolio.text)
+            uLogView.showLog('Error! No se han podido registrar los datos alumno con este número de folio.\nYa existe un alumno con el nombre '+tiNombre.text)
             return
         }
         sql = 'insert into '+r.tableName+'('+r.cols+')values('+
@@ -322,10 +322,10 @@ Item {
             labelStatus.text=msg
             r.modificando=false
         }else{
-            let msg='El alumno con el folio '+tiFolio.text+' no ha sido modificado correctamente.'
+            let msg='El alumno con el nombre '+tiNombre.text+' no ha sido modificado correctamente.'
             unik.speak(msg)
             labelStatus.text=msg
-            r.uCodInserted=tiFolio.text
+            r.uCodInserted=tiNombre.text
         }
         clear()
         let d=new Date(Date.now())
