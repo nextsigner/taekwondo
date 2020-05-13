@@ -6,7 +6,7 @@ Item{
     width: parent.width
     height: minimalista?app.fs*0.5:app.fs*1.4
     property bool minimalista: menuSettings.minimalista
-    property var arrayMenuNames: ['Inicio', 'Registrar Datos Alumno', 'Buscar Alumno', 'Registrar Certificado', 'Buscar Certificado', 'Configurar']
+    property var arrayMenuNames: ['Inicio', 'Registrar Datos Alumno', 'Buscar Alumno', 'Registrar Certificado', 'Buscar Certificado', 'Configurar', 'Acerca de']
     Settings{
         id: menuSettings
         fileName: pws+'/'+app.moduleName+'/'+app.moduleName+'_xmenu'
@@ -59,13 +59,4 @@ Item{
             }
         }
     }
-//    Component.onCompleted: {
-//        //uLogView.showLog(Qt.application.arguments)
-//        var a=[]
-//        if(Qt.application.arguments.toString().indexOf('-cert')){
-//            r.arrayMenuNames=['Inicio', 'Registrar Alumnos', 'Buscar Alumnos', 'Certificados', 'Configurar']
-//        }else{
-//            r.arrayMenuNames=['Inicio', 'Registrar Alumnos', 'Buscar Alumnos', 'Configurar']
-//        }
-//    }
 }

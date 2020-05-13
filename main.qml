@@ -118,6 +118,7 @@ ApplicationWindow {
                     currentTableName: xFormInsert.tableName
                 }
                 XConfig{id:xConfig; visible: app.mod===5&&!xLogin.visible}
+                XAbout{visible: app.mod===6}
                 XLogin{id: xLogin;
                    //visible: false
                 }
