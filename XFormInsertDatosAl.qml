@@ -309,8 +309,8 @@ Item {
         }
         sql = 'update '+r.tableName+' set '+
                 app.colsDatosAlumnos[0]+'=\''+tiNombre.text+'\','+
-                app.colsDatosAlumnos[1]+'=\''+tiDomicilio.text+'\','+
-                app.colsDatosAlumnos[2]+'=\''+tiEdad.text+'\','+
+                app.colsDatosAlumnos[1]+'=\''+tiEdad.text+'\','+
+                app.colsDatosAlumnos[2]+'=\''+tiDomicilio.text+'\','+
                 app.colsDatosAlumnos[3]+'=\''+tiTel.text+'\','+
                 app.colsDatosAlumnos[4]+'=\''+tiEMail.text+'\''+
                 ' where id='+r.pIdAModificar
