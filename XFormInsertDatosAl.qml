@@ -246,8 +246,8 @@ Item {
         }
         sql = 'insert into '+r.tableName+'('+r.cols+')values('+
                 '\''+tiNombre.text+'\','+
-                '\''+tiDomicilio.text+'\','+
                 '\''+tiEdad.text+'\','+
+                '\''+tiDomicilio.text+'\','+
                 '\''+tiTel.text+'\','+
                 '\''+tiEMail.text+'\''+
                 ')'
