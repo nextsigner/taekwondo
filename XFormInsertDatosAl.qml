@@ -241,7 +241,7 @@ Item {
         sql = 'select '+r.cols[0]+' from '+r.tableName+' where '+r.cols[0]+'=\''+tiNombre.text+'\''
         rows = unik.getSqlData(sql)
         if(rows.length>=1){
-            uLogView.showLog('Error! No se han podido registrar los datos alumno con este número de folio.\nYa existe un alumno con el nombre '+tiNombre.text)
+            uLogView.showLog('Error! No se han podido registrar los datos alumno con este nombre.\nYa existe un alumno con el nombre '+tiNombre.text)
             return
         }
         sql = 'insert into '+r.tableName+'('+r.cols+')values('+
@@ -428,6 +428,6 @@ Item {
     }
     function escForm(){
         calendario.parent=r
-        tiFolio.textInput.focus=true
+        tiNombre.textInput.focus=true
     }
 }
