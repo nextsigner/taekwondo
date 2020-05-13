@@ -35,11 +35,7 @@ Item {
             id: labelCountProds
             text: '<b>Cantidad de Alumnos Registrados: </b> Contando...'
             font.pixelSize: app.fs
-        }
-        UText{
-            text: '<b>Color actual: </b>'+unikSettings.currentNumColor
-            font.pixelSize: app.fs
-        }
+        }       
     }
     Timer{
         running: r.visible
@@ -48,8 +44,11 @@ Item {
         onTriggered: actualizar()
     }
     function actualizar(){
-        let sql = 'select * from '+app.tableName1
+        let sql = 'select * from '+app.tableName2
         let rows = unik.getSqlData(sql)
         labelCountProds.text='<b>Cantidad de Alumnos Registrados: </b>'+rows.length
+        sql = 'select * from '+app.tableName1
+        rows = unik.getSqlData(sql)
+        labelCountProds.text+='<br /><b>Cantidad de Certificados Registrados: </b>'+rows.length
     }
 }
